@@ -1,0 +1,200 @@
+<!-- <div id='c21-app-list-conversations'>
+  <div *ngFor="let conversation of listConversations | slice:0:limit">
+    <button tabindex="1103" class="c21-item-conversation" (click)="openConversationByID(conversation)">
+      <div class="c21-body-conv">
+        <div class="c21-left-conv">
+          <div class="c21-ball" [style.background-color]="conversation?.color">
+            <span class="c21-ball-label" [innerHTML]="conversation?.avatar"></span>
+            <div *ngIf="conversation.image" #avatarImage class="c21-avatar-image" [style.background-image]="'url(' + conversation.image + ')'"></div>
+          </div>
+        </div>
+        <div class="c21-right-conv">
+          <div class="c21-last-time">{{conversation.time_last_message}}</div>
+          <div class="truncate c21-name">{{conversation.sender_fullname }}</div>
+          <div [class.not-read]="conversation.is_new" class="truncate c21-msg" [innerHTML]="conversation.last_message_text"></div>
+        </div>
+        <!- - <div *ngIf="conversation.is_new" [ngStyle] = "{ 'background-color': styleMap.get('themeColor') }" class="c21-divBudge">{{conversation.badge}}</div>
+        <div *ngIf="conversation.archived" class="c21-lablel-close">{{ translationMap.get('CLOSED') }}</div> - ->
+      </div>
+      <div class="clear"></div>
+    </button>
+    
+  </div>
+</div> -->
+
+<!-- -------------------------------------------------------------------------- -->
+<!-- New   <ion-spinner class="spinner-middle" style="margin-left: 19px;"></ion-spinner> -->
+<!-- -------------------------------------------------------------------------- -->
+<!-- <ion-item *ngIf="isOnline === false" button="true" lines="none" class="ion-no-padding waiting-for-connection">
+  <div tabindex="0"></div>
+  <ion-avatar item-start>
+    <div class="sk-fading-circle">
+      <div class="sk-circle1 sk-circle"></div>
+      <div class="sk-circle2 sk-circle"></div>
+      <div class="sk-circle3 sk-circle"></div>
+      <div class="sk-circle4 sk-circle"></div>
+      <div class="sk-circle5 sk-circle"></div>
+      <div class="sk-circle6 sk-circle"></div>
+      <div class="sk-circle7 sk-circle"></div>
+      <div class="sk-circle8 sk-circle"></div>
+      <div class="sk-circle9 sk-circle"></div>
+      <div class="sk-circle10 sk-circle"></div>
+      <div class="sk-circle11 sk-circle"></div>
+      <div class="sk-circle12 sk-circle"></div>
+    </div>
+  </ion-avatar>
+  <ion-label part="message-text" class="waiting-for-network-msg"> Waiting for network</ion-label>
+</ion-item> -->
+
+<!-- <ion-item>
+  <div tabindex="0"></div>
+  <iframe loading="lazy" width="100%" height="70px" style="border: unset;" [src]="PROJECT_FOR_PANEL"></iframe>
+</ion-item>  -->
+<!-- <ion-item button="true" (click)="openUnsevedConversationIframe()">
+  <app-project-item
+  (projectIdEvent)="getLastProjectId($event)"></app-project-item>
+</ion-item> -->
+
+
+<!-- <ion-item-sliding disabled>
+  <ion-item>
+    <ion-label>
+      Sliding Item, Icons Start
+    </ion-label>
+  </ion-item>
+  <ion-item-options>
+    <ion-item-option color="primary">
+      <ion-icon slot="start" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      More
+    </ion-item-option>
+    <ion-item-option color="secondary">
+      <ion-icon slot="start" name="archive"></ion-icon>
+      Archive
+    </ion-item-option>
+  </ion-item-options>
+</ion-item-sliding> -->
+
+
+<ion-item button="true" lines="none" class="ion-no-padding" [class.ion-selected]="conversation?.uid === uidConvSelected"
+  *ngFor="let conversation of listConversations; let index= index" (click)="openConversationByID(conversation)" detail=false>
+  <div tabindex="0"></div>
+
+  <!-- <div [class.selected]="conversation.uid === uidConvSelected"></div> -->
+  <div>
+    <ion-avatar item-start>
+      <!-- [style.background-color]="conversation.color"  -->
+      <div #avatarPlaceholder class="avatar-placeholder"
+        [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + conversation.color + ')'}"
+        [innerHTML]="conversation.avatar"></div>
+      <div *ngIf="conversation.image" #avatarImage class="avatar-profile"
+        [style.background-image]="'url(' + conversation.image + ')'"></div>
+      <!-- <div *ngIf="getImageAvatar(conversation.sender)" #avatarImage class="avatar-profile" [style.background-image]="'url(' + getImageAvatar(conversation.sender) + ')'"></div> -->
+    </ion-avatar>
+  </div>
+  <div class="conv-container">
+    <ion-label>
+      <div class="conversation_project truncate">
+        <!-- DIRECT CONV -->
+        <div *ngIf="conversation.channel_type === CHANNEL_TYPE.DIRECT">
+          <img class="channel-icon" src="assets/images/channel_icons/direct.svg">
+          <span  class="truncate">{{translationsMap.get('DIRECT_CHAT')}}</span>
+        </div>
+        <!-- GROUP CONV -->
+        <div *ngIf="conversation.uid.startsWith(CHANNEL_TYPE.GROUP)">
+          <img class="channel-icon" src="assets/images/channel_icons/group.svg">
+          <span class="truncate">{{translationsMap.get('GROUP_CHAT')}}</span>
+        </div>
+        <!-- SUPPORT-GROUP CONV -->
+        <div  *ngIf="conversation.uid.startsWith(CHANNEL_TYPE.SUPPORT_GROUP) && !IS_ON_MOBILE_DEVICE">
+          <img class="channel-icon" src="assets/images/channel_icons/chat21.svg" *ngIf="conversation?.attributes && ( (conversation?.attributes?.request_channel && conversation?.attributes?.request_channel === CHANNEL_TYPE.CHAT21) ||  !conversation?.attributes?.request_channel) " >
+          <img class="channel-icon" src="assets/images/channel_icons/email-logo.svg" *ngIf="conversation?.attributes && conversation?.attributes?.request_channel && conversation?.attributes?.request_channel === CHANNEL_TYPE.EMAIL" >
+          <img class="channel-icon" src="assets/images/channel_icons/form-logo_v2.svg" *ngIf="conversation?.attributes && conversation?.attributes?.request_channel && conversation?.attributes?.request_channel === CHANNEL_TYPE.FORM" >
+          <img class="channel-icon" src="assets/images/channel_icons/messenger-logo.svg" *ngIf="conversation?.attributes && conversation?.attributes?.request_channel && conversation?.attributes?.request_channel === CHANNEL_TYPE.MESSENGER" >
+          <img class="channel-icon" src="assets/images/channel_icons/whatsapp-logo.svg" *ngIf="conversation?.attributes && conversation?.attributes?.request_channel && conversation?.attributes?.request_channel === CHANNEL_TYPE.WHATSAPP" >
+          <img class="channel-icon" src="assets/images/channel_icons/telegram-logo.svg" *ngIf="conversation?.attributes && conversation?.attributes?.request_channel && conversation?.attributes?.request_channel === CHANNEL_TYPE.TELEGRAM" >
+          <img class="channel-icon" src="assets/images/channel_icons/voice.svg" *ngIf="conversation?.attributes && conversation?.attributes?.request_channel && conversation?.attributes?.request_channel.startsWith(CHANNEL_TYPE.VOICE)" >
+          <span *ngIf="conversation?.attributes?.project_name" class="truncate">{{conversation?.attributes?.project_name}}</span>
+          <span *ngIf="!conversation?.attributes?.project_name" class="truncate">{{conversation?.attributes?.projectId}}</span>
+        </div>
+      </div>
+      <div style="display: flex;">
+        <span class="conversation_with truncate" [class.not-read]="conversation.is_new">
+          {{conversation?.conversation_with_fullname}}
+        </span>
+      </div>
+      <div class="conversation_message truncate" [ngClass]="{'truncate-on-desktop': !isApp}">
+  
+        <!-- -------------------------------------------------------------------------- -->
+        <!-- if conversation type is image display the image icon before the message -->
+        <!-- -------------------------------------------------------------------------- -->
+        <!-- <div *ngIf="conversation.type === 'image'" class="icon-image-before-msg-wpr">
+          <ion-icon name="image-outline" class="icon-image-before-msg"></ion-icon>
+        </div>
+        <p [class.not-read]="conversation.is_new" class="truncate" [ngClass]="{'truncate-on-desktop': !isApp}"
+          [innerHTML]="conversation.last_message_text"></p> -->
+  
+        <!-- <div *ngIf="conversation.type === 'image'" class="icon-image-before-msg-wpr"> -->
+        <ion-icon *ngIf="isImage(conversation)" name="image-outline" class="icon-image-before-msg"></ion-icon>
+        <ion-icon *ngIf="isFile(conversation)" name="attach-outline" class="icon-attach-before-msg"></ion-icon>
+        <ion-icon *ngIf="isAudio(conversation)" name="mic-outline" class="icon-mic-before-msg"></ion-icon>
+        <!-- </div> -->
+        <!-- [innerHTML]="conversation.last_message_text" -->
+        <span [class.not-read]="conversation.is_new">
+          {{ conversation.last_message_text }}
+        </span>
+      </div>
+    </ion-label>
+  </div>
+
+  <ion-note *ngIf="!conversation.archived" class="conversation_time" [ngClass]="{'is-on-mobile': isApp}">
+    {{conversation.timestamp | amTimeAgo}}
+  </ion-note>
+  <ion-note item-end *ngIf="conversation?.archived" class="conversation_time">
+    <span *ngIf="(conversation.timestamp | amDateFormat:'YYYY') === currentYear">
+      {{browserLang === 'en' ? (conversation.timestamp | amDateFormat:'MMM DD') : (conversation.timestamp| amDateFormat:'DD MMM')}}
+      <!-- {{conversation.timestamp | amDateFormat:'DD MMM'}} -->
+    </span>
+    <span *ngIf="(conversation.timestamp | amDateFormat:'YYYY') !== currentYear">
+      {{browserLang === 'en' ? (conversation.timestamp | amDateFormat:'MMM DD YYYY') : (conversation.timestamp| amDateFormat:'DD MMM YYYY') }}
+      <!-- {{conversation.timestamp | amDateFormat:'DD MMM YYYY'}} -->
+    </span>
+  </ion-note>
+
+  <ion-buttons slot="end">
+    <ion-button *ngIf="!conversation.archived" placement="bottom"
+      [ngClass]="{'hide': !isApp, 'button-on-desktop': !isApp, 'button-on-mobile': isApp  }"
+      id="{{ 'close_conversation_button' + conversation.uid }}" class="close-conversation-button" ion-button clear
+      item-end (click)="closeConversation(conversation);$event.stopPropagation();" padding>
+      <ion-icon slot="icon-only" style="display:block;" id="{{ 'close_button_icon' + conversation.uid }}" name="archive-outline" item-end></ion-icon>
+      <!-- <div *ngIf="conversation?.recipient.startsWith('support-group')" tooltip="{{ translationsMap?.get('Resolve')}}"></div>
+      <div *ngIf="conversation?.recipient.startsWith('support-group')" tooltip="{{ translationsMap?.get('Archive')}}"></div> -->
+    </ion-button>
+
+    <!-- <ion-button *ngIf="conversation?.recipient.startsWith('support-group') && !conversation.archived" [tooltip]="joinTooltip"  [options]="tooltip_options" placement="bottom"  content-type="template"
+      [ngClass]="{'hide': !isApp, 'button-on-desktop': !isApp, 'button-on-mobile': isApp  }"
+      id="{{ 'join_conversation_button' + conversation.uid }}" class="close-conversation-button" ion-button clear
+      item-end (click)="joinConversation(conversation);$event.stopPropagation();" padding>
+      <ion-icon slot="icon-only" style="display:block;" id="{{ 'join_button_icon' + conversation.uid }}" name="link-outline" item-end></ion-icon>
+
+      <ng-template #joinTooltip>
+        <span>{{ translationsMap?.get('JOIN_CONVERSATION')}} </span>
+      </ng-template>
+    </ion-button> -->
+
+
+    <!-- <ion-button *ngIf="conversation.archived" class="close-conversation-button" ion-button clear item-end disabled padding>
+      <!- - <ion-icon  style="display:block;" id="{{ 'close_button_icon' + conversation.uid }}" color="close-conversation" name="archive-outline" item-end></ion-icon> - ->
+      <i class="material-icons" id="{{ 'close_button_icon' + conversation.uid }}"  item-end> history </i>
+      <!- - <div item-end *ngIf="conversation.archived">{{ translationMap.get('CLOSED') }}</div> - ->
+    </ion-button> -->
+  </ion-buttons>
+
+  
+
+  <!-- && !conversation?.archived -->
+  <div item-end class="notification_point"
+    [ngClass]="{'notification_point-on-desktop': !isApp, 'notification_point-on-mobile': isApp }"
+    *ngIf="conversation.is_new">
+  </div>
+
+</ion-item>

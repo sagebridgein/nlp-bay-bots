@@ -1,0 +1,12 @@
+<!-- [ngStyle]="{ 'max-width': width +'px', 'max-height': height +'px' }" style="position: relative; " -->
+<div [ngStyle]="{'max-height': height +'px' }" class="c21-img-container">
+  <div *ngIf="loading" class="loader" [ngStyle]="{ 'width': width , 'height': height  }"></div>
+  <img id="myImg" 
+    class="message-contentX message-content-imageX" 
+    [ngClass]="{'isLoadingImage': loading}"
+    [width]="width"
+    [height]="height"
+    [src]="metadata.src" 
+    (load)="onLoaded($event)" 
+    (click)="openImageViewerModal(metadata.src, metadata.name)" />
+</div>

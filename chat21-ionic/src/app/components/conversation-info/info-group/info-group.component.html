@@ -1,0 +1,51 @@
+<!-- <pre style="font-size: 12px;"> {{ groupDetail | json }} </pre>  -->
+
+<ion-content class="group-profile">
+    <ion-card>
+      <div class="chat21-box-profile chat21-box">
+        <div class="chat21-content">
+          <div class="image-profile">
+            <app-avatar-profile [itemAvatar]="groupDetail"></app-avatar-profile>
+          </div>
+  
+          <div class="info-profile">
+            <div class="name">
+              <span class="read">{{groupDetail?.name}}</span>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+    </ion-card>
+    
+    <ion-list id="fake-members-list" *ngIf="displaySkeletonScreen">
+      <ion-item color="none" lines="none" *ngFor="let fake of generateFake(membersObjectLength)" style="margin-left:-3px">
+        <ion-avatar slot="start">
+          <ion-skeleton-text animated style="width: 44px; height: 44px;"></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 60%;position: relative;top: 2px;height: 16px;"></ion-skeleton-text>
+          </h3>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  
+    <!-- <pre style="font-size: 8px;"> {{member_array | json }} </pre>  <pre style="font-size: 8px;"> {{displaySkeletonScreen}} </pre> -->
+    <ion-list id="members-list" *ngIf="groupDetail?.member_array?.length > 0 && !displaySkeletonScreen">
+      <ion-item color="none" lines="none" *ngFor='let member of groupDetail?.member_array'>
+        <ion-avatar  slot="start" style="margin-right: 12px;"> 
+          <app-avatar-profile [itemAvatar]=member></app-avatar-profile>
+          <div class="status-icon-container" [class.mobile]="isMobile" >
+            <svg xmlns="http://www.w3.org/2000/svg" [class.online]="(member?.userOnline)" height="15"  width="15" viewBox="0 0 24 24" fill="#000000"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          </div>
+        </ion-avatar>
+        <ion-label>
+          <h3>
+            {{ member.fullname }}
+          </h3>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  
+  </ion-content>

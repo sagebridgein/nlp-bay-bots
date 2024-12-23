@@ -1,0 +1,42 @@
+{
+    "t2y12PruGU9wUtEGzBJfolMIgK": "${FEATURES_TOKEN}",
+    "globalRemoteJSSrc":"${REMOTE_JS_SRC}",
+    "chatEngine": "${CHAT21_ENGINE}",
+    "uploadEngine": "${UPLOAD_ENGINE}",
+    "pushEngine":"${PUSH_ENGINE}",
+    "fileUploadAccept":"${FILE_UPLOAD_ACCEPT}",
+    "logLevel":"${LOG_LEVEL}",
+    "authPersistence": "${AUTH_PERSISTENCE}",
+    "supportMode": "${SUPPORT_MODE}",
+    "writeToButton": "${WRITE_TO_BUTTON}",
+    "archivedButton": "${ARCHIVED_BUTTON}",
+    "firebaseConfig": {
+        "tenant":"${FIREBASE_TENANT}",
+        "apiKey": "${FIREBASE_APIKEY}",
+        "authDomain": "${FIREBASE_AUTHDOMAIN}",
+        "databaseURL": "${FIREBASE_DATABASEURL}",
+        "projectId": "${FIREBASE_PROJECT_ID}",
+        "storageBucket": "${FIREBASE_STORAGEBUCKET}",
+        "messagingSenderId": "${FIREBASE_MESSAGINGSENDERID}",
+        "appId": "${FIREBASE_APP_ID}",
+        "chat21ApiUrl": "${CHAT21_URL}",
+        "vapidKey": "${FIREBASE_VAPID}"
+    },
+    "chat21Config": {
+        "appId": "${MQTT_APPID}",
+        "MQTTendpoint": "${MQTT_ENDPOINT}",
+        "APIendpoint": "${MQTT_APIENDPOINT}"
+    },
+    "apiUrl": "${SERVER_BASE_URL}",
+    "brandSrc": "${BRAND_SRC}",
+    "whatsappTemplatesBaseUrl":"${WHATSAPP_TEMPLATES_BASE_URL}",
+    "baseImageUrl": "${API_BASEIMAGE_URL}",
+    "dashboardUrl": "${DASHBOARD_URL}",
+    "widgetBaseUrl":"${WIDGET_LOCATION}",
+    "wsUrl": "${WS_URL}",
+    "wsUrlRel": "${WS_URL_RELATIVE}",
+    "storage_prefix": "${CHAT_STORAGE_PREFIX}",
+    "emailSection": "${EMAIL_SECTION}",
+    "whatsappTemplatesSection":"${WHATSAPP_TEMPLATES_SECTION}",
+    "googleMapsApiKey":"${GOOGLE_MAPS_APIKEY}"
+}

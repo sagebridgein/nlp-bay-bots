@@ -1,0 +1,136 @@
+<ion-header no-border class="ion-no-border" [class.mobile]="isMobile">
+  <header-conversations-list *ngIf="conversationType ==='active'" 
+    [numberOpenConv]="numberOpenConv" 
+    [supportMode]="supportMode"
+    [archived_btn]="archived_btn"
+    [writeto_btn]="writeto_btn"
+    [sound_btn]="sound_btn"
+    [isMobile]="isMobile"
+    (onSoundChange)="onSoundChange($event)"
+    (openContactsDirectory)=openContactsDirectory($event) 
+    (openProfileInfo)=openProfileInfo($event)>
+  </header-conversations-list>
+
+  <header-conversations-list-archived *ngIf="conversationType ==='archived'" 
+    [headerTitle]=headerTitle
+    [isMobile]="isMobile"
+    (onBackButton)=onBackButtonFN($event)>
+  </header-conversations-list-archived>
+
+  <header-conversations-list-unassigned *ngIf="conversationType ==='unassigned'"
+    [headerTitle]=headerTitle
+    [isMobile]="isMobile"
+    (onBackButton)=onBackButtonFN($event)>
+  </header-conversations-list-unassigned>
+
+</ion-header>
+
+<!-- appScrollbarTheme -->
+<ion-content id="convs-list" #ioncontentconvlist class="list-avatar-page" [class.mobile]="isMobile">
+  <!-- class="ps" style="position: relative; max-width: 600px; max-height: 100%;" [perfectScrollbar]="config" -->
+  <div id="scrollbar2">
+    <ion-list>
+
+        <!-- supportMode && -->
+        <ion-item  *ngIf="displayNewConvsItem && conversationType !=='archived' && supportMode" class="ion-no-padding open-iframe-item" lines="none">
+          <div tabindex="0"></div>
+          <!-- <ion-note class="pinned-project">
+            {{ 'PINNED_PROJECT' | translate }}
+          </ion-note> -->
+     
+          <app-project-item
+            (openUnsevedConvsEvent)="openUnsevedConversationIframe($event)"
+            (projectIdEvent)="getLastProjectId($event)">
+          </app-project-item>
+        </ion-item>
+
+      <span
+        *ngIf="(conversations.length > 0 && conversationType ==='active') || (archivedConversations.length > 0  && conversationType ==='archived') || (unassignedConversations.length > 0  && conversationType ==='unassigned');then contentConversations else contentMessageWelcome">
+        here is ignored
+      </span>
+
+ 
+
+      <ng-template #contentConversations>
+        <!-- ---------------------------------- -->
+        <!-- ACTIVE CONVERSATION LIST -->
+        <!-- ---------------------------------- -->
+        <ion-list-conversations *ngIf="conversationType ==='active'" 
+          [uidConvSelected]="uidConvSelected"
+          [listConversations]="conversations" 
+          [stylesMap]="stylesMap" 
+          [translationMap]="translationMapConversation"
+          (onConversationSelected)=onConversationSelected($event) 
+          (onImageLoaded)="onImageLoaded($event)"
+          (onConversationLoaded)="onConversationLoaded($event)" 
+          (onCloseConversation)="onCloseConversation($event)" 
+          [archiveActionNotAllowed]="archiveActionNotAllowed"
+          (onCloseAlert)="onCloseAlert($event)">
+        </ion-list-conversations>
+
+        <!-- ---------------------------------- -->
+        <!-- ARCHIVED CONVERSATION LIST -->
+        <!-- ---------------------------------- -->
+        <ion-list-conversations *ngIf="conversationType ==='archived'" 
+          [listConversations]="archivedConversations"
+          [stylesMap]="stylesMap" 
+          [translationMap]="translationMapConversation"
+          (onConversationSelected)=onConversationSelected($event) 
+          (onImageLoaded)="onImageLoaded($event)"
+          (onConversationLoaded)="onConversationLoaded($event)">
+        </ion-list-conversations>
+
+        <!-- ---------------------------------- -->
+        <!-- UNASSIGNED CONVERSATION LIST -->
+        <!-- ---------------------------------- -->
+        <ion-list-conversations *ngIf="conversationType ==='unassigned'" 
+          [listConversations]="unassignedConversations"
+          [stylesMap]="stylesMap" 
+          [translationMap]="translationMapConversation"
+          (onConversationSelected)=onConversationSelected($event)
+          (onCloseConversation)="onCloseConversation($event)" 
+          (onJoinConversation) ="onJoinConversation($event)"
+          (onImageLoaded)="onImageLoaded($event)"
+          (onConversationLoaded)="onConversationLoaded($event)">
+        </ion-list-conversations>
+      </ng-template>
+
+      <ng-template #contentMessageWelcome>
+        <div [class.active]="loadingIsActive" class="chat21-spinner" id="chat21-spinner">
+          <!-- <div class="chat21-bounce1"></div>
+          <div class="chat21-bounce2"></div>
+          <div class="chat21-bounce3"></div> -->
+          <!-- <span>loading ...</span>  -->
+          <!-- --------------------------------------------- -->
+          <!-- skeleton loading -->
+          <!-- --------------------------------------------- -->
+          <ion-list *ngIf="loadingIsActive">
+            <ion-item lines="none" *ngFor="let fake of generateFake(10)">
+              <ion-avatar slot="start" style="margin-left: 0 !important;">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-avatar>
+              <ion-label>
+                <h3 style="height: 21px;">
+                  <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                </h3>
+                <p style="height: 15px;">
+                  <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+                </p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <div id="no-convs-wpr"
+          *ngIf="(!loadingIsActive && conversations.length === 0) || (!loadingIsActive && archivedConversations.length === 0) || (!loadingIsActive && unassignedConversations.length === 0)">
+          <ion-item id="no-convs" class="ion-text-center" lines="none">
+            <ion-label class="ion-text-wrap" color="medium">
+              {{ 'LABEL_MSG_PUSH_START_CHAT' | translate }}
+            </ion-label>
+          </ion-item>
+        </div>
+
+      </ng-template>
+    </ion-list>
+  </div>
+</ion-content>

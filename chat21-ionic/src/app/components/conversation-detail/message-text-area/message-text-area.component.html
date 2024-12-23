@@ -1,0 +1,139 @@
+<ion-grid>
+  <div class="footer-options-container">
+    <!-- CHAT-OPTION -->
+    <div class="section-option" id="chat"  tooltip="{{translationMap?.get('LABEL_CHAT')}}" placement="top">
+      <ion-button fill="clear" (click)="onOpenSection('chat')" [class.active]="section==='chat'">
+        <ion-icon name="chatbubbles"></ion-icon>
+        {{translationMap.get('LABEL_CHAT')}}
+      </ion-button>
+    </div>
+    <!-- EMAIL-OPTION -->
+    <div *ngIf="emailSection" class="section-option" id="email"  tooltip="{{translationMap?.get('EMAIL.LABEL_TOOLTIP')}}" placement="top">
+      <ion-button fill="clear" [class.active]="section==='email'" (click)="onOpenSection('email')" [disabled]="channelType === 'direct' || channel == CHANNEL_TYPE.WHATSAPP || channel == CHANNEL_TYPE.MESSENGER">
+        <ion-icon name="mail-open"></ion-icon>
+        {{translationMap.get('LABEL_EMAIL')}}
+      </ion-button>
+    </div>
+
+    <div *ngIf="whatsappTemplatesSection" class="section-option" id="template" tooltip="{{translationMap?.get('WHATSAPP.LABEL_TOOLTIP')}}" placement="top">
+      <ion-button fill="clear" [class.active]="section==='templates'" (click)="onOpenSection('templates');onOpenTemplateModal()" [disabled]="channel !== CHANNEL_TYPE.WHATSAPP">
+        <ion-icon name="logo-whatsapp"></ion-icon>
+        {{translationMap?.get('WHATSAPP.LABEL_TEMPLATES')}}
+      </ion-button>
+    </div>
+    
+    <div *ngIf="offlineMsgEmail && section==='chat' && channel !== CHANNEL_TYPE.WHATSAPP && messageString && (leadInfo?.presence['status']==='offline' && leadInfo?.hasEmail)" class="section-option offline-lead-tip" >
+      {{translationMap.get('EMAIL.EMAIL_OFFLINE_TIP')}}
+    </div>
+
+  </div>
+
+  <ion-row id="message-email" [style.display]="section==='email'? 'flex': 'none'">
+    <ion-col col-auto>
+      <div *ngIf="leadInfo?.hasEmail" class="placeholder" (click)="onOpenEmailModal()">{{translationMap.get('EMAIL.EMAIL_PLACEHOLDER')}}</div>
+      <div *ngIf="!leadInfo?.hasEmail" class="placeholder noEmail">{{translationMap.get('EMAIL.EMAIL_NOT_FOUND_PLACEHOLDER')}}</div>
+    </ion-col>
+  </ion-row>
+
+  <ion-row id="message-text-area" [style.display]="section==='chat' || section ==='templates'? 'flex': 'none'">
+
+    <ion-col col-auto style="display: flex;">
+
+      <div class="buttons-left">
+
+        <!-- CANNED RESPONSES -->
+        <ng-container *ngIf="areVisibleCAR && supportMode">
+          <div class="canned-responses-btn-wpr"
+            tooltip="{{translationMap?.get('CANNED_RESPONSES')}}" placement="top">
+            <ion-button ion-button fill="clear" class="canned-responses-btn" (click)="openCannedResponses()"
+              [disabled]="!conversationWith?.startsWith(CHANNEL_TYPE.SUPPORT_GROUP) || disableTextarea">
+              <ion-icon slot="icon-only" name="flash-outline" style="font-size: 24px;"></ion-icon>
+            </ion-button>
+          </div>
+          <div *ngIf="conversationWith?.startsWith(CHANNEL_TYPE.SUPPORT_GROUP)  && tagsCannedCount === 0"
+            tooltip="{{translationMap?.get('NO_CANNED_RESPONSES')}}" placement="top"
+            class="no-canned-responses-btn-badge">
+            <ion-icon name="alert-sharp" style="vertical-align: middle;"></ion-icon>
+          </div>
+          <div *ngIf="conversationWith?.startsWith(CHANNEL_TYPE.SUPPORT_GROUP) && (tagsCannedCount > 0)"
+            tooltip="{{translationMap?.get('YES_CANNED_RESPONSES')}}" placement="top" class="canned-responses-btn-badge">
+            <ion-icon name="information-sharp" style="vertical-align: middle;"></ion-icon>
+          </div>
+        </ng-container>
+
+        <!-- UPLOAD ATTACHMENT -->
+        <div *ngIf="!IS_ON_MOBILE_DEVICE" class="upload-image-btn-wpr" tooltip="{{translationMap?.get('UPLOAD')}}" placement="top">
+          <ion-button ion-button fill="clear" class="upload-image-btn" [disabled]="disableTextarea">
+            <ion-icon slot="icon-only" name="attach-outline"
+              style="font-size: 30px;transform: rotate(42deg);"></ion-icon>
+            <input #fileInput type="file" (change)="onFileSelected($event)" capture="camera" id="file-input"
+              [accept]="fileUploadAccept">
+          </ion-button>
+        </div>
+
+        <!-- <ion-icon (click)="showEmojiPicker = !showEmojiPicker" color="secondary" name="happy" style="zoom:2;"></ion-icon> -->
+        <!-- --------------------------------------------- -->
+        <!-- EMOJII PICKER BUTTON  -->
+        <!-- --------------------------------------------- -->
+        <div class="emoji-picker-btn-wpr" *ngIf="!IS_ON_MOBILE_DEVICE">
+          <ion-button ion-button fill="clear" class="emoji-picker-btn" (click)="showEmojiPicker = !showEmojiPicker"
+            [disabled]="disableTextarea">
+            <!-- <ion-icon slot="icon-only" name="flash-outline" style="font-size: 24px;"></ion-icon> -->
+            <ion-icon slot="icon-only" name="happy-outline" style="font-size: 24px;"></ion-icon>
+          </ion-button>
+
+          <!-- <div class="emojiContainer" [style.height]="showEmojiPicker?'300px':'0px'"> -->
+          <!--Show/Hide emoji picker. Don't use *ngIf because the component will be created again and again and cause performance issue-->
+          <!-- <emoji-picker (onEmojiSelect)="addEmoji($event)"></emoji-picker> -->
+          <!-- { position: 'absolute', bottom: '20px', right: '20px' }" -->
+          <!-- --------------------------------------------------------------------- -->
+          <!-- https://www.npmjs.com/package/@ctrl/ngx-emoji-mart/v/1.0.6 -->
+          <!-- --------------------------------------------------------------------- -->
+          <!-- [style]="{ position: 'absolute', bottom: '53px', right: '-246px' }" -->
+          <emoji-mart 
+            [showPreview]="false" 
+            [perLine]="emojiPerLine" 
+            [style.visibility]="showEmojiPicker?'visible':'hidden'"  
+            [include]="emojiiCategories"
+            [color]="emojiColor"
+            [custom]="customEmojis"
+            class="emoji-picker"
+            [ngClass]="{'emoji-mart-desktop': !IS_ON_MOBILE_DEVICE, 'emoji-mart-mobile': IS_ON_MOBILE_DEVICE }"
+            (emojiSelect)="addEmoji($event)">
+          </emoji-mart>
+          <!-- </div> -->
+
+        </div>
+      </div>
+
+
+
+
+
+      <div class="text-message" [ngClass]="{'text-message-no-cr': areVisibleCAR === false || supportMode === false}">
+        <ion-textarea id="ion-textarea" #messageTextArea #message_text_area #textArea rows="1"
+          [placeholder]="translationMap?.get('LABEL_ENTER_MSG_SHORT')" 
+          autosize="false" 
+          auto-grow="true" 
+          autofocus="true" 
+          [value]=""
+          [disabled]="disableTextarea"
+          [(ngModel)]="messageString" 
+          (ionChange)="ionChange($event);" 
+          (ionFocus)="ionFocus()"
+          (keydown.enter)="onKeydown($event, messageString)" 
+          (paste)="onPaste($event)">
+        </ion-textarea>
+      </div>
+      <div class="buttons-right">
+        <ion-button [disabled]="conversationEnabled === false" class="send-button right active" ion-button fill="clear"
+          (click)="sendMessage(messageString)">
+          <ion-icon
+            [ngClass]="{'send-msg-disabled': conversationEnabled === false,'send-msg-activated': conversationEnabled === true }"
+            slot="icon-only" name="send"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-col>
+
+  </ion-row>
+</ion-grid>

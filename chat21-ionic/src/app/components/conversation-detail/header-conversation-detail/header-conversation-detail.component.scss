@@ -1,0 +1,284 @@
+
+ion-header {
+    border: none;
+    &.mobile{
+        --ion-background-color: #fff;
+        border-bottom-style: solid;
+        border-color: var(--light-gray);
+        border-bottom-width: thin;
+    }
+    
+    ion-toolbar{
+        height: var(--header-height);
+        &:not(.mobile){
+            --background: var(--list-bkg-color);
+        }
+        .flex-container{
+            display: flex;
+        }
+
+        .back-flex-container{
+            flex: 0 1 auto;
+            order: 0;
+        }
+        .user-info-flex-container{
+            flex: 0 1 auto;
+            order: 1;
+        }
+        .resolve-flex-container{
+            flex: 0 1 auto;
+            order: 2;
+        }
+    }
+    ion-title {
+        text-align: left;
+        padding-inline: unset;
+        margin: 0px 10px;
+        // height: 40px;
+        width: 100%;
+    }
+    ion-avatar {
+        position: relative;
+        display: inline-block;
+        margin: 0 12px 0 0;
+        padding: 0;
+        height: 40px;
+        width: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        line-height: 40px;
+        vertical-align: middle;
+        .avatar-placeholder {
+            position: absolute;
+            top:0;
+            left:0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 16px;
+            color: var(--avatar-placeholder-color);
+            font-weight: 500;
+        }
+        .avatar-profile {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            background-size: cover;
+            background-position: top center;
+            border-radius: 50%;
+            border-color: #c3c3c3;
+            border-style: solid;
+            border-width: 0px;
+        }
+    }
+    .tile-info-with {
+        display: flex;
+
+        .tile-username {
+            display: inline-block;
+            font-size: 18px;
+            margin: 0;
+            padding: 0;
+    
+            color: var(--conversation-detail-header-color);
+            font-weight: 400; //600;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            -webkit-text-size-adjust: none;
+            -moz-text-size-adjust: none;
+            -ms-text-size-adjust: none;
+            text-size-adjust: none;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+    }
+    .tile-point {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        line-height: 10px;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+    
+
+    .tile-last-activity {
+        color: var(--light-gray);
+        font-size: 12px;
+        font-weight: normal;
+        margin-top: 2px;
+        vertical-align: middle;
+        position: relative;
+        .tile-typing-now {
+            color: var(--conversation-detail-header-typing-color)
+        }
+    }
+    
+    ion-buttons {
+        ion-icon , span{
+            color: var(--icon-color)
+        }
+        button {
+            max-width: 30px;
+            padding: 0;
+            margin-right: 20px;
+        }
+    }
+}
+
+.avatar-and-typing-wpr{
+    display: flex;
+    &.mobile{
+        margin-left: 25px;
+    }
+}
+
+.avatar-container {
+    // background-color: #fff;
+    color: #fff;
+    text-align: center;
+    width: 44px;
+    height: 44px;
+    // position: absolute;
+    // top: 0;
+    // left: 20px;
+    border-radius: 50%;
+    padding: 0px;
+    // transform: translateX(-50%);
+
+    border-color: #fff;
+    border-style: solid;
+    border-width: 0px;
+    line-height: 40px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.avatar-container-ios {
+    left: 55px;
+    top: 10px;
+}
+
+.info-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 12px;
+    width: 80%;
+}
+
+.user-presence {
+    position: absolute;
+    bottom: 3px; //0;
+    height: 12px;
+    left: 30px;
+    width: 100px;
+}
+.subtitle-info {
+    // position: absolute;
+    // left: 50px;
+    // bottom: -3px;
+    // padding: 0;
+    // margin: 0;
+    display: flex;
+    align-items: center;
+    // height: 16px;
+    // width: 140px;
+    font-size: 12px;
+    .conversation_project{
+        display: inline-flex;
+        align-items: center;
+        line-height: 1.2rem;
+        font-weight: 500;
+        color: #779bbb;
+        font-size: 10px;
+        max-width: 90%;
+        margin-right: 5px;
+        svg {
+            fill:#779bbb;
+            vertical-align: sub;
+        }
+        span{
+            padding-left: 5px
+        }
+        .channel-icon{
+            vertical-align: sub;
+            filter: brightness(0) saturate(100%) invert(83%) sepia(45%) saturate(1879%) hue-rotate(178deg) brightness(79%) contrast(81%);
+        }
+    }
+}
+
+
+
+.tile-info-with-ios {
+    left: 82px !important;
+    top: 10px!important;
+}
+
+.user-presence-ios {
+    left: 63px;
+}
+
+ion-button.live{
+    --padding-end: 0px;
+    --padding-start: 5px;
+    
+    span.live-icon{
+        display: inline-block;
+        position: relative;
+        // top: calc(50% - 5px);
+        background-color: white;
+        width: 10px;
+        height: 10px;
+        margin-left: 5px;
+        margin-right: 5px;
+        border: 1px solid rgba(black, .1);
+        border-radius: 50%;
+        z-index: 1;
+        &:before{
+          content: '';
+          display: block;
+          position: absolute;
+          background-color: rgba(white,.6);
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          animation: live 2s ease-in-out infinite;
+          z-index: -1;
+        }
+    }
+    
+    span.live-text{
+        color: white;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    
+    span.live-content{
+        background-color: white;
+        color: red;
+        margin-left: 5px;
+        padding: 0px 5px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+    
+    @keyframes live {
+      0% {
+        transform: scale(1,1);
+      }
+      100% {
+        transform: scale(3.5,3.5);
+        background-color: rgba(red,0);
+      }
+    }
+}
+
+

@@ -1,0 +1,57 @@
+.info-container{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    padding: 4px 0px 2px 0px;
+    width: 100%;
+}
+
+.base_info {
+    border-radius: 14px;
+    // border: 1px solid rgba(24, 119, 242, 0.1);
+    padding-left: 4px;
+    padding-right: 4px;
+    padding: 6px 10px;
+    display: inline-block;
+    background: var(--info-message-background);
+    font-size: 0.70em;
+    color: var(--info-message-color);
+    margin-left: 5px; //32px;
+    margin-right: 5px; //32px;
+
+    a {
+        word-break: break-all;
+    }
+
+ 
+}
+
+.spinner {
+    // margin: 15px 10px; //remove it if activate avatar image 
+    width: 45px;
+    // text-align: center;
+    min-height: 100%;
+    margin: auto 0px;
+}
+
+.spinner > div {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    display: inline-block;
+    margin: 0px 2px;
+}
+
+.spinner .bounce1 {
+    background-color: var(--info-message-bounce-color);
+}
+
+.spinner .bounce2 {
+    background-color: var(--info-message-bounce-color);
+    opacity: 0.6
+}
+
+.spinner .bounce3 {
+    background-color: var(--info-message-bounce-color);
+    opacity: 0.4
+}

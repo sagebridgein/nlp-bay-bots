@@ -1,0 +1,50 @@
+<!-- {{ member | json}} -->
+<ion-content *ngIf="member" class="member-profile">
+  <ion-card class="first-card">
+    <div class="chat21-box-profile chat21-box">
+
+      <div class="chat21-content">
+
+        <div class="image-profile">
+          <app-avatar-profile [itemAvatar]='member'></app-avatar-profile>
+        </div>
+        
+        <div class="info-profile">
+          <div class="name">
+            <span class="read">{{member.fullname}}</span>
+          </div>
+        </div>
+
+        <div class="member-email">
+          <a [href]="'mailto:' + member.email + '?Subject='">
+            {{member.email}}
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </ion-card>
+
+
+
+  <div class="info-accordion-container">
+    <app-advanced-info-accordion class="info-accordion"
+      [advancedAttributes]="advancedAttributes"
+      [translationMap]="translationMap">
+    </app-advanced-info-accordion>
+  </div>
+
+
+</ion-content>
+
+<!-- <ion-content *ngIf="!member">
+  <ion-item lines="none">  
+    <ion-label style="text-align: center;margin-top: 65px;color: #999999;" class="ion-text-wrap">
+      {{ translationMap.get('NO_INFORMATION_AVAILABLE') }}
+    </ion-label>
+  </ion-item>
+</ion-content> -->
+
+
+

@@ -1,0 +1,26 @@
+<ion-toolbar [class.mobile]="isMobile">
+  <ion-title>{{ 'LABEL_NEW_CHAT' | translate }}</ion-title>
+
+  <ion-buttons slot="end">
+    <ion-button ion-button fill="clear" (click)="onClose()">
+      <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+
+</ion-toolbar>
+
+
+<ion-content>
+  <component-contacts-directory 
+    [contacts] = contacts
+    (onOpenNewChat) = openNewChat($event)>
+  </component-contacts-directory>
+
+  <div class="loader" *ngIf="contacts.length === 0">
+    <div class="box">
+      <div class="spinner" [ngStyle]="{'border-top-color': stylesMap?.get('themeColor')}"></div>
+      <div class="label">{{'LABEL_LOADING' | translate}}</div>
+    </div>
+  </div>
+
+</ion-content>

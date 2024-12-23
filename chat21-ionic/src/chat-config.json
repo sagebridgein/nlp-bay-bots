@@ -1,0 +1,42 @@
+{
+    "t2y12PruGU9wUtEGzBJfolMIgK":"${FEATURES_TOKEN}",
+    "globalRemoteJSSrc":"${REMOTE_JS_SRC}",
+    "chatEngine": "mqtt",
+    "updloaEngine": "native",
+    "pushEngine":"none",
+    "fileUploadAccept":"*/*",
+    "logLevel": "Info",
+    "authPersistence": "LOCAL",
+    "firebaseConfig": {
+        "tenant":"tilechat",
+        "apiKey": "CHANGEIT",
+        "authDomain": "CHANGEIT",
+        "databaseURL": "CHANGEIT",
+        "projectId": "CHANGEIT",
+        "storageBucket": "CHANGEIT",
+        "messagingSenderId": "CHANGEIT",
+        "appId": "CHANGEIT",
+        "chat21ApiUrl": "CHANGEIT",
+        "vapidKey": "CHANGEIT"
+    },
+    "chat21Config": {
+        "appId": "tilechat",
+        "MQTTendpoint": "ws://localhost:15675/ws",
+        "APIendpoint": "http://localhost:8004/api"
+    },
+    "apiUrl": "http://localhost:3000/",
+    "brandSrc": "${BRAND_SRC}",
+    "whatsappTemplatesBaseUrl":"http://localhost:3000/",
+    "baseImageUrl": "https://firebasestorage.googleapis.com/v0/b/",
+    "dashboardUrl": "https://support-pre.tiledesk.com/dashboard/",
+    "widgetBaseUrl": "https://widget-pre.tiledesk.com/v5/",
+    "wsUrl": "ws://localhost:3000/",
+    "wsUrlRel": "${WS_URL_RELATIVE}",
+    "storage_prefix": "chat_sv5",
+    "supportMode": false,
+    "writeToButton": false,
+    "archivedButton": false,
+    "emailSection": true,
+    "whatsappTemplatesSection":true,
+    "googleMapsApiKey":"CHANGEIT"
+}

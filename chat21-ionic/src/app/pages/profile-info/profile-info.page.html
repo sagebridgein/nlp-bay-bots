@@ -1,0 +1,154 @@
+<!-- <ion-header no-border class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button ion-button fill="clear" (click)="onClose()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content class="current-user-profile">
+
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button ion-button fill="clear" (click)="onClose()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <div *ngIf="loggedUser" class="content-user-profile">
+    <div class="user">
+      <div class="username">
+        {{loggedUser.fullname}}
+      </div>
+      <div class="email">
+        {{loggedUser.email}}
+      </div>
+
+
+
+      <!-- <div class="avatar-container"> -->
+      <div class="avatar-container" tooltip="{{loggedUser.uid}}" placement="top"
+        contentType="template" (click)="copyLoggedUserUID()">
+        <app-avatar-profile [itemAvatar]=itemAvatar></app-avatar-profile>
+      </div>
+
+
+      <!-- <div class="user-presence">
+        <app-user-presence 
+          [idUser]=loggedUser.uid 
+          [translationMap]=translationMap>
+        </app-user-presence>
+      </div> -->
+
+
+      <!-- 
+        <div class="avatar-container">
+          <div class="avatar avatar-placeholder" [style.background-color]="loggedUser.color" [innerHTML]="loggedUser.avatar" ></div>
+          <div class="avatar avatar-image" [style.background-image]="'url(' + loggedUser.imageurl + ')'" ></div>
+          
+          <div class="status-icon" [class.online]="loggedUser.online">
+            <span class="online-point">
+              {{ 'LABEL_AVAILABLE' | translate }}
+            </span>
+          </div>
+  
+        </div> 
+        -->
+    </div>
+  </div>
+
+  <div *ngIf="loggedUser" style="margin:10px">
+    <!-- <ion-item lines="none" class="sidebar-items" (click)="onClickArchivedConversation()">
+      <div tabindex="0"></div>
+      <ion-icon name="archive-outline" class="sidebar-icons"></ion-icon>
+      <ion-label class="sidebar-labels">
+        <h3>{{ 'LABEL_ARCHIVED' | translate }}</h3>
+      </ion-label>
+    </ion-item> -->
+
+    <section class="availability-section">
+      <!-- <mat-slide-toggle (change)="changeAvailabilityStateInUserDetailsSidebar(IS_AVAILABLE = !IS_AVAILABLE)"
+          class="custom-mat-slide-toggle" [checked]="IS_AVAILABLE" labelPosition="before">
+
+          <span *ngIf="IS_AVAILABLE"
+              style="font-weight: 400 !important; text-transform: capitalize; font-size:14px; color:#a9afbb">
+              {{IS_AVAILABLE_msg}}
+          </span>
+          <span *ngIf="!IS_AVAILABLE"
+              style="font-weight: 400 !important;text-transform: capitalize;font-size:14px; color:#a9afbb">
+              {{IS_UNAVAILABLE_msg}}
+          </span>
+      </mat-slide-toggle> -->
+      <ng-select style="text-align: left;" 
+        (change)="changeAvailabilityStateInUserDetailsSidebar(selectedStatus)" 
+        [(ngModel)]="selectedStatus" 
+        class="teammate-status-in-drawer profile-info" 
+        [items]="teammateStatus" 
+        bindLabel="name" bindValue="id"
+        [clearable]="false"
+        [searchable]="false">
+        <!-- {{teammateStatus.name}} -->
+          <ng-template ng-label-tmp let-item="item">
+              <img style="width: 15px;height: 15px;position: relative; top: 1px;" height="15" width="15" [src]="item?.avatar" />
+              <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize; margin-left:8px">  {{item.label}} </span>
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item" let-index="index">
+              <img style="width: 15px;height: 15px;position: relative; top: 1px;" height="15" width="15" [src]="item?.avatar" />
+              <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize; margin-left:8px">  {{item.label}} </span>
+          </ng-template>
+      </ng-select>
+    </section>
+
+    <hr class="first-divider">
+
+    <section *ngIf="isVisiblePAY" class="user-details-plan-info">
+        <span class="material-icons user-details-plan-icon">apps</span>
+        <span>
+            <div> {{project?.name}} </div>
+            <div style="margin-left: 26px;"> {{ profile_name_translated }} </div>
+
+            <div *ngIf="project?.profile?.type === 'payment' && project?.isActiveSubscription === false"
+                style="color:#f44336; position:relative; top: -1px;display: inline-block;">
+                <i *ngIf="project?.profile?.name !== 'enterprise'" class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer;    
+                    font-size: 16px;" matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ translationsMap.get('SubscriptionPaymentProblem') }}" #tooltip="matTooltip" matTooltipPosition='right'
+                    matTooltipHideDelay="100">
+                    error_outline
+                </i>
+                <i *ngIf="project?.profile?.name === 'enterprise'" class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer;    
+                    font-size: 16px;" matTooltipClass="custom-mat-tooltip" matTooltip="{{ translationsMap.get('ThePlanHasExpired') }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                    error_outline
+                </i>
+            </div>
+        </span>
+    </section>
+
+    <section class="user-details-footer-section"
+        [ngClass]="{'footer-margin-top-pricing-no-visible': isVisiblePAY === false }">
+        <div role="button" class="logout-btn-wpr" (click)="onLogout()">
+            <i class="material-icons user-details-logout-icon" >
+                logout
+            </i>
+            <div class="user-details-logout-text"> 
+                 {{translationsMap.get('LABEL_LOGOUT')}} 
+            </div>
+        </div>
+    </section>
+
+  </div>
+
+</ion-content>
+
+
+<ion-footer class="ion-no-border">
+  <!-- <ion-toolbar style="background-color: #1e2129 !important"> -->
+    <div class="content-chat-version">
+      <!-- <p class="chat-title">Tiledesk Chat</p> -->
+      <p class="chat-version">{{ 'LABEL_VERSION' | translate }} {{version}}</p>
+    </div>
+  <!-- </ion-toolbar> -->
+</ion-footer>

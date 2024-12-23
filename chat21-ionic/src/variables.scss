@@ -1,0 +1,156 @@
+body {
+    /* Color palette */
+    --black: #000000;
+
+    --base-brand-color: rgb(224, 106, 88);
+
+    --basic-green: #0A7D41;
+    --dark-green: #005f3b;
+    --light-green: #8cc841;
+    --light-gray: #F2F2F2;
+    --basic-gray: #666666;
+    --dark-gray: #363636;
+    --light-blue: #C9E4F6;
+
+    --header-height: 60px;
+    --padding-conversation-detail: 10px;
+    --border-radius-item: 16px;
+    --border-radius-content: 16px;
+    --sidebar-width: 70px;
+    
+    --bubble-blue: rgb(0, 153, 255);
+
+    /* ----- NEW ----- */
+    --icon-color: rgb(135, 150, 175);
+    --basic-blue: #2a69c1;
+    --basic-red: #EB1E23;
+
+    // ***** Conversation-list: start ***** //
+    --list-bkg-color: #f8fafc;
+    --list-bkg-color-selected: rgba(24, 119, 242, 0.12); //rgba(24, 119, 242, 0.04);
+    --list-bkg-color-selected-border: var(--basic-blue);
+    --item-backgroud-hover: #000000;
+    --archive-button-background: #fff;
+    --avatar-placeholder-color: #ffffff;
+    --conversation-project-color: #779bbb;
+
+    --list-conversation-with-color: rgba(0, 0, 0, 1);
+    --list-conversation-with-color-not-read: #3c4858;
+    --list-conversation-message-color-not-read: #3c4858;
+    --list-notification-point-color: var(--basic-blue);
+    --list-timestamp-color: #6e6f73;
+    --last-message-color: rgb(60, 72, 88);
+
+    --contact-directory-searchbar-background: rgba(0, 0, 0, 0.05);
+    // ***** Conversation-list: end ***** //
+
+    // ***** Conversation-detail: start ***** //
+    --conversation-detail-background: #ffffff;
+    --conversation-detail-header-color: rgba(0, 0, 0, 1);
+    --conversation-detail-header-typing-color: var(--basic-blue);
+    --border-color-base: #e7e7e7;
+    --date-divider-color: #dee5ee;
+    --date-divider-text-color: #64748b;
+    --message-date-color: #647491;
+    --textarea-background: #0000000d;
+    --textarea-placeholder-color: var(--icon-color);
+    --textarea-color: #06132b;
+    // ***** Conversation-detail: end ***** //
+
+    // ***** Conversation-detail PRIVATE-MSG: start ***** //
+    --bubble-lightyellow: rgb(255, 247, 237);
+    --bubble-privateMsg: rgb(254, 214, 168);
+    --bubble-privateMsgColor: rgb(47, 57, 65);
+    // ***** Conversation-detail PRIVATE-MSG: end ***** //
+
+    // ***** Conversation-detail: INFO-MESSAGE: start ***** //
+    --info-message-background: rgba(24, 119, 242, 0.1);
+    --info-message-color: var(--basic-gray);
+    --info-message-bounce-color: #C9E4F6;
+    // ***** Conversation-detail: INFO-MESSAGE: end ***** //
+
+    // ***** Conversation-detail: BUBBLE-MESSAGE: start ***** //
+    --bck-msg-received: #f0f2f7;
+    --col-msg-received: #06132b;
+    --bck-msg-sent: #2a6ac1;
+    --col-msg-sent:#ffffff;
+    --return-receipt-color: #2a6ac1;
+    --button-in-msg-font-size: 15px;
+    --buttonBackgroundColor: #ffffff;
+    --buttonTextColor: #2a6ac1;
+    --buttonHoverBackgroundColor: #2a6ac1;
+    --buttonHoverTextColor: #ffffff;
+    // ***** Conversation-detail: BUBBLE-MESSAGE: end ***** //
+
+     // ***** Conversation-detail EMOJI-MART: start ***** //
+     --emojii-mart-background: white;
+     --emoji-mart-color: var(--icon-color);
+     // ***** Conversation-detail EMOJI-MART: end ***** //
+
+    // ***** Conversation-detail: INFO-DIRECT: start ***** //
+    --info-text-color: #333333;
+    --info-direct-detail-accordion-background: #fff;
+    --info-direct-color-accordion-hover: #f5f7f9;
+    --info-direct-color-accordion-color-title: #050505;
+    --info-direct-color-accordion-color-subtitle: #65676b;
+    // ***** Conversation-detail: INFO-DIRECT: end ***** //
+
+    // ***** MODALS: start ***** //
+    --modal-header-background: #f8fafc;
+    --modal-icon-color: var(--icon-color);
+    --modal-content-background: #ffffff;
+    --title-focus-color: rgb(0,86,192);
+    --border-focus-color: rgb(0, 86, 192);
+    --button-no-background-text-color: rgb(98, 112, 139);
+    --button-background-color: rgb(0,86,192);
+    --button-text-color: #f1f4f7;
+    --label-color: #7695a5;
+    --preview-background: #efefef;
+    // ***** MODALS: end ***** //
+
+    // ***** CANNED-RESPONSES: start ***** //
+    --canned-hover-background: #1877f2;
+    --canned-hover-color: rgb(135, 150, 175);
+    // ***** CANNED-RESPONSES: end ***** //
+
+
+    // ***** Navbar: start ***** //
+    --header-font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    --text-base-color: #555;
+    --navbar-background: #ffffff;
+    --nav-bar-heigth: 60px;
+    --simulate-btn-background: #3ecf8e;
+    --simulate-btn-color: #fff;
+    
+    --dropdown-menu-background: #fff;
+    --dropdown-menu-color: #333;
+    --dropdown-menu-item-color: #0f0e0e;
+    --dropdown-menu-selected-background: #eee;
+    --dropdown-menu-selected-color: #4285f4; 
+    --dropdown-menu-hover-background: #3ea9f5;
+    --dropdown-menu-hover-color: #fff;
+    --dropdown-divider-color: rgba(0,0,0,.12);
+    --dropdown-section-title: rgb(118,149,165);
+    // ***** Navbar: start ***** //
+
+    // ***** Sidebar: start ***** //
+    --sidebar-background-color: #1e2129;
+    --sidebar-header-background: #2d323e;
+    --sidebar-color: #fff;
+    --sidebar-icon-color: #fff;
+    --sidebar-hover-icon-color: #a9afbb;
+    --sidebar-background-item-hover : rgba(248, 248, 248, 0.251);
+    --sidebar-background-item-border-radius: 12px;
+    --sidebar-active-icon: #3ea9f5;
+    --sidebar-inactive-icon: #647491;
+    --sidebar-user-detail-color: #a9afbb;
+    --sidebar-user-detail-profile-color: #00d5ff;
+    --sidebar-user-detail-select-background: #2d323e;
+    --sidebar-user-profile-select-background: #2d323e;
+    --sidebar-user-detail-select-hover-background: rgba(255, 255, 255, .05);
+    --sidebar-user-detail-select-color: #fff;
+    --tooltip-bckground: #2d323e;
+    --tooltip-color: white;
+    // ***** Sidebar: end ***** //
+
+}

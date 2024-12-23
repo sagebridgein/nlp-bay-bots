@@ -1,0 +1,15 @@
+<ion-header no-border class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>{{'JSON_RESPONSE' | translate}}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button ion-button fill="clear" (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <pre class="json" id=json></pre>
+</ion-content>

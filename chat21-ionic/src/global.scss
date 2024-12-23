@@ -1,0 +1,820 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+@import 'material-icons/iconfont/material-icons.css';
+@import "variables.scss";
+
+// http://ionicframework.com/docs/v2/theming/
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+body {
+    user-select: text;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    // font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    overflow: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    -webkit-tap-highlight-color: transparent;
+    text-size-adjust: 100% !important;
+    // -webkit-font-smoothing: subpixel-antialiased !important;
+    // text-shadow: 0px 0px 0px !important;
+    // -webkit-text-stroke-width: 0.01px !important;
+}
+
+// Ionic 'Split Pane' styles need to be tweaked to
+// get this 'master-detail' example to work!
+// .split-pane-side:not(ion-menu) {
+//     display: initial;
+// }
+
+// .split-pane-main {
+//     display: none;
+//     // position: absolute!important;
+// }
+
+// .split-pane-visible {
+//     .split-pane-main {
+//         display: block;
+//     }
+// }
+
+// ion-content {
+//     --overflow: hidden;
+// }
+
+#sidebar {
+    min-width: 256px;
+    width: 33%;
+    max-width: 320px;
+}
+
+app-conversations-list {
+    width: 100%;
+    height: 100%;
+}
+.truncate {
+    width: 100% !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+// START GESTIONE SIDEBAR ESTERNA CON IFRAME: start //
+#tld-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 60px;
+    background-color: black;
+    &.open {
+        width: 300px;
+        .btn-close {
+            display: block;
+            width: 100%;
+        }
+        .btn-open {
+            display: none;
+        }
+    }
+}
+
+.tld-button {
+    width: 100%;
+    height: 56px;
+    .btn {
+        background-color: DodgerBlue;
+        border: none;
+        color: white;
+        padding: 20px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .btn:hover {
+        background-color: RoyalBlue;
+    }
+    .btn-close {
+        display: none;
+    }
+    .btn-open {
+        display: block;
+        width: 100%;
+        font-size: 28px;
+        padding: 14px 14px;
+    }
+}
+.tld-iframe {
+    height: 100%;
+    width: 100%;
+}
+// START GESTIONE SIDEBAR ESTERNA CON IFRAME: end //
+
+
+app-root {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    float: right;
+    z-index: 2;
+    &.open {
+        left: 300px;
+        width: calc(100% - 300px);
+    }
+    &.close {
+        left: 60px;
+        width: calc(100% - 60px);
+    }
+}
+// END GESTIONE SIDEBAR ESTERNA CON IFRAME //
+
+app-message-text-area {
+    width: 100%;
+    z-index: 99999; // nk
+    background: var(--conversation-detail-background); // nk
+}
+
+app-conversation-info {
+    height: calc(100% - 60px);
+}
+app-avatar-profile {
+    width: 100%;
+    height: 100%;
+}
+
+app-info-support-group {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+}
+
+ion-conversation-detail {
+    img {
+        border-style: none;
+        max-width: 300px !important;
+    }
+}
+
+/* Change Autocomplete styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    // border: 0px solid green;
+    // -webkit-text-fill-color: green;
+    -webkit-box-shadow: 0 0 0px 0px #000 inset;
+    transition: background-color 1000s ease-in-out 0s;
+}
+
+.chat-tooltip {
+    font-family: "Roboto", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    letter-spacing: normal;
+    font-stretch: normal;
+    font-variant: normal;
+    font-weight: 300;
+}
+
+/*
+ * Canned responses
+ * -------------------------------------------- */
+.canned-list {
+    .native-input[disabled] {
+        opacity: 10 !important;
+        cursor: pointer;
+    }
+    .native-textarea[disabled] {
+        opacity: 10 !important;
+        cursor: pointer;
+    }
+}
+
+
+
+
+.highlight-search-string {
+    color: #1877f2 !important;
+}
+
+.base_info > p {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+
+    a {
+        word-break: break-all;
+    }
+}
+
+.toast-custom-class {
+    text-align: center;
+}
+
+// #chatArea > ion-row.row_chat_area > ion-content > ion-conversation-detail > div > div > tiledeskwidget-bubble-message.slide-in-right > div > div > div > tiledeskwidget-text > p > p > a{
+//     display: none;
+// }
+
+// #chatArea > ion-row.row_chat_area > ion-content > ion-conversation-detail > div > div > tiledeskwidget-bubble-message.slide-in-right > div > div > tiledeskwidget-image > div > img {
+//     // display: none !important;
+//     border-radius: unset !important;
+//     border-top-right-radius: 6px !important;
+//     border-top-left-radius: 16px !important;
+// }
+
+/* Start rules for the member list refactoring in the "info-group.component.html" (replacement of ion-grid with ion-list) */
+#members-list > ion-item > ion-avatar > app-avatar-profile > div > div.avatar.avatar-image {
+    margin-top: -110% !important;
+    width: 44px !important;
+    height: 44px !important;
+}
+
+#members-list > ion-item > ion-avatar > .user-online {
+    top: 37px !important;
+    left: 45px !important;
+}
+
+#members-list > ion-item > ion-avatar > app-avatar-profile > div > div.avatar.avatar-placeholder {
+    line-height: 42px;
+}
+/* End rules for the member list refactoring in the "info-group.component.html" (replacement of ion-grid with ion-list) */
+
+
+// User details Sidebar
+.user-details-sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+}
+
+// SIDEBAR: start
+.sidebar {
+    background-color: var(--sidebar-background-color);
+    color: var(--sidebar-color);
+
+    transition-property: top, bottom, width;
+    transition-duration: 0.2s, 0.2s, 0.35s;
+    transition-timing-function: linear, linear, ease;
+    -webkit-overflow-scrolling: touch;
+
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.sidebar .logo {
+    position: relative;
+    margin-top: auto;
+    z-index: 4;
+}
+
+.sidebar .sidebar-wrapper {
+    position: relative;
+    height: calc(100vh - 60px);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: var(--sidebar-width);
+    z-index: 4;
+
+    transition-property: top, bottom, width;
+    transition-duration: 0.2s, 0.2s, 0.35s;
+    transition-timing-function: linear, linear, ease;
+}
+
+.small-sidebar__logo {
+    left: 19px;
+    top: 12px !important;
+    width: 25px !important;
+    margin-left: 3px;
+    margin-top: 5px;
+}
+
+.user {
+    position: relative;
+    // display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    // height: 130px;
+    // min-height: 130px;
+    // max-height: 130px;
+}
+
+.sidebar-avatar-container {
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    // top: 80px;
+    border-radius: 50%;
+    // padding: 4px;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    left: 50%;
+    width: 35px;
+    height: 35px;
+}
+
+.sidebar-avatar-container .sidebar-avatar {
+    width: 35px;
+    height: 35px;
+    margin: 0;
+    border-radius: 50%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    min-width: 35px;
+    max-width: 35px;
+}
+
+
+.status-icon {
+    position: absolute;
+    // width: 14px;
+    // height: 14px;
+    // bottom: 8px;
+    // left: 61px;
+    border: 2px solid #2d323e;
+    border-radius: 50%;
+    // background-color: #4caf50;
+
+    left: 26px;
+    bottom: -1px;
+    width: 12px;
+    height: 12px;
+}
+
+.small-sidebar-camera-icon {
+    top: 19px !important;
+}
+
+.is-over-camera {
+    z-index: 5;
+    position: relative;
+    // top: 20px;
+    background-color: rgba(45, 50, 62, 0.7);
+    // padding: 15px;
+    padding: 6px;
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.sidebar--isBusy-icon-wpr {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: -5px;
+    right: 25px;
+}
+
+@media (max-width: 991px) {
+    .sidebar-wrapper {
+        position: relative;
+    }
+}
+
+.nav {
+    padding-left: 0;
+    margin-top: 0px;
+    margin-bottom: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.nav:before {
+    display: table;
+    content: " ";
+}
+
+.nav > li {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    width: 60px;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    justify-content: center;
+}
+
+.is-desktop-menu {
+    margin-top: 40px;
+}
+.is-mobile-menu {
+    margin-top: 0px;
+}
+
+
+.sidebar .logo:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 10%;
+    height: 1px;
+    width: 80%;
+    background-color: rgba(180, 180, 180, 0.3);
+}
+
+.logo-img-wpr {
+    text-transform: none;
+    min-height: 40px;
+    padding-left: 0px !important;
+}
+
+.small-sidebar-email {
+    display: none;
+}
+
+
+/* OVERWRITE THE DEFAULT STYLE */
+.nav-mobile-menu {
+    margin-top: 45px !important;
+}
+
+
+/* CUSTOM SCROLL BAR FOR LEFT SIDEBAR */
+.sidebar-wrapper::-webkit-scrollbar {
+    width: 3px;
+}
+.sidebar-wrapper::-webkit-scrollbar-track {
+    background-color: #1c2b45;
+}
+.sidebar-wrapper::-webkit-scrollbar-thumb {
+    background-color: #3c485b;
+    border-radius: 3px;
+}
+
+/* CUSTOM SCROLL BAR FOR USER DETAILS DRAWER */
+#user-details::-webkit-scrollbar {
+    width: 3px;
+}
+
+#user-details::-webkit-scrollbar-track {
+    background-color: #1c2b45;
+}
+#user-details::-webkit-scrollbar-thumb {
+    background-color: #3c485b;
+    border-radius: 3px;
+}
+
+/* end CUSTOM SCROLL BAR */
+
+/* SIDEBAR NAV ITEMS  */
+
+/* SIDEBAR NAV ITEMS  */
+
+.is-user-online {
+    background-color: #4caf50;
+}
+.is-user-offline {
+    background-color: #f44336;
+}
+.is-user-inactive {
+    background-color: #697482;
+}
+
+.is-desktop-menu {
+    margin-top: 40px;
+}
+.is-mobile-menu {
+    margin-top: 0px;
+}
+
+// select teammate status in user detail drawer
+.teammate-status-in-drawer {
+    &.sidebar{
+        --background-color: var(--sidebar-user-detail-select-background);
+    }
+    &.profile-info{
+        --background-color: var(--sidebar-user-profile-select-background);
+    }
+    &.ng-select {
+
+        .ng-select-container {
+            background-color: var(--background-color);
+            color: #fff;
+            border: 1px solid var(--background-color);
+        }
+        &.ng-select-opened{
+            .ng-select-container {
+                background-color: var(--background-color);
+                border: 1px solid var(--background-color);
+            }
+        }
+    
+        &.ng-select-focused:not(.ng-select-opened){
+             >.ng-select-container{
+                border: 1px solid var(--background-color);
+                box-shadow: unset;
+             }
+        }
+    
+        
+    }
+
+    .ng-dropdown-panel {
+        background-color: var(--background-color);
+        border: 1px solid var(--background-color);
+    
+        &.ng-select-bottom {
+            border: 1px solid var(--background-color);
+            margin-top: 8px;
+            border-top-right-radius: 4px;
+            border-top-left-radius: 4px;
+        }
+    
+        .ng-dropdown-panel-items {
+            .ng-option {
+                background-color: var(--background-color);
+                color: var(--sidebar-user-detail-select-color);
+    
+                &.ng-option-marked {
+                    background-color: var(--sidebar-user-detail-select-hover-background);
+                    color: var(--sidebar-user-detail-select-color);
+                }
+    
+                &.ng-option-selected {
+                    background-color: var(--background-color);
+                    color: var(--sidebar-user-detail-select-color);
+                }
+    
+                &.ng-option-marked.ng-option-selected{
+                    background-color: var(--sidebar-user-detail-select-hover-background);
+                    color: var(--sidebar-user-detail-select-color);
+                }
+            }
+            
+        }
+    }
+}
+
+
+
+/* *** SMALL SIDEBAR STYLE ***  */
+.small-sidebar-tiledesk-nav-user {
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+}
+.small-sidebar-avatar {
+    top: 13px;
+}
+.small-sidebar-avatar-with-avatar {
+    top: 13px;
+}
+
+.small-sidebar-status-text {
+    display: none;
+}
+
+
+/* OVERWRITE THE DEFAULT STYLE */
+.nav-mobile-menu {
+    margin-top: 45px !important;
+}
+/* // NK end NEW: AVATAR ON THE SIDEBAR  */
+
+/* SIDEBAR NAV ITEMS  */
+
+.item-active a {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+
+/* SIDEBAR NAV ITEMS  */
+
+p.hidden-lg.hidden-md {
+    color: rgba(255, 255, 255, 0.6);
+}
+li.item-active p.hidden-lg.hidden-md {
+    color: rgba(25, 25, 25, 1) !important;
+}
+.nav .open > a > p.hidden-lg.hidden-md {
+    color: rgba(25, 25, 25, 1) !important;
+}
+ul.dropdown-menu > li > a {
+    color: rgba(255, 255, 255, 0.6);
+}
+/* end - mobile sidebar USED WITH SIDWBAR WITH BLACK BACKGROUND */
+/* END - USED WITH SIDWBAR WITH BLACK BACKGROUND */
+
+/* CUSTOM MARGIN BETWEEN THE MENU ITEM*/
+// .nav li > a.customAncor {
+//     /* margin: 5px 15px !important; */
+//     margin-top: 5px !important;
+//     margin-right: 15px !important;
+//     margin-bottom: 5px !important;
+//     margin-left: 0px !important;
+//     width: 60px;
+//     border-radius: 0px;
+// }
+
+.sidebar-icons {
+    font-size: 20px !important;
+    // color: #a9afbb !important;
+}
+
+// ng-select custom class in Create ticket modal
+.ng-select.create-ticket-custom-select {
+    margin-top: 5px !important;
+}
+
+
+
+
+//MODALS
+//is desktop computers, laptops, and smartphones with a stylus 
+@media (hover: hover) {
+    .modal-wrapper{
+        border-radius: 16px !important;
+    }
+
+    .json-modal-class .modal-wrapper{
+        --height: 90%;
+        --width: 70%;
+        span.key{ color: red; }
+        span.number { color:#6eb4bc; }
+        span.boolean { color:#a693e0; }
+        span.null { color:#e09393; }
+        span.key { color: #a9d18f; }
+    }
+}
+// .modal-wrapper{
+//     border-radius: 16px !important;
+// }
+
+
+
+
+//TOAST
+.toast-copy{
+    --end: 0px;
+    --width: auto;
+    .toast-message{
+        display: flex !important;
+    }
+}
+
+
+//POPOVER
+.info-popover{
+    .popover-content{ 
+        width: 250px; 
+    }
+}
+
+
+//TOOLTIP
+.tooltip-container {
+    font-family: 'Roboto','Google Sans', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    letter-spacing: normal;
+    font-stretch: normal;
+    font-variant: normal;
+    font-weight: 300;
+    z-index: 100;
+    position: fixed;
+    padding: 6px 12px;
+    line-height: initial;
+    color: black;
+    width: auto;
+    background:rgb(255, 255, 255);
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3); 
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+    box-sizing: border-box;
+    opacity: 0;
+    transform: translate(-80%, -70%);
+    animation: tooltip-slide 0.18s ease-out 0.5s;
+    animation-fill-mode: forwards;
+    pointer-events: none;
+}
+
+@keyframes tooltip-slide {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -70%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+
+.ng-tooltip {
+    position: absolute;
+    max-width: 150px;
+    font-size: 14px;
+    text-align: center;
+    color: black;
+    padding: 3px 8px;
+    background:rgb(255, 255, 255);
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3); 
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    z-index: 1000;
+    opacity: 0;
+
+    font-family: 'Roboto','Google Sans', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    letter-spacing: normal;
+    font-stretch: normal;
+    font-variant: normal;
+    font-weight: 300;
+
+}
+.ng-tooltip:after {
+    content: "";
+    position: absolute;
+    border-style: solid;
+}
+.ng-tooltip-top:after {
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-color: rgb(255, 255, 255) transparent transparent transparent;
+}
+.ng-tooltip-bottom:after {
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-color: transparent transparent rgb(255, 255, 255) transparent;
+}
+.ng-tooltip-left:after {
+    top: 50%;
+    left: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-color: transparent transparent transparent rgb(255, 255, 255);
+}
+.ng-tooltip-right:after {
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-color: transparent rgb(255, 255, 255) transparent transparent;
+}
+.ng-tooltip-show {
+    opacity: 1;
+}
+  
+
+
+

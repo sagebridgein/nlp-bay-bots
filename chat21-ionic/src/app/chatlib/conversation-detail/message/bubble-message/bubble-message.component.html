@@ -1,0 +1,87 @@
+<!-- [ngClass]="{'button-in-msg' : message.metadata && message.metadata.button}" -->
+<!-- [ngStyle]="{'padding': (isImage(message) || isFrame(message))?'0px':'0 8px'}" -->
+<!-- isImage >{{isImage(message) }}    message.metadata.width {{message?.metadata?.width }}  -->
+<!-- 'width': (isImage(message) || isFrame(message))? sizeImage?.width : null -->
+<div id="bubble-message"  [ngStyle]="{'padding': (isImage(message) || isFrame(message))?'0px':'0 8px' }" class="messages primary-color">
+
+  <!-- <div class="options-container" >
+    <div class="options-logo" (click)="onClickOptionsMessage($event, message)" >
+      <ion-icon name="chevron-down"></ion-icon>
+    </div>
+  </div> -->
+  <chat-options
+    [message]="message"
+    [logLevel]="logger.getLoggerConfig().logLevel"
+    (onOptionsMessage)="onOptionsMessageFN($event)">
+  </chat-options>
+
+  <div>
+
+    <div *ngIf="messageType(MESSAGE_TYPE_OTHERS, message) && !isSameSender" 
+      [style.color]="fullnameColor"
+      [ngStyle]="{'padding': (isImage(message) || isFrame(message))? '10px 16px 8px 16px': '10px 8px 0px 8px'}" class="message_sender_fullname">
+      {{message?.sender_fullname}}
+    </div>
+    <!-- message type:: image -->
+    <!-- <div *ngIf="message.type == 'image' && message.metadata"  [ngStyle] = "{ 'max-width': getSizeImg(message).width, 'max-height': getSizeImg(message).height }">
+        <img class="message-contentX message-content-imageX" [src]="message.metadata.src" />
+    </div> -->
+
+    <!-- <img *ngIf="message.type == 'image' && message.metadata" class="message-contentX message-content-imageX"
+    [src]="message.metadata.src" [width]="getSizeImg(message).width"
+    [height]="getSizeImg(message).height" /> -->
+
+    <!-- [width]="getMetadataSize(message.metadata).width" 
+    [height]="getMetadataSize(message.metadata).height" -->
+    <chat-image *ngIf="isImage(message)" 
+      [metadata]="message.metadata" 
+      [width]="sizeImage?.width"
+      [height]="sizeImage?.height"
+      (onElementRendered)="onElementRenderedFN($event)">
+    </chat-image>
+
+    <!-- [width]="getMetadataSize(message.metadata).width"  -->
+    <!-- [height]="getMetadataSize(message.metadata).height"> -->
+    <chat-frame *ngIf="isFrame(message)" 
+      [metadata]="message.metadata" 
+      [width]="sizeImage?.width"
+      [height]="sizeImage?.width"
+      (onElementRendered)="onElementRenderedFN($event)">
+    </chat-frame>
+
+    <chat-audio *ngIf="isAudio(message)"
+      [metadata]="message.metadata" 
+      (onElementRendered)="onElementRenderedFN($event)">
+    </chat-audio>
+
+    <!-- <chat-frame *ngIf="message.metadata && message.metadata.type && message.metadata.type.includes('video')"
+      [metadata]="message.metadata"
+      [width]="message.metadata.width"
+      [height]="message.metadata.height">
+    </chat-frame> -->
+
+
+    <!-- [tooltip]="timeTooltipLeft" [options]="tooltipOptions" placement="left" content-type="template" (click)="handleTooltipEvents($event)" -->
+    <div *ngIf="message?.text" style="display: flex; margin: 0px 0px 0px 0px;"> 
+
+      <!-- <ng-template #timeTooltipLeft>
+        <span>{{message.timestamp | amTimeAgo}} ({{message.timestamp | amLocal | amDateFormat: 'L HH:mm:ss'}})</span>
+      </ng-template>  -->
+
+      <chat-text *ngIf="message?.type !=='html'"
+        [text]="message?.text" 
+        [color]="fontColor" 
+        [message]="message"
+        (onBeforeMessageRender)="returnOnBeforeMessageRender($event)"
+        (onAfterMessageRender)="returnOnAfterMessageRender($event)">
+      </chat-text>
+
+      <chat-html *ngIf="message?.type==='html'"
+        [htmlText]="message?.text">
+      </chat-html>
+
+    </div>
+
+  </div>
+
+</div>

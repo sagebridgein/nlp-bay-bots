@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+</head>
+
+<body style="height: 100%;">
+  <div id="titolo">CHAT IONIC TEST PAGE</div>
+
+  <div class="event-wrp" id="onThemeColor">
+    <span class="badge">EVENT</span>
+    <label>themeColor LIGHT</label>
+    <label class="switch">
+      <input type="checkbox" name="themeColor" onclick="onCLickThemeColor(this)">
+      <span class="slider round"></span>
+    </label>
+  </div>
+
+  <iframe id="myIFrame" frameBorder="0" width="100%" style="display: flex; height: 95vh" onload="onLoad()"
+  src="http://localhost:8080/#/conversation-detail?tiledesk_supportMode=true&jwt=JWT eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmQzNGU0MjQ5NjEwZTAwMzQ5ODUwNzgiLCJlbWFpbCI6ImdhYnJpZWxlLnBhbmljb0Bmcm9udGllcmUyMS5pdCIsImZpcnN0bmFtZSI6IkdhYnJpZWxlMiIsImxhc3RuYW1lIjoiUGFuaWNvIC1wcmUiLCJlbWFpbHZlcmlmaWVkIjp0cnVlLCJpYXQiOjE2OTgzMzYyMTMsImF1ZCI6Imh0dHBzOi8vdGlsZWRlc2suY29tIiwiaXNzIjoiaHR0cHM6Ly90aWxlZGVzay5jb20iLCJzdWIiOiJ1c2VyIiwianRpIjoiNjAzZGY3NDQtZWY0OS00Mjg2LWJlMWQtYWM5OGYyYTNkMTJiIn0.bof5QPQP262yCQfpeSjqyoYPkSCttg5NQFkcV8d634xzeq7wJBdhtiO7IJY6hS81a1YyXrAsxlK7RiNS-UZdYiTXR81UXurQd1fnE9jtaggB82tyNL8vmiZEOs6xh4TqO3-kkBzRxQIp74bY53fk_mu5RmNbAjIgUWEufaNDiv8"></iframe>
+  
+  <script>        
+    // window.addEventListener('message', event => {
+    //     console.log('[CHAT-IONIC] test page event::', event)
+    // });
+
+    function onLoad(){
+      // var cssLink = document.createElement("style");
+      // cssLink.src = "./assets/style.css"; 
+      // // cssLink.rel = "stylesheet"; 
+      // cssLink.type = "text/css"; 
+      // console.log('framessss', frames['myIFrame'])
+      // frames['myIFrame'].contentWindow.document.body.appendChild(cssLink);
+
+      // let msg= { action: "style", type: 'light', parameter: 'http://localhost:8080/assets/customStyle.css'}
+      // frames['myIFrame'].contentWindow.postMessage(msg, '*');
+    }
+
+
+    function onCLickThemeColor(event){
+      console.log('onCLickThemeColor: status-->',event.checked);
+      if(event.checked){
+        let msg= { action: "style", type: 'style-1', parameter: 'http://localhost:8080/assets/customStyle.css'}
+        frames['myIFrame'].contentWindow.postMessage(msg, '*');
+      }else{
+        let msg= { action: "style", parameter: ''}
+        frames['myIFrame'].contentWindow.postMessage(msg, '*');
+      }
+    }
+
+  </script>
+</body>
+
+</html>

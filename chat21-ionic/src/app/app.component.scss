@@ -1,0 +1,73 @@
+@import '../variables.scss';
+
+.split-pane-md.split-pane-visible > .split-pane-side {
+    min-width: 320px; //360px; //312px;
+    display: block; // Safari bug fix
+    --border: 0px;
+    // background-color: var(--list-bkg-color);
+}
+
+// .split-pane-md:not(.mobile){
+//     height: calc( 100% - var(--nav-bar-heigth));
+//     margin-top: var(--nav-bar-heigth);
+// }
+
+ion-split-pane:not(.mobile) {
+    height: calc( 100% - var(--nav-bar-heigth));
+    margin-top: var(--nav-bar-heigth);
+    margin-left: var(--sidebar-width);
+    // display: block; // Safari bug fix
+    // --border: 0px;
+    background-color: var(--list-bkg-color);
+    &.sidebar-hidden{
+        margin-left: 0px;
+        margin-top: 0px;
+        height: 100%;
+    }
+}
+
+app-navbar{
+    position: absolute;
+    top: 0px;
+    width: calc(100%  - var(--sidebar-width));
+    margin-left: var(--sidebar-width);
+
+    &.sidebar-hidden{
+        width: 100%;
+        margin-left: 0px;
+    }
+}
+
+app-sidebar{
+    &.sidebar-hidden{
+        display: none;
+    }
+}
+
+
+.navbar{
+    display: flex;
+    position: fixed;
+    top: 0px;
+}
+
+.hide-sidebar {
+    display: none;
+}
+
+.router-outlet-margin-left {
+    left: 60px
+}
+
+// ion-nav {
+//     background-color: var(--list-bkg-color);
+// }
+
+// @media (min-width: 768px) {
+//     .split-pane-md.split-pane-visible > .split-pane-side {
+//         min-width: 312px;
+//         display: block; // Safari bug fix
+//     }
+// }
+
+

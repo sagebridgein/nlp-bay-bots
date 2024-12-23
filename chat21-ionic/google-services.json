@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "522823349790",
+    "firebase_url": "https://tiledesk-v3-prod-cf4ff-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "tiledesk-v3-prod-cf4ff",
+    "storage_bucket": "tiledesk-v3-prod-cf4ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522823349790:android:54cf45313fbe20101fa00f",
+        "android_client_info": {
+          "package_name": "chat.ionic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "522823349790-gsagrbpf0ktecjbm3ec53d4jnunpi4k3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI2rc6vHd5VLzptv6ftBya54F-7VNfw6E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "522823349790-gsagrbpf0ktecjbm3ec53d4jnunpi4k3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,47 @@
+<ion-header no-border class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>{{translationMap?.get('LABEL_EMAIL')}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button ion-button fill="clear" (click)="onClose()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="content-container" [attr.isMobile]="isMobile">
+    <form [formGroup]="emailFormGroup" (ngSubmit)="onSubmit()">
+      <!-- <div class="form-group row">
+        <ion-item lines="none">
+          <ion-label position="floating">Oggetto</ion-label>
+          <ion-input type="text"  formControlName="topic"></ion-input>
+        </ion-item>
+      </div> -->
+      <div class="field-wrapper" id="div_input_topic" #div_input_topic>
+        <input type="text" formControlName="subject" >
+        <div class="field-placeholder" (click)="addFocus()"><span>{{translationMap?.get('EMAIL.SUBJECT')}}</span></div>
+      </div>
+
+      <ion-label class="message-placeholder">{{translationMap?.get('EMAIL.MESSAGE')}}</ion-label>
+      <div class="field-wrapper-email">
+        <ion-textarea 
+          formControlName="text"
+          autosize="false" 
+          auto-grow="true" 
+          autofocus="true"
+          rows="2"
+          placeholder="{{translationMap?.get('EMAIL.MESSAGE_PLACEHOLDER')}}">
+        </ion-textarea>
+        <div class="info-wrapper" *ngIf="LOGOS_ITEMS['BASE_LOGO_GRAY'].icon">
+          <ion-label>Powered by</ion-label>
+          <img [src]="LOGOS_ITEMS['BASE_LOGO_GRAY'].icon">
+        </div>
+      </div>
+
+      <div class="field-wrapper-submit">
+        <ion-button [disabled]="emailFormGroup.invalid" ion-button fill="clear" type="submit">{{translationMap?.get('LABEL_SEND')}}</ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

@@ -1,0 +1,48 @@
+<ion-app>
+  <div>
+
+    <app-image-viewer></app-image-viewer>
+
+    <app-network-offline></app-network-offline>
+
+
+    <app-navbar *ngIf="!IS_ON_MOBILE_DEVICE && lang"
+      [ngClass]="{'sidebar-hidden':  IS_ON_MOBILE_DEVICE || SUPPORT_MODE === false }"
+      [isSoundEnabled]="isSoundEnabled"
+      (onSoundChange)="onSoundChange($event)">
+    </app-navbar>
+
+    <app-sidebar class="sidebar"
+      [ngClass]="{'sidebar-hidden': IS_ONLINE === false || IS_ON_MOBILE_DEVICE || SUPPORT_MODE === false}">
+    </app-sidebar>
+
+    <!-- <div class="sidebar" [ngClass]="{'hide-sidebar': IS_ONLINE === false || IS_ON_MOBILE_DEVICE === true || SUPPORT_MODE === false}">
+      <app-sidebar></app-sidebar>
+    </div> -->
+    
+    <div class="user-details-sidebar" [ngClass]="{'hide-sidebar': IS_ONLINE === false || IS_ON_MOBILE_DEVICE || SUPPORT_MODE === false}">
+      <app-sidebar-user-details> </app-sidebar-user-details>
+    </div>
+ 
+    <ion-split-pane when="md" contentId="main" [ngClass]="{'mobile': IS_ON_MOBILE_DEVICE, 'sidebar-hidden': IS_ON_MOBILE_DEVICE || SUPPORT_MODE === false}">
+      <!-- 'sidebar-visible': IS_ONLINE === true && SUPPORT_MODE === true, -->
+      <ion-nav #sidebarNav [root]="sidebarPage"></ion-nav>
+      <!--  our side menu  -->
+      <!-- <ion-router-outlet id="sidebar" name='sidebar' animated="false" #masterNav> -->
+      <!-- <app-conversations-list></app-conversations-list> -->
+      <!-- </ion-router-outlet> -->
+      <!-- the main content -->
+      <!--  -->
+      <ion-router-outlet id="main" #detailNav animated="false">
+      </ion-router-outlet>
+    </ion-split-pane>
+  </div>
+</ion-app>
+
+<!-- 
+<ion-app>
+  <ion-split-pane when="md" disabled="{{disableSplit}}" contentId="detailNav" #splitpane>
+    <ion-router-outlet swipeBackEnabled="false" contentId="detailNav" id="masterNav" #masterNav></ion-router-outlet>
+    <ion-router-outlet name="detailNav" id="detailNav" #detailNav (activate)="onRouterActivate()"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app> -->

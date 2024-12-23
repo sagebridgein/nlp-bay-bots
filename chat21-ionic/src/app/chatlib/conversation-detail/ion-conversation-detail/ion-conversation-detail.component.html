@@ -1,0 +1,267 @@
+<!-- <ion-list no-lines style="display: none;">
+  <div *ngFor="let message of messages; let i = index">
+ 
+    <ion-item class="align-center" class="ion-text-center" *ngIf="messageType(MESSAGE_TYPE_INFO, message)" class="msg_info_container">
+      <chat-info-message class="messages"
+          [message]="message">
+      </chat-info-message>
+    </ion-item>
+
+    <!- - message SENDER:: - ->
+    <ion-item role="messaggio" *ngIf="messageType(MESSAGE_TYPE_MINE, message)" class="msg_container base_sent">
+                          
+      <!- -backgroundColor non viene ancora usato - ->
+      <chat-bubble-message class="messages msg_sent slide-in-right"
+          [ngClass]="{'button-in-msg' : message.metadata && message.metadata.button}"
+          [message]="message"
+          [textColor]="'col-msg-sent'"
+          (onBeforeMessageRender)="returnOnBeforeMessageRender($event)"
+          (onAfterMessageRender)="returnOnAfterMessageRender($event)">
+      </chat-bubble-message>
+
+        <!- - icon status message - ->
+      <chat-return-receipt class="slide-in-right"
+          [status]="message.status">
+      </chat-return-receipt>
+
+    </ion-item>
+
+    <!- - message RECIPIENT:: - ->
+    <div role="messaggio" *ngIf="messageType(MESSAGE_TYPE_OTHERS, message) && isChannelTypeGroup(channelType)" class="message_sender_fullname slide-in-left">{{message.sender_fullname}}</div>
+    <div role="messaggio" *ngIf="messageType(MESSAGE_TYPE_OTHERS, message)" class="msg_container base_receive">
+                          
+      <!- - <chat-avatar-image class="slide-in-left"  
+          [senderID]="message.sender"
+          [senderFullname]="message.sender_fullname"
+          [baseLocation]="baseLocation">
+      </chat-avatar-image> - ->
+
+      <!- -backgroundColor non viene ancora usato - ->
+      <chat-bubble-message class="messages msg_receive slide-in-left"
+          [message]="message"
+          [textColor]="'black'"
+          (onBeforeMessageRender)="returnOnBeforeMessageRender($event)"
+          (onAfterMessageRender)="returnOnAfterMessageRender($event)">
+      </chat-bubble-message>
+
+    </div>
+
+  </div>
+</ion-list> -->
+
+<!-- ----------------------------------------------------------- -->
+<!--  nk - no tag ionic -->
+<!-- ----------------------------------------------------------- -->
+<div *ngIf="!isMobile" class="manage_conversation_info_container" [ngClass]="{'close': !openInfoConversation, 'mobile': isMobile}">
+  <ion-button fill="clear" *ngIf="openInfoConversation" (click)="onOpenCloseInfoConversationFN()"
+  tooltip="{{translationMap?.get('LABEL_CLOSE_GROUP')}}" placement="bottom">
+    <ion-icon name="arrow-forward-outline"></ion-icon>
+    <!-- {{translationMap.get('LABEL_CLOSE_GROUP')}} -->
+    <!-- <ng-template #closeGroupTooltip>
+      <span> {{ translationMap?.get('LABEL_CLOSE_GROUP')}} </span>
+    </ng-template> -->
+  </ion-button>
+  <ion-button fill="clear" *ngIf="!openInfoConversation" (click)="onOpenCloseInfoConversationFN()"
+  tooltip="{{ translationMap?.get('LABEL_OPEN_INFO_CONVERSATION')}}" placement="bottom">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+    <!-- <ng-template #openGroupTooltip>
+      <span> {{ translationMap?.get('LABEL_OPEN_INFO_CONVERSATION')}} </span>
+    </ng-template> -->
+    <!-- {{translationMap.get('LABEL_OPEN_INFO_CONVERSATION')}} -->
+  </ion-button>
+</div>
+
+<div class="conversation-wpr" style="height: 100%;">
+  
+  <div *ngFor="let message of messages; let i = index; let first = first; trackBy: trackByFn">
+
+    <ng-container *ngIf="first || (messages[i - 1].timestamp | date:'d') !== (message.timestamp | date:'d')">
+      <div class="long-date-divider-wpr">
+        <div class="long-date-divider-border-b"></div>
+        <div class="long-date-divider">
+          <!-- {{message.timestamp | date: 'longDate' : 'it'}} -->
+          {{message.timestamp | amDateFormat:'LL'}}
+
+        </div>
+        <div class="long-date-divider-border-b"></div>
+      </div>
+    </ng-container>
+
+    <div class="align-center ion-text-center msg_info_container" *ngIf="messageType(MESSAGE_TYPE_INFO, message)">
+      <chat-info-message class="messages" 
+        [message]="message">
+      </chat-info-message>
+    </div>
+
+    <!-- message SENDER:: -->
+    <div role="messaggio" *ngIf="messageType(MESSAGE_TYPE_MINE, message)" class="msg_container base_sent">
+
+      <div class="message-date-hover"> {{message.timestamp | date:'HH:mm' }} </div>
+
+      <!-- <ng-container *ngIf="areVisibleCAR && supportMode">
+        <ion-button shape="round" size="small" class="btn-add-msg canned" ion-button fill="clear"
+          (click)="presentCreateCannedResponseModal(message)" [tooltip]="addAsCannedResponseTooltipText"
+          [options]="tooltipOptions" placement="bottom">
+          <ion-icon slot="icon-only" name="flash-outline" style="font-size: 1em;"> </ion-icon>
+          <span class="add-canned-response-add-icon">+</span>
+        </ion-button>
+      </ng-container> -->
+
+      
+      <div class="bubble-container">
+
+        <div class="email-logo" *ngIf="message?.attributes?.offline_channel && message?.attributes?.offline_channel.includes(TYPE_MSG_EMAIL)">
+          <ion-icon name="mail"></ion-icon>
+          <ion-icon name="flash" 
+            *ngIf="message?.attributes?.offline_channel.includes('offline_')"
+            [ngStyle]="{'color': stylesMap.get('bubbleSentBackground')}">
+          </ion-icon>
+        </div>
+
+        <!--backgroundColor non viene ancora usato -->
+        <chat-bubble-message class="messages msg_sent" id="message_msg_sent" style="position: relative;" 
+          [ngClass]="{'has-metadata': (isImage(message) || isFrame(message)), 'privateMsg': (message?.attributes && message?.attributes?.subtype === 'private')}" 
+          [class.no-background]="(isImage(message) || isFrame(message)) && message?.text && message?.text.trim() === '' "  
+          [class.emoticon]="isEmojii(message?.text)"
+          [ngStyle]="{'background': stylesMap.get('bubbleSentBackground'), 'color': stylesMap.get('bubbleSentTextColor')}"
+          [ngClass]="{'button-in-msg' : message.metadata && message.metadata.button}"
+          [message]="message" 
+          [fontColor]="stylesMap.get('bubbleSentTextColor')"
+          [fontSize]="stylesMap.get('fontSize')"
+          [fontFamily]="stylesMap.get('fontFamily')"
+          (onBeforeMessageRender)="onBeforeMessageRenderFN($event)"
+          (onAfterMessageRender)="onAfterMessageRenderFN($event)" 
+          (onElementRendered)="onElementRenderedFN($event)"
+          (onOptionsMessage)="onClickOptionsMessage($event)">
+        </chat-bubble-message>
+      </div>
+
+      <!-- icon status message -->
+      <chat-return-receipt 
+        [status]="message.status">
+      </chat-return-receipt>
+
+      
+
+    </div>
+
+    <!-- message RECIPIENT + TIME :: -->
+    <!-- <div class="msg_container base_receive" *ngIf="messageType(MESSAGE_TYPE_OTHERS, message) && isChannelTypeGroup(channelType) && !isSameSender(message?.sender, i)">
+      <div role="messaggio" class="message_sender_fullname">
+        {{message.sender_fullname}}
+      </div>
+      <div class="message-date"> {{message.timestamp | date:'HH:mm' }} </div>
+    </div> -->
+    <!-- message RECIPIENT :: -->
+    <div role="messaggio" *ngIf="messageType(MESSAGE_TYPE_OTHERS, message)" class="msg_container base_receive">
+
+      <!-- <chat-avatar-image class="slide-in-left"  
+          [senderID]="message.sender"
+          [senderFullname]="message.sender_fullname"
+          [baseLocation]="baseLocation">
+      </chat-avatar-image> -->
+
+      <div class="bubble-container">
+        <!--backgroundColor non viene ancora usato -->
+        <chat-bubble-message class="messages msg_receive" id="message_msg_receive"
+          [ngClass]="{'has-metadata': (isImage(message) || isFrame(message)), 'privateMsg': (message?.attributes && message?.attributes?.subtype === 'private')}" 
+          [class.no-background]="(isImage(message) || isFrame(message)) && message?.text && message?.text.trim() === '' "  
+          [class.emoticon]="isEmojii(message?.text)"
+          [ngStyle]="{'background': stylesMap?.get('bubbleReceivedBackground'), 'color': stylesMap.get('bubbleReceivedTextColor')}"
+          [isSameSender]="isSameSender(message?.sender, i)"
+          [message]="message" 
+          [fontColor]="stylesMap?.get('bubbleReceivedTextColor')"
+          [fontSize]="stylesMap?.get('fontSize')"
+          [fontFamily]="stylesMap?.get('fontFamily')"
+          (onBeforeMessageRender)="onBeforeMessageRenderFN($event)"
+          (onAfterMessageRender)="onAfterMessageRenderFN($event)" 
+          (onElementRendered)="onElementRenderedFN($event)"
+          (onOptionsMessage)="onClickOptionsMessage($event)">
+        </chat-bubble-message>
+
+      </div>
+
+      <ng-container *ngIf="message?.attributes && message?.attributes?.sourcePage && !isSameSender(message?.sender, i)">
+        <ion-button shape="round" size="small" class="btn-info-msg " ion-button fill="clear"
+          (click)="onClickInfoMessage(message, i)" tooltip="{{viewedPageTooltipText}}" placement="bottom">
+          <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+        </ion-button>
+      </ng-container>
+
+      <!-- <ng-container *ngIf="areVisibleCAR && supportMode">
+        <ion-button shape="round" size="small" class="btn-add-msg canned" ion-button fill="clear"
+          (click)="presentCreateCannedResponseModal(message)" [tooltip]="addAsCannedResponseTooltipText"
+          [options]="tooltipOptions" placement="bottom">
+          <ion-icon slot="icon-only" name="flash-outline" style="font-size: 1em;"> </ion-icon>
+          <span class="add-canned-response-add-icon">+</span>
+        </ion-button>
+      </ng-container> -->
+      <!-- <ng-container *ngIf="supportMode">
+        <ion-button shape="round" size="small" class="btn-add-msg emoji" ion-button fill="clear"
+          (click)="presentEmojiiModal()" tooltip="{{addAsCannedResponseTooltipText}}"
+          [options]="tooltipOptions" placement="bottom">
+          <ion-icon slot="icon-only" name="happy-outline" style="font-size: 1em;"> </ion-icon>
+        </ion-button>
+      </ng-container> -->
+
+      <div class="message-date-hover" *ngIf="isChannelTypeGroup(channelType)"> {{message.timestamp | date:'HH:mm' }} </div>
+    </div>
+    
+    <div class="base_receive sourcePage-container" *ngIf="messageType(MESSAGE_TYPE_OTHERS, message) && message?.attributes?.sourcePage" [class.show]="showSourceInfo && showSourceInfoIndex===i">
+      <svg xmlns="http://www.w3.org/2000/svg" height="15px" width="15px" viewBox="0 0 24 24"  fill="none"><path _ngcontent-wrg-c96="" d="M0 0h24v24H0V0z" fill="none"></path><path _ngcontent-wrg-c96="" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-.61.08-1.21.21-1.78L8.99 15v1c0 1.1.9 2 2 2v1.93C7.06 19.43 4 16.07 4 12zm13.89 5.4c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41C17.92 5.77 20 8.65 20 12c0 2.08-.81 3.98-2.11 5.4z"></path></svg>
+      <a target="_blank" href="{{message?.attributes?.sourcePage}}" class="truncate">
+        <span title="{{message?.attributes?.sourcePage}}" *ngIf="!message?.attributes?.sourceTitle">{{message?.attributes?.sourcePage}}</span>
+        <span title="{{message?.attributes?.sourcePage}}" *ngIf="message?.attributes?.sourceTitle">{{message?.attributes?.sourceTitle}}</span>
+      </a>
+      
+    </div>
+
+    <!-- message type:: button &&  -->
+    <div *ngIf="message?.attributes && message?.attributes?.attachment " class="slide-in-left">
+      <chat-message-attachment style="height: 100%; display: block;" 
+        [message]="message"
+        [isLastMessage]="isLastMessage(message?.uid)" 
+        [stylesMap]="stylesMap"
+        (onElementRendered)="onElementRenderedFN($event)"
+        (onAttachmentButtonClicked)="onAttachmentButtonClickedFN($event)">
+      </chat-message-attachment>
+    </div>
+  </div>
+  <!-- (fileType === 'file' && uploadProgress !== 100)  -->
+
+  <!-- uploadProgress -> {{ uploadProgress }} -->
+  <div *ngIf="uploadProgress !== 100" class="msg_container base_sent" style="margin-right: 20px;">
+    <div class="chat21-spinner active" id="chat21-spinner" style="margin: 0px 6px 0px;">
+      <div class="chat21-bounce1" [ngStyle]="{'background-color': stylesMap.get('themeColor')}"></div>
+      <div class="chat21-bounce2" [ngStyle]="{'background-color': stylesMap.get('themeColor'), 'opacity': 0.4}"></div>
+      <div class="chat21-bounce3" [ngStyle]="{'background-color': stylesMap.get('themeColor'), 'opacity': 0.6}"></div>
+      <!-- <span [ngStyle]="{'color': stylesMap.get('themeColor')}">{{translationMap.get('LABEL_LOADING')}}</span> -->
+    </div>
+  </div>
+
+  <div *ngIf="isTypings" class="msg_container base_receive typing_container">
+    <!-- !isSameSender(idUserTypingNow, i) -->
+    <!-- <div *ngIf="nameUserTypingNow">{{nameUserTypingNow}}</div> -->
+    <user-typing
+      [themeColor]="stylesMap?.get('themeColor')"
+      [translationMap]="translationMap"
+      [idUserTypingNow]="idUserTypingNow"
+      [nameUserTypingNow]="nameUserTypingNow">
+    </user-typing>
+    <div class="typing_info" *ngIf="nameUserTypingNow"> {{nameUserTypingNow}} {{translationMap.get('LABEL_IS_WRITING')}}</div>
+  </div>
+
+</div>
+
+<!-- fileType > {{fileType }} uploadProgress {{uploadProgress}} -->
+<!--  -->
+<!-- <div class="msg_container base_sent"
+  style="margin-right: 20px;">
+  <div class="messages msg_sent">
+    <div class="spinner">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+  </div>
+</div> -->

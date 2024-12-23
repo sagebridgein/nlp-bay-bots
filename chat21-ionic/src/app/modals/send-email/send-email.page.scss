@@ -1,0 +1,190 @@
+ion-toolbar{
+    --background: var(--modal-header-background);
+    &:not(.mobile){
+        // --background: var(--list-bkg-color);
+        border: none;
+    }
+    &.mobile{
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    ion-button,
+    ion-title{
+        --color: var(--modal-icon-color);
+    }
+}
+ion-content{
+    --background: var(--modal-content-background);
+}
+
+.content-container{
+    padding-top: 40px;
+    padding-left: 8%;
+    padding-right: 8%;
+
+}
+
+.content-container[isMobile= true]{
+    height: 100vh;
+    form{
+        height: 100%;
+    }
+    .field-wrapper-email{
+        height: 65%;
+        ion-textarea{
+            min-height: calc(100% - 50px);
+            max-height: calc(100% - 50px);
+            
+            &::ng-deep textarea {
+                height: unset !important;
+            }
+        }
+    }
+
+}
+
+ion-label + ion-input:focus {
+    color: rgb(5, 102, 255);
+    font-weight: bold;
+}
+ion-input{
+    --padding-top: 20px;
+    --padding-bottom: 10px;
+    // display: block;
+    // width: 100%;
+    // font-size: 16px;
+    // line-height: 20px;
+    // letter-spacing: -0.01em;
+    // height: 51px;
+    // color: rgb(8, 15, 26);
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(211, 219, 229);
+    border-radius: 4px;
+    // padding: 16px 14px;
+    // outline: none;
+}
+
+
+
+.field-wrapper{
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.field-wrapper input{
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(211, 219, 229);
+    color: rgb(98, 112, 139);
+    border-radius: 4px;
+    padding: 15px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.field-wrapper input:focus-visible,
+.field-wrapper textarea:focus-visible{
+    outline: var(--border-focus-color) auto 1px;
+}
+
+.field-wrapper .field-placeholder{
+    font-size: 16px;
+    position: absolute;
+    /* background: #fff; */
+    bottom: 17px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #80868b;
+    left: 8px;
+    padding: 0 8px;
+    -webkit-transition: transform 150ms cubic-bezier(0.4,0,0.2,1),opacity 150ms cubic-bezier(0.4,0,0.2,1);
+    transition: transform 150ms cubic-bezier(0.4,0,0.2,1),opacity 150ms cubic-bezier(0.4,0,0.2,1);
+    z-index: 1;
+
+    text-align: left;
+    // width: 100%;
+}        
+
+.field-wrapper .field-placeholder span{
+    // background: #ffffff;
+    // padding: 0px 8px;
+}
+
+.field-wrapper input:not([disabled]):focus~.field-placeholder,
+.field-placeholder:target,
+.field-wrapper.hasValue input:not([disabled])~.field-placeholder{
+    -webkit-transform: scale(.75) translateY(-50px) translateX(-30px);
+    transform: scale(.75) translateY(-50px) translateX(-30px);
+    color:var(--title-focus-color);
+    font-weight: bold; 
+    font-size: 18px;
+}
+
+.field-wrapper-email{
+    background-color: #f1f4f7;
+    border: 0;
+    border-radius: 6px;
+    padding: 34px;
+    font-size: 16px;
+    overflow: hidden;
+
+    ion-textarea{
+        border-radius: 6px; // NK edited
+        padding: 0;
+        margin: 0;
+        height: auto;
+        overflow: auto;
+        background-color: white;
+        --padding-top: 12px;
+        --padding-bottom: 12px;
+        --padding-start:12px;
+        --padding-end: 12px;
+        min-height: 184px;
+        max-height: 184px;
+        color: rgb(98, 112, 139);
+
+        &::ng-deep textarea {
+            height: unset !important;
+        }
+    }
+}
+
+ion-label.message-placeholder{
+    display: inline-block;
+    font-weight: 400;
+    max-width: 100%
+}
+
+.info-wrapper{
+    display: flex;
+    flex-direction: column;
+    -webkit-box-align: center;
+    align-items: center;
+    margin-top: 20px;
+    // padding-bottom: 30px;
+    position: relative;
+    text-align: center;
+    color: rgb(98, 112, 139);
+    font-size: 13px;
+
+    img{
+        max-width: 35%;
+        max-height: 50px;
+    }
+}
+
+.field-wrapper-submit{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+
+    ion-button{
+        background-color:var(--button-background-color);
+        color:var(--button-text-color);
+        border-radius: 4px;
+        font-size: 18px;
+        height: 46px;
+        line-height: 23px;
+        min-width: 160px;
+    }
+}

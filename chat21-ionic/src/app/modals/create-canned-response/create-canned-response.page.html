@@ -1,0 +1,110 @@
+<ion-header no-border class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>{{'AddNewCannedResponse' | translate}}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button ion-button fill="clear" (click)="closeModalCreateCannedResponseModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-menu side="start" menu-id="custom" content-id="main" class="my-custom-menu">
+  <!-- <ion-header>
+    <ion-toolbar color="tertiary">
+      <ion-title>Custom Menu</ion-title>
+    </ion-toolbar>
+  </ion-header> -->
+  <ion-content>
+    <ion-list>
+      <ion-item button color="none" (click)="addPlaceholdertoMsg('$recipient_name')"
+        (mouseover)="mouseOverBtnAddRecipientNamePlaceholder = true"
+        (mouseout)="mouseOverBtnAddRecipientNamePlaceholder = false">
+        <ion-label>
+          {{translationsMap?.get('First_name_of_recipient')}}
+        </ion-label>
+      </ion-item>
+      <ion-item button color="none" (click)="addPlaceholdertoMsg('$agent_name')"
+        (mouseover)="mouseOverBtnAddAgentNamePlaceholder = true"
+        (mouseout)="mouseOverBtnAddAgentNamePlaceholder = false">
+        <ion-label>
+          {{translationsMap?.get('First_name_of_agent')}}
+        </ion-label>
+      </ion-item>
+
+    </ion-list>
+    <!-- <ion-note> </ion-note> -->
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-padding">
+          <div class="ion-text-center">
+            <h6
+              *ngIf="mouseOverBtnAddRecipientNamePlaceholder === false && mouseOverBtnAddAgentNamePlaceholder === false"
+              ion-text class="note-text">
+              {{translationsMap?.get('SelectACustomizationToAddToYourMessage')}}
+            </h6>
+            <h6
+              *ngIf="mouseOverBtnAddRecipientNamePlaceholder === true && mouseOverBtnAddAgentNamePlaceholder === false"
+              ion-text class="note-text">
+              {{translationsMap?.get('recipient_name_desc')}}
+            </h6>
+
+            <h6
+              *ngIf="mouseOverBtnAddRecipientNamePlaceholder === false && mouseOverBtnAddAgentNamePlaceholder === true"
+              ion-text class="note-text">
+              {{translationsMap?.get('agent_name_desc')}}
+            </h6>
+
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-content>
+</ion-menu>
+<!-- <ion-router-outlet id="menuContent"></ion-router-outlet> -->
+
+<ion-content id="create-canned-response-content">
+  <div  class="content-container">
+    <form [formGroup]="cannedFormGroup" (ngSubmit)="onSubmit()">
+      
+      <!-- Canned response title -->
+      <div class="field-wrapper" id="div_input_topic" #div_input_topic>
+        <input type="text" formControlName="title" >
+        <div class="field-placeholder" (click)="addFocus()"><span>{{translationsMap?.get('Title')}}</span></div>
+      </div>
+
+      
+
+      <!-- Canned response message -->
+      <ion-label class="message-placeholder">{{translationsMap?.get('Message')}}</ion-label>
+      <div class="field-wrapper" >
+        <textarea
+          id="message"
+          formControlName="message"
+          autosize="false" 
+          autoGrow="true" 
+          autofocus="true"
+          rows="5" 
+          (ngModelChange)="cannedResponseMessageChanged($event)"
+          placeholder="{{translationsMap?.get('WriteMsgToSendToYourVisitors')}}"></textarea>
+        <!-- <div class="field-placeholder" (click)="addFocus()"><span>{{translationsMap?.get('Title')}}</span></div> -->
+        
+        <div class="customizeBtn-container">
+          <ion-button ion-button fill="clear" size="small" (click)="openAddPersonalisationMenu()">
+            {{translationsMap?.get('AddCustomization')}}
+          </ion-button>
+        </div>
+      
+      </div>
+
+
+      <div class="field-wrapper-submit">
+        <ion-button [disabled]="cannedFormGroup.invalid" ion-button fill="clear" type="submit">{{translationsMap?.get('Add')}}</ion-button>
+      </div>
+
+    </form>
+  </div>
+
+</ion-content>

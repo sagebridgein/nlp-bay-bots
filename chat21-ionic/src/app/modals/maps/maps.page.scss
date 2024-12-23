@@ -1,0 +1,199 @@
+ion-toolbar{
+    --background: var(--modal-header-background);
+    &:not(.mobile){
+        // --background: var(--list-bkg-color);
+        border: none;
+    }
+    &.mobile{
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    ion-button,
+    ion-title{
+        --color: var(--modal-icon-color);
+    }
+}
+ion-content{
+    --background: var(--modal-content-background);
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+capacitor-google-map {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+// google maps
+
+/**
+ * @license
+ * Copyright 2019 Google LLC. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+/* 
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map. 
+ */
+.map {
+    height: 50%;
+    //box-shadow: 0px 0px 3px #aaa;
+    border: solid 2px #e8e8e8;
+}
+
+#description {
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+}
+
+#infowindow-content .title {
+    font-weight: bold;
+}
+
+#infowindow-content {
+    display: none;
+}
+
+#map #infowindow-content {
+    display: inline;
+}
+
+.pac-card {
+    margin-top: 10px;
+    background-color: transparent;
+    // border: 0;
+    // border-radius: 2px;
+    // box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+    //margin: 10px;
+    width: 100%;
+    padding: 0 0.5em;
+    //font: 400 18px Roboto, Arial, sans-serif;
+    overflow: hidden;
+    //font-family: Roboto;
+    padding: 0;
+}
+
+#pac-container {
+    padding-bottom: 12px;
+    //margin-right: 12px;
+}
+
+.pac-controls {
+    display: inline-block;
+    padding: 5px 11px;
+}
+
+.pac-controls label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+#pac-input {
+    background-color: #fff;
+    //font-family: Roboto;
+    font-size: 15px;
+    font-weight: 400;
+    margin-left: 12px;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    //width: 400px;
+    width: 100%;
+    margin-left: 0px;
+    height: 36px;
+    border-radius: 6px;
+    border: solid 2px #e8e8e8;
+    //box-shadow: 0px 0px 3px #aaa;
+}
+
+#pac-input:focus {
+    border-color: #00a5f4;
+}
+
+#title {
+    color: #fff;
+    background-color: #4d90fe;
+    font-size: 25px;
+    font-weight: 500;
+    padding: 6px 12px;
+}
+
+.selected-place {
+    background-color: #f3f3f3;
+    padding: 8px 8px;
+    border-radius: 6px;
+    margin-top: 20px;
+
+    .share-location-title {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 10px;
+        align-items: center;
+        color: #006a9b;
+
+        ion-icon {
+            margin-right: 4px;
+        }
+
+        p {
+            font-size: 14px;
+            font-weight: 600;
+        }
+    }
+
+    p {
+        margin: 0px;
+        font-size: 14px;
+    }
+
+    .place-info {
+        padding-left: 20px;
+
+        .place-name {
+            font-weight: 500;
+        }
+
+        .place-address {
+            font-style: italic;
+        }
+
+        .place-coords {
+            font-size: 12px;
+            font-weight: 500;
+            color: #aaa;
+        }
+    }
+
+    .place-footer {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+
+        ion-button {
+            background-color: rgb(0, 86, 192);
+            color: #f1f4f7;
+            border-radius: 6px;
+            font-size: 12px;
+            height: 30px;
+            line-height: 23px;
+            min-width: 120px;
+        }
+
+        ion-icon {
+            margin-right: 6px;
+        }
+    }
+}
+
+#map > div > div > div > div {
+    display: none !important;
+}
+
+#map > div > div > div > div > div.gmnoproint {
+    display: none !important;
+}

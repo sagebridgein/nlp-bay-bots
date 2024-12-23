@@ -1,0 +1,41 @@
+#presence-container{
+    display: flex;
+}
+
+.status-icon-container{
+    position: fixed;
+    top: 22px;
+    left: 30px;
+    background-color: white;
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.mobile{
+        top: 36px;
+        left: 50px;
+    }
+
+    svg{
+        fill: #f44336;
+
+        &.online{
+            fill: #4caf50;
+        }
+    }
+    
+}
+
+.online-point {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.2rem;
+    font-weight: 500;
+    color: #779bbb;
+    font-size: 10px;
+    max-width: 90%;
+    margin-right: 5px;
+}

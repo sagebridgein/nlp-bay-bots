@@ -1,0 +1,662 @@
+ion-toolbar{
+    --background: var(--modal-header-background);
+    &:not(.mobile){
+        // --background: var(--list-bkg-color);
+        border: none;
+    }
+    &.mobile{
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    ion-button,
+    ion-title{
+        --color: var(--modal-icon-color);
+    }
+}
+ion-content{
+    --background: var(--modal-content-background);
+}
+
+.error-container {
+    margin-top: 70px;
+    display: flex;
+    justify-content: center;
+}
+
+.error-message {
+    white-space: pre-line;
+    color: #bababa;
+    font-style: italic;
+    text-align: center;
+}
+
+.label-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+
+    .template-name {
+        margin-right: 8px;
+        font-weight: 500;
+    }
+
+    .template-status-icon {
+        margin-right: 8px;
+    }
+
+    .template-language {
+        margin-right: 8px;
+        color: #a3a3a3;
+    }
+}
+
+.body-preview-subtitle {
+    width: 300px;
+    color: #a3a3a3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.content-container-edit {
+    background-color: red;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.content-container {
+    background-color: blueviolet;
+    // height: 100px;
+}
+
+ion-input{
+    background-color: var(--textarea-background);
+    color: var(--textarea-color);
+    --placeholder-color: var(--textarea-placeholder-color);
+}
+
+ion-footer {
+    background: var(--modal-content-background);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 5px 10px;
+
+    ion-button {
+        background-color: rgb(0, 86, 192);
+        color: #f1f4f7;
+        border-radius: 6px;
+        font-size: 14px;
+        height: 40px;
+        line-height: 23px;
+        min-width: 120px;
+    }
+
+    ion-icon {
+        margin-right: 6px;
+    }
+}
+
+.preview-container {
+    padding: 0px 22px;
+}
+
+.message-preview {
+    width: 100%;
+    min-height: 200px;
+    //background-image: url(https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png);
+    background-image: url(../../../assets/images/whatsapp_background.png);
+    border-radius: 8px;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 20px;
+
+    .message-cloud {
+        background-color: #fff;
+        // width: auto;
+        width: 260px;
+        //max-width: 50%;
+        padding: 8px 10px 2px 10px;
+        //border-radius: 8px 0 8px 8px;
+        border-radius: 8px;
+        box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.15);
+        font-size: 12px;
+
+        .header-preview {
+            color: rgba(0, 0, 0, 0.76);
+            font-size: 15px;
+            font-weight: bold;
+            line-height: 19px;
+            padding-bottom: 8px;
+        }
+
+        .body-preview {
+            font-size: 13.6px;
+            color: #282828;
+            line-height: 19px;
+        }
+
+        .footer-preview {
+            padding-top: 6px;
+            color: #00000073;
+            font-size: 13px;
+            line-height: 17px;
+        }
+
+        .whatsapp-call-to-action {
+            background-color: #fff;
+            color: #00a5f4;
+            width: 100%;
+            height: 26px;
+            font-size: 14px;
+            text-transform: none;
+            min-width: calc(50% - 2px);
+        }
+    }
+
+    .message-cloud-buttons-container {
+        max-width: 260px;
+    }
+
+    .message-cloud-buttons {
+        margin: 0 -1.5px;
+        border: none;
+        box-sizing: border-box;
+        display: flex;
+        flex-wrap: wrap;
+        width: 260px;
+        
+    }
+
+    .message-cloud-button {
+        margin: 3px 1.5px 0;
+        border-radius: 7.5px;
+        padding: 6px 7px 8px 9px;
+        min-width: calc(50% - 3px);
+        height: 36px;
+        flex-grow: 1;
+        background-color: white;
+        color: #00a5f4;
+        box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.15);
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0px;
+    }
+
+    // .message-cloud::after {
+    //     content: '';
+    //     position: relative;
+    //     top: 46%;
+    //     left: 14%;
+    //     border-left: 0px solid transparent;
+    //     border-right: 12px solid transparent;
+    //     border-top: 17px solid #b2feab;
+    //     /* border-bottom: 20px solid #b2feab; */
+    //     border-radius: 0px 3px 3px 3px;
+    //     clear: both;
+    // }
+
+    // out of ion-grid
+    // .whatsapp-button {
+    //     background-color:#fff;
+    //     color: #00a5f4;;
+    //     width: 100%;
+    //     height: 34px;
+    //     border-radius: 7.5px;
+    //     font-size: 14px;
+    //     text-transform: none;
+    //     box-shadow: 0 1px 0.5px rgba(0, 0, 0, .15);
+    //     margin: 2px 0 0 2px;
+    //     min-width: calc(50% - 2px);
+    // }
+
+    // in ion-grid
+    .whatsapp-button {
+        background-color: #fff;
+        color: #00a5f4;
+        width: 100%;
+        height: 34px;
+        border-radius: 7.5px;
+        font-size: 14px;
+        text-transform: none;
+        box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.15);
+        margin: 0px;
+    }
+
+    // .message-cloud-buttons {
+    //     width: calc(50% + 2px);
+    //     //max-width: 50%;
+    //     display: flex;
+    //     flex-direction: row;
+    //     margin-left: -2px;
+
+    //     // out of ion-grid
+    //     // .whatsapp-button {
+    //     //     background-color:#fff;
+    //     //     color: #00a5f4;;
+    //     //     width: 100%;
+    //     //     height: 34px;
+    //     //     border-radius: 7.5px;
+    //     //     font-size: 14px;
+    //     //     text-transform: none;
+    //     //     box-shadow: 0 1px 0.5px rgba(0, 0, 0, .15);
+    //     //     margin: 2px 0 0 2px;
+    //     //     min-width: calc(50% - 2px);
+    //     // }
+
+    //     // in ion-grid
+    //     .whatsapp-button {
+    //         background-color: #fff;
+    //         color: #00a5f4;
+    //         width: 100%;
+    //         height: 34px;
+    //         border-radius: 7.5px;
+    //         font-size: 14px;
+    //         text-transform: none;
+    //         box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.15);
+    //         margin: 0px;
+    //     }
+
+    //     // ion-button {
+    //     //     width: 100%;
+    //     //     color: #00a5f4;
+    //     // }
+    // }
+}
+
+.title-back {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    ion-button {
+        margin-right: 10px;
+    }
+}
+
+.parameters-container {
+    padding: 0px 22px 12px 22px;
+
+    .parameters-title {
+        font-weight: 500;
+    }
+
+    .parameters-subtitle {
+        margin-bottom: 4px;
+        font-size: 14px;
+        color: #959494;
+        margin-top: -12px;
+    }
+
+    .parameter {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .param-number {
+        height: 40px;
+        width: 50px;
+        background-color: rgba(24, 119, 242, 0.1);
+        display: flex;
+        align-items: center;
+        /* text-align: center; */
+        margin-right: 10px;
+        justify-content: center;
+        font-weight: 600;
+        border-radius: 4px;
+        font-style: italic;
+    }
+}
+
+.field-wrapper {
+    position: relative;
+
+    .customizeBtn-container {
+        display: flex;
+        justify-content: flex-end;
+
+        ion-button {
+            color: rgb(98, 112, 139);
+        }
+    }
+}
+
+.large {
+    width: 80%;
+}
+
+.whatsapp-call-to-action {
+    background-color: #fff;
+    color: #00a5f4;
+    width: 200px;
+    height: 26px;
+    font-size: 14px;
+    text-transform: none;
+    border-radius: 6px;
+    margin-bottom: 4px;
+}
+
+.call-to-action-icon {
+    font-size: 16px;
+    margin-right: 6px;
+}
+
+.field-wrapper input,
+.field-wrapper textarea {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #d3dbe5;
+    border-radius: 4px;
+    padding: 15px;
+    border-radius: 4px;
+    width: 100%;
+    height: 40px;
+}
+
+.field-wrapper .field-placeholder {
+    font-size: 16px;
+    position: absolute;
+    /* background: #fff; */
+    bottom: 17px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #80868b;
+    left: 8px;
+    padding: 0 8px;
+    -webkit-transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1), opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1), opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+
+    text-align: left;
+    // width: 100%;
+}
+
+.field-wrapper .field-placeholder span {
+    background: #ffffff;
+    padding: 0px 8px;
+}
+
+.field-wrapper input:not([disabled]):focus ~ .field-placeholder,
+.field-placeholder:target,
+.field-wrapper.hasValue input:not([disabled]) ~ .field-placeholder {
+    -webkit-transform: scale(0.75) translateY(-35px) translateX(-18px);
+    transform: scale(0.75) translateY(-35px) translateX(-18px);
+    color: rgb(0, 86, 192);
+    font-weight: bold;
+}
+
+.loader {
+    height: 310px;
+
+    .box {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+    }
+
+    .container {
+        height: 15px;
+        width: 105px;
+        display: flex;
+        position: relative;
+
+        .circle {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: var(--basic-blue);
+            animation: move 500ms linear 0ms infinite;
+            margin-right: 30px;
+
+            &:first-child {
+                position: absolute;
+                top: 0;
+                left: 0;
+                animation: grow 500ms linear 0ms infinite;
+            }
+
+            &:last-child {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin-right: 0;
+                animation: grow 500ms linear 0s infinite reverse;
+            }
+        }
+    }
+
+    .spinner {
+        margin: auto;
+        border: 8px solid #eaf0f6;
+        border-radius: 50%;
+        border-top: 8px solid var(--basic-blue);
+        width: 50px;
+        height: 50px;
+        animation: spinner 1s linear infinite;
+    }
+
+    @keyframes spinner {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .label {
+        text-align: center;
+        margin-top: 10px;
+        animation: blinker 1s linear infinite;
+    }
+
+    @keyframes grow {
+        from {
+            transform: scale(0, 0);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1, 1);
+            opacity: 1;
+        }
+    }
+
+    @keyframes move {
+        from {
+            transform: translateX(0px);
+        }
+        to {
+            transform: translateX(45px);
+        }
+    }
+
+    @keyframes blinker {
+        50% {
+            opacity: 0;
+        }
+    }
+}
+
+ion-toolbar {
+    &.beta:after {
+        content: "beta";
+        position: fixed;
+        width: 80px;
+        height: 25px;
+        background: #ee8e4a;
+        top: 7px;
+        left: -20px;
+        text-align: center;
+        font-size: 13px;
+        font-family: sans-serif;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: #fff;
+        line-height: 27px;
+        transform: rotate(-45deg);
+    }
+
+    ion-title {
+        margin-left: 30px;
+    }
+}
+
+.url-button-previsioning {
+    padding: 8px 8px;
+    border-radius: 4px;
+    background-color: #1877f21a;
+
+    .previsioning-url {
+        margin: 0px;
+    }
+}
+
+iframe {
+    pointer-events: none;
+}
+
+ion-button.icon-only {
+    height: 40px;
+    border: 2px solid #d3dbe5;
+    border-radius: 6px;
+}
+
+.first-button {
+    margin: 0px;
+    padding: 0px;
+}
+
+// .first-button-mr {
+//     margin-right: 1px;
+// }
+
+.second-button {
+    margin: 0px;
+    padding: 0px;
+}
+
+// .second-button-ml {
+//     margin-left: 1px;
+// }
+
+.pdf-preview {
+    width: 100%;
+    height: 100%;
+    background-color: #d3dbe5;
+    border-radius: 6px;
+    padding: 26px;
+    display: flex;
+    justify-content: center;
+
+    p {
+        padding: 10px;
+        color: white;
+        background-color: #80868b;
+        border-radius: 12px;
+        width: 70px;
+        text-align: center;
+    }
+}
+
+.location-preview {
+    width: 100%;
+    height: 100%;
+    background-color: #d3dbe5;
+    border-radius: 6px;
+    padding: 26px;
+    display: flex;
+    justify-content: center;
+    background-image: url("https://media.istockphoto.com/id/1306807452/vector/map-city-vector-illustration.jpg?s=612x612&w=0&k=20&c=8efOIy-Ft3trEzeDk3PY2WRjWws8mvKXgkLqCZ2cP5A=");
+    background-size: contain;
+
+    p {
+        padding: 10px;
+        color: white;
+        background-color: #80868b;
+        border-radius: 12px;
+        width: 100px;
+        text-align: center;
+    }
+}
+
+capacitor-google-map {
+    display: inline-block;
+    width: 275px;
+    height: 400px;
+}
+
+.selected-place {
+
+    background-color: #f3f3f3;
+    padding: 8px 8px;
+    border-radius: 6px;
+    margin-top: 20px;
+
+    .share-location-header {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;    
+    }
+    
+    .share-location-title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        color: #006a9b;
+
+        ion-icon {
+            margin-right: 4px;
+        }
+
+        p {
+            font-size: 14px;
+            font-weight: 600;
+        }
+    }
+
+    p {
+        margin: 0px;
+        font-size: 14px;
+    }
+
+    .place-info {
+        padding-left: 20px;
+
+        .place-name {
+            font-weight: 500;
+        }
+
+        .place-address {
+            font-style: italic;
+        }
+
+        .place-coords {
+            font-size: 12px;
+            font-weight: 500;
+            color: #aaa;
+        }
+    }
+
+    ion-button.small {
+        background-color: transparent;
+        color: #006a9b;
+        border-radius: 6px;
+        border: solid 1px #006a9b;
+        font-size: 14px;
+        height: 24px;
+        line-height: 23px;
+        min-width: 60px;
+    }
+
+    ion-icon {
+        margin-right: 6px;
+    }
+}

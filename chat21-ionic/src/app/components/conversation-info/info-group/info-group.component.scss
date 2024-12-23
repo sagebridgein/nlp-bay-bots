@@ -1,0 +1,129 @@
+ion-content{
+    --background: var(--conversation-detail-background);
+}
+
+.group-profile {
+    ion-card {
+        width: 100%;
+        padding: 10px 20px;
+        margin: 0px 0 1px 0;
+        border-radius: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-bottom: 1px solid var(--border-color-base);
+        background: transparent;
+
+        .image-profile {
+            padding: 0 0 0 0;
+            width: 100px;
+            height: 100px;
+            margin: auto;
+            line-height: 100px;
+            font-size: 40px;
+            color: white;
+        }
+
+        .info-profile {
+            padding: 10px 0 0 0;
+            text-align: center;
+            .name {
+                -webkit-font-smoothing: antialiased;
+                text-rendering: optimizeLegibility;
+                text-size-adjust: none;
+                user-select: text;
+                font-family: "Roboto", "Helvetica Neue", sans-serif;
+                -webkit-box-direction: normal;
+                color: var(--info-text-color);
+                font-weight: 500;
+                font-size: 17px;
+                box-sizing: border-box;
+                -webkit-tap-highlight-color: transparent;
+                display: block;
+                font-size: large;
+                font-weight: bold;
+            }
+        }
+    }
+
+
+    #members-list{
+        ion-item{
+            display: flex;
+            height: 60px;
+
+            .status-icon-container{
+                position: absolute;
+                top: 35px;
+                left: 45px;
+                background-color: white;
+                height: 17px;
+                width: 17px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+        
+                &.mobile{
+                    top: 30px;
+                    left: 50px;
+                }
+            
+                svg{
+                    fill: #f44336;
+            
+                    &.online{
+                        fill: #4caf50;
+                    }
+                }
+            }
+
+        }
+    }
+
+    ion-list{
+        background-color: transparent;
+    }
+
+    
+
+    // .member-profile {
+    //     padding: 0 0 0 0;
+    //     width: 55px;
+    //     height: 55px;
+    //     margin: auto;
+    //     line-height: 57px;
+    //     font-size: 25px;
+    //     color: white;
+    //     position: relative;
+    // }
+
+    // .user-online {
+    //     height: 11px;
+    //     width: 11px;
+    //     border-radius: 50%;
+    //     position: absolute;
+    //     top: 44px;
+    //     left: 40px;
+    //     border: 0.5px solid #fff;
+    // }
+    
+
+    // .user-presence {
+    //     position: absolute;
+    //     top: 88px;
+    //     height: 12px;
+    //     left: calc(50% + 30px);
+    //     width: 100px;
+    // }
+
+    
+
+    // .info-group-member-email {
+    //     font-size: 13px;
+    //     margin-top: 2px;
+    //     white-space: nowrap;
+    //     width: 205px;
+    //     overflow: hidden;
+    //     text-overflow: ellipsis;
+    // }
+}

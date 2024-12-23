@@ -1,0 +1,91 @@
+// @import '../../../../sass/variables';
+/* ====== SET MESSAGES ====== */
+
+.messages {
+    border-radius: 8px;
+    padding: 0;
+    word-wrap: break-word;
+    position: relative;
+    // padding: 14px;
+    // padding: 6px 6px 6px 6px;
+    // box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    // -webkit-animation: heartbeat 1.5s ease-in-out both;
+    // animation: heartbeat 1.5s ease-in-out both;
+
+    &:hover{
+        chat-options{
+            // display: flex;
+            visibility: visible;
+        }
+    }
+
+    chat-options{
+        visibility: hidden;
+    }
+
+    // .options-container{
+    //     display: flex;
+    //     visibility: hidden;
+    //     flex-direction: row-reverse;
+    //     position: absolute;
+    //     top: 0px;
+    //     right: 0px;
+    //     height: 25px;
+    //     width: 40px;
+    //     padding: 5px;
+    //     z-index: 2;
+    //     background: radial-gradient(at top right,rgba(240, 242, 247,1) 60%,rgba(240, 242, 247,0) 80%);
+    //     border-top-right-radius: 16px;
+        
+    //     .options-logo{
+    //         // display: none;
+    //         display: flex;
+    //         -webkit-box-align: center;
+    //         align-items: center;
+    //         -webkit-box-pack: center;
+    //         /* width: 20px; */
+    //         height: 16px;
+    //         border-radius: 3px;
+    //         color: rgb(135, 150, 175);
+    //         text-align: left;
+    //         justify-content: center;
+    //         font-size: initial;
+            
+    //         &:hover{
+    //             cursor: pointer;
+    //         }
+    //     }
+
+    // }
+
+    .message_sender_fullname{
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    p {
+        font-size: 1.4em;
+        margin: 0;
+        padding: 14px;
+        font-style: normal;
+        letter-spacing: normal;
+        font-stretch: normal;
+        font-variant: normal;
+        font-weight: 300;
+        overflow: hidden;
+    }
+    img {
+        border-radius: 8px;
+        padding: 3px;
+        margin-bottom: 0px;
+        max-width: calc(100% - 6px);
+        width: auto;
+        height: auto;
+        object-fit: cover;
+    }
+}
+// > .button-native
+
+
+
+

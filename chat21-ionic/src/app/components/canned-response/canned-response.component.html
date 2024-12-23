@@ -1,0 +1,39 @@
+<div>
+  <div class="canned-list" *ngIf="tagsCannedFilter.length > 0">
+    <ion-item button="true" [ngClass]="{'is_active_item': i == arrowkeyLocation}" lines="none"
+      class="canned-item no-ripple border" id="{{'canned-item_'+ i }}"
+      *ngFor="let canned of tagsCannedFilter; let i = index;"
+      (click)="onClickCannedFN(canned, $event)">
+      <div class="cannedContent">
+        <ion-input [class.readonly]="canned?.disabled" [readonly]="canned?.disabled" type="text" [(ngModel)]="canned.title" class="title" id="{{'titleCanned_'+canned._id}}" #title></ion-input>
+        <ion-input [class.readonly]="canned?.disabled" [readonly]="canned?.disabled" type="text" [(ngModel)]="canned.text"  class="text truncate"></ion-input>
+      </div>
+      <!-- <ion-icon class="canned-item-icon" name="pin" src="assets/images/pin.svg" slot=end *ngIf="canned.pinned" (click)="onPinCanned(canned, $event)"></ion-icon>
+      <ion-icon class="canned-item-icon" name="pin" src="assets/images/pinned.svg" slot=end (click)="onUnPinCanned(canned, $event)"></ion-icon> -->
+      <ion-icon class="canned-item-icon"  name="checkmark-sharp" slot=end *ngIf="canned.createdBy === loggedUser.uid && !canned.disabled" (click)="onConfirmEditCanned(canned, $event)"></ion-icon>
+      <ion-icon class="canned-item-icon"  name="pencil-sharp" slot=end *ngIf="canned.createdBy === loggedUser.uid && canned.disabled" (click)="onEditCanned(canned, $event)"></ion-icon>
+      <ion-icon class="canned-item-icon"  name="trash-bin-outline" slot=end *ngIf="canned.createdBy === loggedUser.uid" (click)="onDeleteCanned(canned, $event)"></ion-icon>
+    </ion-item>
+    <ion-item  class="canned-item add-canned-response-wpr" button="true" lines="none" (click)="onClickAddCannedResponseFN()">
+      <ion-icon class="add-canned-response-icon"  name="flash-outline"></ion-icon>
+      <span class="add-canned-response-add-icon">+</span>
+     <label class="add-canned-response-label" >{{translationMap?.get('AddNewCannedResponse')}}</label> 
+    </ion-item>
+  </div>
+  <!-- LOADER -->
+  <div class="loader" *ngIf="tagsCannedFilter.length === 0">
+    <div class="box">
+      <!-- <div class="container">
+        <span class="circle" [ngStyle]="{'background-color': stylesMap?.get('themeColor')}"></span>
+        <span class="circle" [ngStyle]="{'background-color': stylesMap?.get('themeColor')}"></span>
+        <span class="circle" [ngStyle]="{'background-color': stylesMap?.get('themeColor')}"></span>
+        <span class="circle" [ngStyle]="{'background-color': stylesMap?.get('themeColor')}"></span>
+      </div> -->
+      <div class="spinner" [ngStyle]="{'border-top-color': stylesMap?.get('themeColor')}"></div>
+      <div class="label">{{translationMap.get('LABEL_LOADING')}}</div>
+    </div>
+  </div>
+  <div *ngIf="!canShowCanned">
+    
+  </div>
+</div>

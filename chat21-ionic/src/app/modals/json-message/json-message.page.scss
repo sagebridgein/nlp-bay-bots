@@ -1,0 +1,31 @@
+ion-toolbar{
+    --background: var(--modal-header-background);
+    &:not(.mobile){
+        // --background: var(--list-bkg-color);
+        border: none;
+    }
+    &.mobile{
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    ion-button,
+    ion-title{
+        --color: var(--modal-icon-color);
+    }
+}
+ion-content{
+    --background: var(--modal-content-background);
+    .json{
+        background: #354552;
+        color: #d6e5db;
+        line-height: 18px;
+        margin-bottom: 30px;
+        padding: 10px;
+        overflow-x: auto;
+        margin: 10px;
+
+    }
+
+
+        
+}
+

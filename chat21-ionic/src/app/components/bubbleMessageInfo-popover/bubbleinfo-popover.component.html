@@ -1,0 +1,15 @@
+<ion-list lines="none" class="ion-no-padding">
+  <ion-item button="true" *ngIf="message.text.trim() !== ''"(click)="onClickOption('copy')">
+    <ion-icon name="copy-outline" slot="start"></ion-icon>
+    <ion-label>{{translationsMap?.get('COPY')}}</ion-label>
+  </ion-item>
+  <ion-item button="true" (click)="onClickOption('addCanned')">
+    <ion-icon name="flash-outline" slot="start"></ion-icon>
+    <!-- <span class="add-canned-response-add-icon">+</span> -->
+    <ion-label>{{translationsMap?.get('AddAsCannedResponse')}}</ion-label>
+  </ion-item>
+  <ion-item button="true" *ngIf="logLevel >= LogLevel.DEBUG" (click)="onClickOption('jsonInfo')">
+    <ion-icon src="assets/images/json-file.svg" slot="start"></ion-icon>
+    <ion-label>{{translationsMap?.get('JSON_RESPONSE')}}</ion-label>
+  </ion-item>
+</ion-list>

@@ -1,0 +1,39 @@
+body.custom{
+    background-color: red;
+    --list-bkg-color: red;
+}
+
+body.light{
+    background-color: green;
+    --list-bkg-color: green;
+}
+
+body.style-1{
+    background-color: blue;
+    --list-bkg-color: blue;
+}
+
+body.light .navbar{
+    background-color: red;
+}
+
+body.light ion-button  .button-native {
+    background-color: red;
+}
+
+body.light ion-button {
+    background-color: red;
+}
+
+body.style-1 ion-button .button-native {
+    background-color: red;
+}
+
+/* body.dark :host(.button-native) {
+    border: 1px solid red;
+} */
+
+
+body.style-1 ion-col div.buttons-left {
+    background-color: blue;
+}

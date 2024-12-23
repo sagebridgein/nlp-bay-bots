@@ -1,0 +1,8 @@
+<component-login
+  [showSpinnerInLoginBtn] = showSpinnerInLoginBtn
+  [translationMap] = translationMap
+  [companyLogoBlackUrl]="LOGOS_ITEMS['BASE_LOGO'].icon"
+  [companyName]="BRAND_BASE_INFO['BRAND_NAME']"
+  [companySiteUrl]="BRAND_BASE_INFO['COMPANY_SITE_URL']"
+  (onSignInWithEmailAndPassword)="onSignInWithEmailAndPassword($event)">
+</component-login>
