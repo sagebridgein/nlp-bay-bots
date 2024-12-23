@@ -1,0 +1,128 @@
+<!-- wizard-bckgrnd -->
+<div class="main-content css-create-project">
+  <img [src]="companyLogo" class="logo" />
+  <div class="close-wizard-page">
+    <i *ngIf="!CLOSE_BTN_IS_HIDDEN" class="material-icons close-btn" (click)="goBack()">clear</i>
+  </div>
+
+  <div class="col-left">
+
+    <div *ngIf="!DISPLAY_SPINNER_SECTION">
+
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="pre-title">
+            {{ 'CreateAProject' | translate }}
+          </h1>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="title">
+            {{ 'StartByEnteringTheNameOf' | translate }}
+            <span> {{ 'YourSite' | translate }} </span>
+          </h1>
+        </div>
+
+        <div class="col-md-12">
+          <div class="project-name">
+
+            <div class="form-group label-floating">
+              <label class="control-label">
+                {{ 'SiteName' | translate }}
+              </label>
+              <input [(ngModel)]="project_name" id="projectName" type="text" class="form-control" style="max-width: 450px;">
+            </div>
+
+            <div class="msg" style="height:31px">
+
+              <span *ngIf="!project_name">
+                {{ 'TheSiteNameIsRequested'| translate }}
+              </span>
+
+              <span 
+                *ngIf="project_name?.length > 0 && project_name?.length < 4"
+                style="padding-left: 5px; font-size: 0.9em; color:#da491c">
+                {{ 'ProjectsPage.ModalMustBeAtLeast' | translate }}
+              </span>
+            </div>
+            
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <button [disabled]="project_name?.length < 4" class="btn btn-lg btn-primary"
+            (click)="createNewProject()">
+            {{ 'ProjectsPage.ModalCreateProjectBtn' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div *ngIf="DISPLAY_SPINNER_SECTION" class="loading-section">
+      
+      <div class="images-wrapper">
+
+        <div *ngIf="!DISPLAY_SPINNER">
+          <div class="success-checkmark-project">
+            <div class="check-icon-project">
+              <span class="icon-line line-tip"></span>
+              <span class="icon-line line-long"></span>
+              <div class="icon-circle"></div>
+              <div class="icon-fix"></div>
+            </div>
+          </div>
+        </div>
+  
+        <div *ngIf="DISPLAY_SPINNER" class="svg-wrapper">
+          <div class="dot-spinner">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+          </div>
+        </div>
+  
+      </div>
+  
+  
+      <div *ngIf="DISPLAY_SPINNER" class="wizard-success-container">
+        <div class="success-label">
+          <span class="wizard-span-processing-msg">{{ "Processing" | translate }}</span>
+        </div>
+      </div>
+  
+  
+      <div *ngIf="!DISPLAY_SPINNER" class="wizard-success-container">
+  
+        <div class="success-label">
+          <p class="wizard-span-success-msg">
+            {{ "ProjectsPage.YourNewProject" | translate }} 
+            {{ project_name }} 
+            {{ "ProjectsPage.IsReady" | translate }}
+          </p>
+        </div>
+  
+        <button id="continue-btn-after-project-created"
+          class="btn btn-lg btn-primary" 
+          style="margin-top: 64px;" 
+          (click)="continueToNextStep()">
+          {{ "ProjectsPage.Continue" | translate }}
+        </button>
+
+      </div>
+  
+    </div>
+
+  </div>
+
+  <div class="col-right">
+    <appdashboard-sidebar-claims></appdashboard-sidebar-claims>
+  </div>
+
+</div>
+

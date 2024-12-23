@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 80">
+  <!-- Background rectangle with rounded corners -->
+  <rect width="250" height="80" rx="10" ry="10" fill="#3498db"/>
+  
+  <!-- NLP text -->
+  <text x="20" y="55" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="white">NLP</text>
+  
+  <!-- Bay text -->
+  <text x="130" y="55" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="#f1c40f">BAY</text>
+  
+  <!-- Subtle wave-like underline to represent data/language processing -->
+  <path d="M20 65 Q125 75, 230 65" stroke="white" stroke-width="3" fill="none" opacity="0.7"/>
+</svg>

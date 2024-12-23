@@ -1,0 +1,58 @@
+<h1 mat-dialog-title>  {{ 'KbPage.AddContent' | translate }} </h1>
+
+<div mat-dialog-content>
+
+  <div class="info-container">
+    <i class="material-icons-outlined info-icon">help_outline</i>
+    <div class="info-text">
+      <p>{{ 'KbPage.AddKbInfoTextContent' | translate }}</p>
+      <!-- <p>{{ 'KbPage.AddKbInfoTextContentMsg1' | translate }}</p> -->
+      <p [innerHTML]="'KbPage.AddKbInfoTextContentMsg1' | translate" style="margin-top: 8px;"></p>
+    </div>
+  </div>
+
+  
+  <div class="form-container">
+    <form [formGroup]="kbForm">
+      <div class="input-container">
+        <span class="input-label">{{ 'Name' | translate }}</span>
+        <!-- placeholder="{{ 'KbPage.TypeKbNamePlaceholder' | translate }}"  -->
+        <input type="text" name="name" class="custom-input" 
+          [(ngModel)]="kb.name" 
+          formControlName="name"
+          (input)="onChangeInput($event)"
+          [class.invalid]="(kbForm.controls.name.errors?.pattern || kbForm.controls.name.errors?.required) && kbForm.controls.name.touched">
+        <span class="input-label">{{ 'KbPage.FileText' | translate }}</span>
+
+        <!-- placeholder="{{ 'KbPage.TypeKbContentPlaceholder' | translate }}"  -->
+        <textarea type="text" name="content" class="custom-textarea" 
+          [(ngModel)]="kb.content" 
+          formControlName="content"
+          (input)="onChangeInput($event)" 
+          rows="4"
+          [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched">
+        </textarea>
+        
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
+        {{ "Cancel" | translate }}
+    </button>
+   
+    <button [disabled]="buttonDisabled" class="mat-dialog-ok-btn" mat-button
+        (click)="onSaveKnowledgeBase()" cdkFocusInitial>
+      
+        {{ 'KbPage.Import' | translate }}
+        
+    </button>
+</div>
+
+
+
+
+

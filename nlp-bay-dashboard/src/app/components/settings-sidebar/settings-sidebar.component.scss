@@ -1,0 +1,33 @@
+
+
+li > a {
+    margin-top: 5px !important;
+    margin-right: 5px !important;
+    margin-bottom: 5px !important;
+    margin-left: 0px !important;
+    border-radius: 0px;
+}
+
+.kb-beta-badge {
+    font-weight: var(--settings-sidebar-beta-badge-font-weight);
+    background-color: var(--settings-sidebar-beta-badge-background-color);
+    padding: 1px 5px;
+    border-radius: var(--settings-sidebar-beta-badge-border-radius);
+    font-size: var(--settings-sidebar-beta-badge-font-size);
+    color: var(--settings-sidebar-beta-badge-color);
+    position: relative;
+    top: -1px;
+    margin-left: 2px;
+    // text-transform: uppercase;
+}
+
+::ng-deep .custom-mat-tooltip-in-settings-sidebar {
+    background-color: var(--settings-sidebar-mat-tooltip-background-color) !important;
+    color: var(--settings-sidebar-mat-tooltip-color) !important;
+    font-size: var(--settings-sidebar-mat-tooltip-font-size)  !important;
+    border-radius: var(--settings-sidebar-mat-tooltip-border-radius) !important;
+    font-family: var(--header-font-family);
+    padding-top:8px!important;
+    padding-bottom:8px!important;
+    border: var(--settings-sidebar-mat-tooltip-border)!important;
+  }
