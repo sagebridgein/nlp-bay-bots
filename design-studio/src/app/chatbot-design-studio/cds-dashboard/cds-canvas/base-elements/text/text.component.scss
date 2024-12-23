@@ -1,0 +1,270 @@
+    
+.text-editor-wrapper:hover {
+    .text-editor {
+        .response-controls {
+            opacity: 1;
+        }
+    }
+}
+.text-editor-wrapper {
+    font-size: var(--font-size-base);
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    .text-editor {
+        position: relative;
+        margin: 0;
+        padding: 0;
+
+
+        .box-input {
+            // width: calc(100% - 40px);
+            // margin-left: 20px;
+            width: 100%;
+            input {
+                border-radius: var(--input-border-radius-base);
+                background: var(--color-white-hex);
+                border: 1px solid var(--blu-light-02);
+                overflow-x: hidden;
+                overflow-y: auto;
+                // width: calc(100% - 2.5em);
+                width: 100%;
+                color: var(--gray);
+                font-size: 1.15em;
+                line-height: 25px;
+                resize: vertical;
+
+                padding: 10px;
+                padding-top: 4px;
+                padding-bottom: 4px;
+                margin: 0px;
+
+                &.customPrefix{
+                    padding-left: 20px;
+                    width: calc(100% - 20px);
+                }
+
+                &.autocompleteOpen{
+                    border-radius: var(--input-border-radius-base) var(--input-border-radius-base) 0 0;
+                }
+                
+            }
+
+            .input-prefix {
+                position: absolute;
+                top: 14px;
+                left: 8px;
+                color: #7d7d7d;
+                font-weight: 800;
+            }
+            
+            .input-suffix {
+                position: absolute;
+                top: 14px;
+                right: 8px;
+                color: #7d7d7d;
+                font-weight: 800;
+            }
+        }
+
+    }
+    
+}
+
+
+/** TEXT **/
+mat-form-field.mat-form-field ::ng-deep {
+    .mat-form-field-infix{
+        border-top: 0px !important;
+        input{
+            &:hover{
+                border: 1px solid var(--blu) !important;
+                outline: 0px solid var(--blu) !important;
+            }
+        }
+    }
+}
+
+mat-form-field.mat-focused ::ng-deep {
+    .mat-form-field-wrapper {
+        .mat-form-field-flex {
+            .mat-form-field-infix {
+                display: flex;
+                input {
+                    border: 1px solid var(--blu)!important;
+                    outline: 0px solid var(--blu)!important;
+                    transition: border .3s;
+                    &.invalid{
+                        border: 1px solid red !important;
+                        outline: 0px solid red !important;
+                        transition: border 0.3s;
+                    }
+                    
+                }
+            }
+        }
+    }
+}
+mat-form-field.box-input ::ng-deep {
+    .mat-form-field-wrapper {
+        padding-bottom:0;
+        .mat-form-field-flex {
+            border-radius: 4px 4px 0 0;
+            // padding: 0 0.75em 0 0.75em;
+            padding: 0px;
+            margin: 0px;
+            background: transparent;
+        }
+    }
+    .mat-form-field-underline {
+        display: none;
+    }   
+    .mat-form-field-infix {
+        display: flex;
+        width: 100%;
+        padding: 0px;
+    } 
+}
+
+
+// Hide arrows inside the input of type number
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+
+/** box-textarea **/
+.box-textarea {
+    width: 100%;
+    // margin-left: 20px;
+    textarea {
+        border-radius: var(--input-border-radius-base);
+        background: var(--color-white-hex);
+        border: 1px solid var(--blu-light-02);
+        overflow-x: hidden;
+        overflow-y: auto;
+        color: var(--gray);
+        font-size: 1.15em;
+        line-height: 25px;
+        resize: vertical;
+
+        // width: calc(100% - 2.5em);
+        padding: 10px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        margin: 0px;
+        // resize: none;
+        height: 26px;
+        min-height: 26px;
+
+    }
+}
+
+/** editor-utils **/
+.editor-utils {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: absolute;
+    bottom: -10px;
+    right: 20px;
+    z-index: 1;
+    // float: right;
+
+    .tpl-text-limit {
+        pointer-events: none;
+        transition: background-color 0.3s, color 0.3s;
+        .num-chars {
+            background: var(--blu-light-01);
+            flex-shrink: 0;
+            padding: 0px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            color: var(--blu);
+            float: right;
+            line-height: 24px;
+            font-weight: 700;
+            // width: 40px;
+            text-align: center;
+            &.error {
+                background: var(--color-red-hex);
+                color: var(--color-white-hex);
+            }
+        }
+    }
+
+    .text-editor-insert-attribute {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        align-items: center;
+        background: var(--color-white-hex);
+        border-radius: 100%;
+        -webkit-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 19%);
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 19%);
+        cursor: pointer;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        height: 24px;
+        width: 24px;
+        justify-content: center;
+        color: var(--blu);
+        border: 1px solid var(--blu-light-02);
+        &:hover {
+            background: var(--blu);
+            color:var(--color-white-hex) ;
+        }
+    }
+    .emoji-picker {
+        .emoji-picker-button {
+            align-items: center;
+            background: var(--color-white-hex);
+            border-radius: 100%;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 19%);
+            cursor: pointer;
+            display: flex;
+            height: 24px;
+            width: 24px;
+            justify-content: center;
+            color: var(--blu);
+            border: 1px solid var(--blu-light-02);
+            &:hover {
+                background: var(--blu);
+                color:var(--color-white-hex) ;
+            }
+        }
+    }
+    
+}
+
+
+.mat-option{
+    color: var(--gray) !important;
+    height: unset !important;
+    line-height: 25px !important;
+    padding: 10px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+
+    &.mat-active{
+        background-color: #ebf5ff !important;;
+    }
+}
+
+.slide-top {
+	-webkit-animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
