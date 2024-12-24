@@ -804,7 +804,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   manageAppVisibility(projectProfileData) {
 
     if (projectProfileData && projectProfileData.customization) {
-   
+       console.log("my console.log --------------------$$$",projectProfileData,projectProfileData.customization)
       if (projectProfileData.customization[this.INT_KEYS.WHATSAPP] === false) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.WHATSAPP);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };

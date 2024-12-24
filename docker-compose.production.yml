@@ -11,7 +11,7 @@ services:
       - FEATURES_TOKEN=PAY:F-ANA:F-ACT:F-TRI:T-GRO:F-DEP:F-OPH:F-MTL:T-CAR:F-V1L:T-PSA:F-MTT:T-SUP:T-LBS:T-APP:T-DEV:F-NOT:T-IPS:F-ETK:F-RAS:T-PPB:F-PET:F-MTS:F-TIL:T-DGF:T-NAT:T-HPB:F-TOW:T-KNB:F-BAN:F-AST:F-MON:F-CNT:F-AUT:F-WUN:F
       - BOT_CREDENTIAL_URL=/api/modules/dialogflow/botcredendials/
       - RASA_BOT_CREDENTIAL_URL=/api/modules/rasa/botcredendials/
-      - "WIDGET_LOCATION=${EXTERNAL_BASE_URL:-http://localhost:8081}/widget/"
+      - "WIDGET_LOCATION=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/widget/"
       - SERVER_BASE_URL=/api/
       - CHAT_BASE_URL=/chat/
       - CDS_BASE_URL=/cds/
@@ -33,19 +33,20 @@ services:
       - FIREBASE_MESSAGINGSENDERID
       - FIREBASE_APP_ID
       - FIREBASE_VAPID
-      - "API_BASEIMAGE_URL=${EXTERNAL_BASE_URL:-http://localhost:8081}/api/"
+      - "API_BASEIMAGE_URL=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/api/"
       - COMMUNITY_TEMPLATES_URL=/api/modules/templates/public/community
       - TEMPLATES_URL=/api/modules/templates/public/templates
     ports:
       - "4500:80"
+    
 
   cds:
     image: ajaysehwal81/nlp-bay-cds
     container_name: nlp-bay-cds
     environment:
       - FEATURES_TOKEN=PAY:F-ANA:F-ACT:F-TRI:T-GRO:F-DEP:F-OPH:F-MTL:T-CAR:F-V1L:T-PSA:F-MTT:T-SUP:T-LBS:T-APP:T-DEV:F-NOT:T-IPS:F-ETK:F-RAS:T-PPB:F-PET:F-MTS:F-TIL:T-DGF:T-NAT:T-HPB:F-TOW:T-KNB:F-BAN:F-AST:F-MON:F-CNT:F-AUT:F-WUN:F
-      - "WIDGET_LOCATION=${EXTERNAL_BASE_URL:-http://localhost:8081}/widget/"
-      - "SERVER_BASE_URL=${EXTERNAL_BASE_URL:-http://localhost:8081}/api/"
+      - "WIDGET_LOCATION=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/widget/"
+      - "SERVER_BASE_URL=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/api/"
       - DASHBOARD_URL=/dashboard/
       - WS_URL
       - WS_URL_RELATIVE=/ws/
@@ -62,7 +63,7 @@ services:
       - FIREBASE_APP_ID
       - FIREBASE_VAPID
       - CDS_STORAGE_PREFIX=cds_sv5
-      - "API_BASEIMAGE_URL=${EXTERNAL_BASE_URL:-http://localhost:8081}/api/"
+      - "API_BASEIMAGE_URL=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/api/"
     ports:
       - "4502:80"
 
@@ -74,8 +75,8 @@ services:
       - MQTT_APPID=tilechat
       - PUSH_ENGINE=none
       - LOG_LEVEL=info
-      - "MQTT_ENDPOINT=${EXTERNAL_MQTT_BASE_URL:-ws://localhost:8081}/mqws/ws"
-      - "MQTT_APIENDPOINT=${EXTERNAL_BASE_URL:-http://localhost:8081}/chatapi/api"
+      - "MQTT_ENDPOINT=${EXTERNAL_MQTT_BASE_URL:-ws://${CODESPACE_NAME}-8081.app.github.dev}/mqws/ws"
+      - "MQTT_APIENDPOINT=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/chatapi/api"
       - FIREBASE_APIKEY
       - FIREBASE_AUTHDOMAIN
       - FIREBASE_DATABASEURL
@@ -84,9 +85,9 @@ services:
       - FIREBASE_MESSAGINGSENDERID
       - FIREBASE_TENANT=tilechat
       - UPLOAD_ENGINE=native
-      - "SERVER_BASE_URL=${EXTERNAL_BASE_URL:-http://localhost:8081}/api/"
-      - "TRANSLATIONS_URL=${EXTERNAL_BASE_URL:-http://localhost:8081}/api/"
-      - "API_BASEIMAGE_URL=${EXTERNAL_BASE_URL:-http://localhost:8081}/api/"
+      - "SERVER_BASE_URL=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/api/"
+      - "TRANSLATIONS_URL=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/api/"
+      - "API_BASEIMAGE_URL=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/api/"
       - DASHBOARD_URL=/dashboard/
       - AUTH_PERSISTENCE=LOCAL
       - ENBED_JS=true
@@ -99,7 +100,7 @@ services:
     environment:
       - DASHBOARD_URL=/dashboard/
       - API_BASEIMAGE_URL=/api/
-      - "SERVER_BASE_URL=${EXTERNAL_BASE_URL:-http://localhost:8081}/api/"
+      - "SERVER_BASE_URL=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/api/"
       - FEATURES_TOKEN=PAY:F-ANA:F-ACT:F-TRI:T-GRO:F-DEP:F-OPH:F-MTL:T-CAR:F-V1L:T-PSA:F-MTT:T-SUP:T-LBS:T-APP:T-DEV:F-NOT:T-IPS:F-ETK:F-RAS:T-PPB:F-PET:F-MTS:F-TIL:T-DGF:T-NAT:T-HPB:F-TOW:T-KNB:F-BAN:F-AST:F-MON:F-CNT:F-AUT:F-WUN:F
       - WIDGET_LOCATION=/widget/
       - PUSH_ENGINE=none
@@ -107,7 +108,7 @@ services:
       - FILE_UPLOAD_ACCEPT=*/*
       - CHAT21_ENGINE=mqtt
       - MQTT_APPID=tilechat
-      - "MQTT_ENDPOINT=${EXTERNAL_MQTT_BASE_URL:-ws://localhost:8081}/mqws/ws"
+      - "MQTT_ENDPOINT=${EXTERNAL_MQTT_BASE_URL:-ws://${CODESPACE_NAME}-8081.app.github.dev}/mqws/ws"
       - MQTT_APIENDPOINT=/chatapi/api
       - UPLOAD_ENGINE=native
       - FIREBASE_APIKEY
@@ -164,9 +165,9 @@ services:
       - EMAIL_PORT=587
       - EMAIL_PASSWORD=qggl vbnp ggna toee
       - EMAIL_FROM_ADDRESS=ajaysehwal000@gmail.com
-      - "EMAIL_BASEURL=${EXTERNAL_BASE_URL:-http://localhost:8081}/dashboard"
-      - "WEBHOOK_ORIGIN=${EXTERNAL_BASE_URL:-http://localhost:8081}/api/"
-      - "WIDGET_LOCATION=${EXTERNAL_BASE_URL:-http://localhost:8081}/widget/"
+      - "EMAIL_BASEURL=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/dashboard"
+      - "WEBHOOK_ORIGIN=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/api/"
+      - "WIDGET_LOCATION=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/widget/"
       - WS_SERVER_PATH
       #PLEASE DON'T PASTE THE LICENSE KEY HERE USE .ENV FILE. DOCKER ISSUE WITH /n char
       - LICENSE_KEY
@@ -183,7 +184,7 @@ services:
       - TELEGRAM_LOG=info
       - FB_APP_ID
       - FB_APP_SECRET
-      - BASE_FILE_URL=${EXTERNAL_BASE_URL:-http://localhost:8081}/api/"
+      - BASE_FILE_URL=${EXTERNAL_BASE_URL:-https://${CODESPACE_NAME}-8081.app.github.dev}/api/"
       - OPENAI_ENDPOINT
       - KB_ENDPOINT
       - AMQP_MANAGER_URL=amqp://ignored:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NjMwYTAwZS0xNTUxLTQ3Y2ItYmEzMC02NGRlNjJmYmNmNGYiLCJzdWIiOiIwMS1PQlNFUlZFUiIsInNjb3BlIjpbInJhYmJpdG1xLnJlYWQ6Ki8qLyoiLCJyYWJiaXRtcS53cml0ZToqLyovKiIsInJhYmJpdG1xLmNvbmZpZ3VyZToqLyovKiJdLCJjbGllbnRfaWQiOiIwMS1PQlNFUlZFUiIsImNpZCI6IjAxLU9CU0VSVkVSIiwiYXpwIjoiMDEtT0JTRVJWRVIiLCJ1c2VyX2lkIjoiMDEtT0JTRVJWRVIiLCJhcHBfaWQiOiJ0aWxlY2hhdCIsImlhdCI6MTY5NjQ5MjI4NywiZXhwIjoyMDA3NTMyMjg3LCJhdWQiOlsicmFiYml0bXEiLCIwMS1PQlNFUlZFUiJdLCJraWQiOiJ0aWxlZGVzay1rZXkiLCJ0aWxlZGVza19hcGlfcm9sZXMiOiJ1c2VyIn0.Lq0MLTYny7tIYVQ-KEDLlL-h7gAqofCfC2IDgI_0TOE@rabbitmq:5672?heartbeat=60
@@ -208,7 +209,7 @@ services:
       - FIREBASE_PROJECT_ID
       - FIREBASE_CLIENT_EMAIL
       - PUSH_WH_CHAT21_API_ADMIN_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5NGFjNjNmNy1hOGM3LTRkZGMtYjJkNS01MWE2MjBmNTdhNmIiLCJzdWIiOiIxMDAtQVBJQURNSU4iLCJzY29wZSI6WyJyYWJiaXRtcS5yZWFkOiovKi8qIiwicmFiYml0bXEud3JpdGU6Ki8qLyoiLCJyYWJiaXRtcS5jb25maWd1cmU6Ki8qLyoiXSwiY2xpZW50X2lkIjoiMTAwLUFQSUFETUlOIiwiY2lkIjoiMTAwLUFQSUFETUlOIiwiYXpwIjoiMTAwLUFQSUFETUlOIiwidXNlcl9pZCI6IjEwMC1BUElBRE1JTiIsImFwcF9pZCI6InRpbGVjaGF0IiwiaWF0IjoxNjM3NzYxNDM0LCJleHAiOjE5NDg4MDE0MzQsImF1ZCI6WyJyYWJiaXRtcSIsIjEwMC1BUElBRE1JTiJdLCJraWQiOiJ0aWxlZGVzay1rZXkiLCJ0aWxlZGVza19hcGlfcm9sZXMiOiJhZG1pbiJ9.fLPrGArRlnyC04552oBsUjohf6l_BIpxwB847xWvugo
-      - PUSH_WH_NOTIFY_URL=http://localhost:8004/api/tilechat/notify
+      - PUSH_WH_NOTIFY_URL=https://${CODESPACE_NAME}-8004.app.github.dev/api/tilechat/notify
       - PUSH_WH_WEBHOOK_TOKEN=WHFyAhecCMkYsvldLFWbSrJt7lAZFAmrp7O5QVMvGQsLVn9SkfT
       - CACHE_ENABLED=false
       - CONTACTS_LOOKUP_ENDPOINT=http://server:3000/users_util

@@ -4,7 +4,7 @@ volumes:
    tiledesk-datadb:
 services:
   dashboard:
-   build: ./tiledesk-dashboard
+   build: ./nlp-bay-dashboard
    container_name: nlp-bay-dashboard 
    environment: 
       - FEATURES_TOKEN=PAY:F-ANA:F-ACT:F-TRI:T-GRO:F-DEP:F-OPH:F-MTL:T-CAR:F-V1L:T-PSA:F-MTT:T-SUP:T-LBS:T-APP:T-DEV:F-NOT:T-IPS:F-ETK:F-RAS:T-PPB:F-PET:F-MTS:F-TIL:T-DGF:T-NAT:T-HPB:F-TOW:T-KNB:F-BAN:F-AST:F-MON:F-CNT:F-AUT:F-WUN:F
@@ -131,7 +131,7 @@ services:
       - "8082:80" #use expose if you want to block external access
 
   proxy:
-    build: ./tiledesk-docker-proxy
+    build: ./nlp-docker-proxy
     container_name: nlp-bay-docker-proxy   
     ports:
       - "8081:80" # specify port forewarding
@@ -145,7 +145,7 @@ services:
     command: [nginx-debug, '-g', 'daemon off;']
     
   server:
-    build: ./tiledesk-server
+    build: ./nlp-server
     # image: nlp-bay.docker.scarf.sh/nlp-bay/nlp-bay-server:2.8.7
     container_name: nlp-bay-server
     restart: always  
@@ -281,3 +281,5 @@ services:
   #  command: ngrok http server:3000    
   #  ports:
   #   -  '4040:4040'
+
+
