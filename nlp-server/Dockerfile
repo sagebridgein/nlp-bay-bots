@@ -54,7 +54,6 @@ RUN if [ -n "$NPM_TOKEN" ]; then \
     fi
 
 # Install dependencies
-RUN npm set timeout 600000
 RUN npm install --production --legacy-peer-deps
 
 # Clean up .npmrc

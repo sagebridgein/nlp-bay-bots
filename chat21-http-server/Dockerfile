@@ -28,9 +28,8 @@ WORKDIR /usr/src/app
 # Copy package files first (leverage Docker caching for dependencies)
 COPY package*.json ./
 
-
 # Set npm config for better reliability
-
+RUN npm config set timeout 60000 \
     && npm config set registry https://registry.npmjs.org/
 
 # Install app dependencies with additional resilience
