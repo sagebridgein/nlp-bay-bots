@@ -121,7 +121,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   TILEDESK_V2 = true;
 
-  public TEST_PAYMENT_LINKS = false;
+  public TEST_PAYMENT_LINKS = true;
 
   DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
@@ -304,20 +304,36 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
   setpaymentLinks() {
     if (this.TEST_PAYMENT_LINKS === true) {
-      this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg";
-      this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV";
-      this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/test_7sI6pkce24T0d8YdQT";
-      this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/test_fZeeVQ6TI85cglabIK";
-      this.PAYMENT_LINK_PLAN_C = "https://buy.stripe.com/test_4gw1502Ds5X4ed26ot";
+      // this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg";
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV";
+      // this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/test_7sI6pkce24T0d8YdQT";
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/test_fZeeVQ6TI85cglabIK";
+      // this.PAYMENT_LINK_PLAN_C = "https://buy.stripe.com/test_4gw1502Ds5X4ed26ot";
+
+      // // New pricing test link
+      // this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_7sI150fqedpwfh6dRc";
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_9AQdRMb9Y4T03yo8wT"; 
+      // this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_3cs8xs5PE5X4d8Y8wQ"; 
+      // this.PAYMENT_LINK_MONTLY_PLAN_EE = 'https://buy.stripe.com/test_6oEeVQ6TI0CKed2eVj';
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_EE = 'https://buy.stripe.com/test_9AQ5lgfqe1GO2uk7sS';
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_9AQdRMdi699gc4U00l";
+
+      this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
+      this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
+      this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
+      this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
+      this.PAYMENT_LINK_PLAN_C = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
 
       // New pricing test link
-      this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_7sI150fqedpwfh6dRc";
-      this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_9AQdRMb9Y4T03yo8wT"; 
-      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_3cs8xs5PE5X4d8Y8wQ"; 
-      this.PAYMENT_LINK_MONTLY_PLAN_EE = 'https://buy.stripe.com/test_6oEeVQ6TI0CKed2eVj';
-      this.PAYMENT_LINK_ANNUALLY_PLAN_EE = 'https://buy.stripe.com/test_9AQ5lgfqe1GO2uk7sS';
-      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_9AQdRMdi699gc4U00l";
+      this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
+      this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss"; 
+      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss"; 
+      this.PAYMENT_LINK_MONTLY_PLAN_EE = 'https://buy.stripe.com/test_cN26p4aexbu24HS7ss';
+      this.PAYMENT_LINK_ANNUALLY_PLAN_EE = 'https://buy.stripe.com/test_cN26p4aexbu24HS7ss';
+      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
 
+
+     
 
     } else if (this.TEST_PAYMENT_LINKS === false) {
       // this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/5kA3ck5K604y9qg3ck"; // "https://buy.stripe.com/aEU3ckc8ug3wdGwdQS";
