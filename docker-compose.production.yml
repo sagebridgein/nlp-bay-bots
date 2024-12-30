@@ -41,7 +41,7 @@ services:
     
 
   cds:
-    image: ajaysehwal81/design-cds
+    image: ajaysehwal81/design-studio
     container_name: nlp-bay-cds
     environment:
       - FEATURES_TOKEN=PAY:F-ANA:F-ACT:F-TRI:T-GRO:F-DEP:F-OPH:F-MTL:T-CAR:F-V1L:T-PSA:F-MTT:T-SUP:T-LBS:T-APP:T-DEV:F-NOT:T-IPS:F-ETK:F-RAS:T-PPB:F-PET:F-MTS:F-TIL:T-DGF:T-NAT:T-HPB:F-TOW:T-KNB:F-BAN:F-AST:F-MON:F-CNT:F-AUT:F-WUN:F
@@ -68,7 +68,7 @@ services:
       - "4502:80"
 
   webwidget:
-    image: ajaysehwal81/chat21-web-webwidget
+    image: ajaysehwal81/chat21-web-widget
     container_name: chat21-web-widget
     environment:
       - CHAT21_ENGINE=mqtt
