@@ -114,22 +114,23 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
 
     let keys = this.public_Key.split("-");
     this.logger.log('[HOME-WA] PUBLIC-KEY - public_Key keys', keys)
+    this.isVisiblePAY = true;
 
-    keys.forEach(key => {
-      if (key.includes("PAY")) {
-        let pay = key.split(":");
-        if (pay[1] === "F") {
-          this.isVisiblePAY = false;
-        } else {
-          this.isVisiblePAY = true;
-        }
-      }
-    });
+    // keys.forEach(key => {
+    //   if (key.includes("PAY")) {
+    //     let pay = key.split(":");
+    //     if (pay[1] === "F") {
+    //       this.isVisiblePAY = false;
+    //     } else {
+    //       this.isVisiblePAY = true;
+    //     }
+    //   }
+    // });
 
 
-    if (!this.public_Key.includes("PAY")) {
-      this.isVisiblePAY = false;
-    }
+    // if (!this.public_Key.includes("PAY")) {
+    //   this.isVisiblePAY = false;
+    // }
   }
 
   getProjectUserRole() {

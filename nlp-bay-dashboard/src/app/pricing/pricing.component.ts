@@ -121,7 +121,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   TILEDESK_V2 = true;
 
-  public TEST_PAYMENT_LINKS = false;
+  public TEST_PAYMENT_LINKS = true;
 
   DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
@@ -304,20 +304,34 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
   setpaymentLinks() {
     if (this.TEST_PAYMENT_LINKS === true) {
-      this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg";
-      this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV";
-      this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/test_7sI6pkce24T0d8YdQT";
-      this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/test_fZeeVQ6TI85cglabIK";
-      this.PAYMENT_LINK_PLAN_C = "https://buy.stripe.com/test_4gw1502Ds5X4ed26ot";
+      // this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg";
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV";
+      // this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/test_7sI6pkce24T0d8YdQT";
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/test_fZeeVQ6TI85cglabIK";
+      // this.PAYMENT_LINK_PLAN_C = "https://buy.stripe.com/test_4gw1502Ds5X4ed26ot";
+
+      // // New pricing test link
+      // this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_7sI150fqedpwfh6dRc";
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_9AQdRMb9Y4T03yo8wT"; 
+      // this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_3cs8xs5PE5X4d8Y8wQ"; 
+      // this.PAYMENT_LINK_MONTLY_PLAN_EE = 'https://buy.stripe.com/test_6oEeVQ6TI0CKed2eVj';
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_EE = 'https://buy.stripe.com/test_9AQ5lgfqe1GO2uk7sS';
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_9AQdRMdi699gc4U00l";
+
+
+      this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
+      this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
+      this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
+      this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
+      this.PAYMENT_LINK_PLAN_C = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
 
       // New pricing test link
-      this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_7sI150fqedpwfh6dRc";
-      this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_9AQdRMb9Y4T03yo8wT"; 
-      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_3cs8xs5PE5X4d8Y8wQ"; 
-      this.PAYMENT_LINK_MONTLY_PLAN_EE = 'https://buy.stripe.com/test_6oEeVQ6TI0CKed2eVj';
-      this.PAYMENT_LINK_ANNUALLY_PLAN_EE = 'https://buy.stripe.com/test_9AQ5lgfqe1GO2uk7sS';
-      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_9AQdRMdi699gc4U00l";
-
+      this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
+      this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss"; 
+      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss"; 
+      this.PAYMENT_LINK_MONTLY_PLAN_EE = 'https://buy.stripe.com/test_cN26p4aexbu24HS7ss';
+      this.PAYMENT_LINK_ANNUALLY_PLAN_EE = 'https://buy.stripe.com/test_cN26p4aexbu24HS7ss';
+      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_cN26p4aexbu24HS7ss";
 
     } else if (this.TEST_PAYMENT_LINKS === false) {
       // this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/5kA3ck5K604y9qg3ck"; // "https://buy.stripe.com/aEU3ckc8ug3wdGwdQS";
@@ -529,7 +543,7 @@ export class PricingComponent implements OnInit, OnDestroy {
         this.logger.error('track go to checkout error', err);
       }
     }
-  }
+  }j
 
   // To test Live Plan 3.00 / Daily
   openPaymentTestLivePaymentLink() {
@@ -742,14 +756,14 @@ export class PricingComponent implements OnInit, OnDestroy {
   setPlansPKandCode() {
     if (this.TILEDESK_V2 === true) {
       this.logger.log('[PRICING] - TILEDESK_V2 ?', this.TILEDESK_V2)
-      this.STRIPE_LIVE_PK = 'pk_live_ED4EiI7FHgu0rv4lEHAl8pff00n2qPazOn';
+      this.STRIPE_LIVE_PK = 'pk_test_51N7xgJSFdANgbjMQnTfk3uu0OoyMAFfZwCjODXyS73cJOPev3sEyXgLbZ8kxVDbnc4PN3pLjWt1hu0MgNLVl45Tx006iiZDNEQ';
       this.LIVE_PLAN_X_MONTH_PLAN_CODE = 'plan_H3i8qRroJqwO6K';
       this.LIVE_PLAN_X_YEAR_PLAN_CODE = 'plan_H3iDFGtPN8coKT';
       this.LIVE_PLAN_X_DAY_20CENTS_PLAN_CODE = 'plan_H3iIUMonLu2jIW';
 
     } else {
       this.logger.log('[PRICING] - TILEDESK_V2 ?', this.TILEDESK_V2)
-      this.STRIPE_LIVE_PK = 'pk_live_XcOe1UfJm9GkSgreETF7WGsc';
+      this.STRIPE_LIVE_PK = 'pk_test_51N7xgJSFdANgbjMQnTfk3uu0OoyMAFfZwCjODXyS73cJOPev3sEyXgLbZ8kxVDbnc4PN3pLjWt1hu0MgNLVl45Tx006iiZDNEQ';
       this.LIVE_PLAN_X_MONTH_PLAN_CODE = 'plan_FrXJ00oxr0akaF';
       this.LIVE_PLAN_X_YEAR_PLAN_CODE = 'plan_FrXjIcRD20tsAN';
       this.LIVE_PLAN_X_DAY_20CENTS_PLAN_CODE = 'plan_FqRflmxFPy6AOn';
@@ -1033,7 +1047,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   */
   stripeProPlanPerDayCheckout() {
     const that = this;
-    const stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
+    const stripe = Stripe('pk_test_51N7xgJSFdANgbjMQnTfk3uu0OoyMAFfZwCjODXyS73cJOPev3sEyXgLbZ8kxVDbnc4PN3pLjWt1hu0MgNLVl45Tx006iiZDNEQ');
 
     // When the customer clicks on the button, redirect
     // them to Checkout.
@@ -1070,7 +1084,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   */
   stripeProPlanPerDayWithTrialCheckout() {
     const that = this;
-    const stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
+    const stripe = Stripe('pk_test_lupk_test_51N7xgJSFdANgbjMQnTfk3uu0OoyMAFfZwCjODXyS73cJOPev3sEyXgLbZ8kxVDbnc4PN3pLjWt1hu0MgNLVl45Tx006iiZDNEQrAeBj5B7n7JGvE1zIPIFwV');
 
     // When the customer clicks on the button, redirect
     // them to Checkout.

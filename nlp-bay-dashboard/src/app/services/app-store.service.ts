@@ -26,6 +26,7 @@ export class AppStoreService {
   ) {
     this.APPS_BASE_URL = this.appConfigService.getConfig().appsUrl;
     this.APPS_URL = this.APPS_BASE_URL + "api/apps?sort=score"
+    console.log('my console.log',this.APPS_URL)
     this.getToken();
   }
 

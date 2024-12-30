@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE } from './utils';
+import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, ChannelsIntregrations, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE } from './utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -87,7 +87,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.logger.log("[INTEGRATION-COMP] brand: ", _brand);
     this.translateparams = _brand;
     // this.INTEGRATIONS_CLONE = JSON.parse(JSON.stringify(INTEGRATION_LIST_ARRAY))
-    
+
   }
 
   ngOnInit(): void {
@@ -221,136 +221,143 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   async getApps() {
-
     return new Promise((resolve) => {
-      this.appService.getApps().subscribe((response: any) => {
+      this.availableApps.push(...ChannelsIntregrations)
+      resolve(true)
+    }).catch((error) => {
+      this.logger.error("--> error getting apps: ", error)
 
-        let whatsappApp = response.apps.find(a => (a.title === APPS_TITLE.WHATSAPP && a.version === "v2"));
-        if (environment['whatsappConfigUrl']) {
-          if (whatsappApp) {
-            whatsappApp.runURL = environment['whatsappConfigUrl'];
-            whatsappApp.channel = "whatsapp";
-          } else {
-            whatsappApp = {
-              runURL: environment['whatsappConfigUrl'],
-              channel: "whatsapp"
-            }
-          }
-        } else {
-          if (whatsappApp) {
-            whatsappApp.channel = "whatsapp";
-          }
-        }
-        this.availableApps.push(whatsappApp);
-
-        let messengerApp = response.apps.find(a => (a.title === APPS_TITLE.MESSENGER && a.version === "v2"));
-        if (environment['messengerConfigUrl']) {
-          if (messengerApp) {
-            messengerApp.runURL = environment['messengerConfigUrl'];
-            messengerApp.channel = "messenger";
-          } else {
-            messengerApp = {
-              runURL: environment['messengerConfigUrl'],
-              channel: "messenger"
-            }
-          }
-        }
-        else {
-          if (messengerApp) {
-            messengerApp.channel = "messenger";
-          }
-        }
-        this.availableApps.push(messengerApp);
-
-        let telegramApp = response.apps.find(a => (a.title === APPS_TITLE.TELEGRAM && a.version === "v2"));
-        if (environment['telegramConfigUrl']) {
-          if (telegramApp) {
-            telegramApp.runURL = environment['telegramConfigUrl'];
-            telegramApp.channel = "telegram";
-          } else {
-            telegramApp = {
-              runURL: environment['telegramConfigUrl'],
-              channel: "telegram"
-            }
-          }
-        }
-        else {
-          if (telegramApp) {
-            telegramApp.channel = "telegram";
-          }
-        }
-        this.availableApps.push(telegramApp);
-
-        let smsApp = response.apps.find(a => (a.title === APPS_TITLE.TWILIO_SMS && a.version === "v2"));
-        if (environment['smsConfigUrl']) {
-          if (smsApp) {
-            smsApp.runURL = environment['smsConfigUrl'];
-            smsApp.channel = "sms";
-          } else {
-            smsApp = {
-              runURL: environment['smsConfigUrl'],
-              channel: "sms"
-            }
-          }
-        }
-        else {
-          if (smsApp) {
-            smsApp.channel = "sms";
-          }
-        }
-        this.availableApps.push(smsApp);
-
-        let voiceApp = response.apps.find(a => (a.title === APPS_TITLE.VXML_VOICE && a.version === "v2"));
-        if (environment['voiceConfigUrl']) {
-          if (voiceApp) {
-            voiceApp.runURL = environment['voiceConfigUrl'];
-            voiceApp.channel = "voice";
-          } else {
-            voiceApp = {
-              voiceApp: environment['voiceConfigUrl'],
-              channel: "voice"
-            }
-          }
-        }
-        else {
-          if (voiceApp) {
-            voiceApp.channel = "voice";
-          }
-        }
-        this.availableApps.push(voiceApp);
-
-        // -------
-
-        let voiceTwiloApp = response.apps.find(a => (a.title === APPS_TITLE.TWILIO_VOICE && a.version === "v2"));
-
-        if (environment['voiceTwilioConfigUrl']) {
-          if (voiceTwiloApp) {
-            voiceTwiloApp.runURL = environment['voiceTwilioConfigUrl'];
-            voiceTwiloApp.channel = "voice-twilio";
-          } else {
-            voiceTwiloApp = {
-              voiceTwiloApp: environment['voiceTwilioConfigUrl'],
-              channel: "voice-twilio"
-            }
-          }
-        }
-        else {
-          this.logger.log('heree voiceTwiloApp ', voiceTwiloApp)
-          if (voiceTwiloApp) {
-            voiceTwiloApp.channel = "voice-twilio";
-          }
-        }
-        this.availableApps.push(voiceTwiloApp);
-
-        // -------
-
-
-        resolve(true);
-
-      }, (error) => {
-        this.logger.error("--> error getting apps: ", error)
-      })
     })
+    // return ChannelsIntregrations;
+    // return new Promise((resolve) => {
+    //   this.appService.getApps().subscribe((response: any) => {
+
+    //     let whatsappApp = response.apps.find(a => (a.title === APPS_TITLE.WHATSAPP && a.version === "v2"));
+    //     if (environment['whatsappConfigUrl']) {
+    //       if (whatsappApp) {
+    //         whatsappApp.runURL = environment['whatsappConfigUrl'];
+    //         whatsappApp.channel = "whatsapp";
+    //       } else {
+    //         whatsappApp = {
+    //           runURL: environment['whatsappConfigUrl'],
+    //           channel: "whatsapp"
+    //         }
+    //       }
+    //     } else {
+    //       if (whatsappApp) {
+    //         whatsappApp.channel = "whatsapp";
+    //       }
+    //     }
+    //     this.availableApps.push(whatsappApp);
+
+    //     let messengerApp = response.apps.find(a => (a.title === APPS_TITLE.MESSENGER && a.version === "v2"));
+    //     if (environment['messengerConfigUrl']) {
+    //       if (messengerApp) {
+    //         messengerApp.runURL = environment['messengerConfigUrl'];
+    //         messengerApp.channel = "messenger";
+    //       } else {
+    //         messengerApp = {
+    //           runURL: environment['messengerConfigUrl'],
+    //           channel: "messenger"
+    //         }
+    //       }
+    //     }
+    //     else {
+    //       if (messengerApp) {
+    //         messengerApp.channel = "messenger";
+    //       }
+    //     }
+    //     this.availableApps.push(messengerApp);
+
+    //     let telegramApp = response.apps.find(a => (a.title === APPS_TITLE.TELEGRAM && a.version === "v2"));
+    //     if (environment['telegramConfigUrl']) {
+    //       if (telegramApp) {
+    //         telegramApp.runURL = environment['telegramConfigUrl'];
+    //         telegramApp.channel = "telegram";
+    //       } else {
+    //         telegramApp = {
+    //           runURL: environment['telegramConfigUrl'],
+    //           channel: "telegram"
+    //         }
+    //       }
+    //     }
+    //     else {
+    //       if (telegramApp) {
+    //         telegramApp.channel = "telegram";
+    //       }
+    //     }
+    //     this.availableApps.push(telegramApp);
+
+    //     let smsApp = response.apps.find(a => (a.title === APPS_TITLE.TWILIO_SMS && a.version === "v2"));
+    //     if (environment['smsConfigUrl']) {
+    //       if (smsApp) {
+    //         smsApp.runURL = environment['smsConfigUrl'];
+    //         smsApp.channel = "sms";
+    //       } else {
+    //         smsApp = {
+    //           runURL: environment['smsConfigUrl'],
+    //           channel: "sms"
+    //         }
+    //       }
+    //     }
+    //     else {
+    //       if (smsApp) {
+    //         smsApp.channel = "sms";
+    //       }
+    //     }
+    //     this.availableApps.push(smsApp);
+
+    //     let voiceApp = response.apps.find(a => (a.title === APPS_TITLE.VXML_VOICE && a.version === "v2"));
+    //     if (environment['voiceConfigUrl']) {
+    //       if (voiceApp) {
+    //         voiceApp.runURL = environment['voiceConfigUrl'];
+    //         voiceApp.channel = "voice";
+    //       } else {
+    //         voiceApp = {
+    //           voiceApp: environment['voiceConfigUrl'],
+    //           channel: "voice"
+    //         }
+    //       }
+    //     }
+    //     else {
+    //       if (voiceApp) {
+    //         voiceApp.channel = "voice";
+    //       }
+    //     }
+    //     this.availableApps.push(voiceApp);
+
+    //     // -------
+
+    //     let voiceTwiloApp = response.apps.find(a => (a.title === APPS_TITLE.TWILIO_VOICE && a.version === "v2"));
+
+    //     if (environment['voiceTwilioConfigUrl']) {
+    //       if (voiceTwiloApp) {
+    //         voiceTwiloApp.runURL = environment['voiceTwilioConfigUrl'];
+    //         voiceTwiloApp.channel = "voice-twilio";
+    //       } else {
+    //         voiceTwiloApp = {
+    //           voiceTwiloApp: environment['voiceTwilioConfigUrl'],
+    //           channel: "voice-twilio"
+    //         }
+    //       }
+    //     }
+    //     else {
+    //       this.logger.log('heree voiceTwiloApp ', voiceTwiloApp)
+    //       if (voiceTwiloApp) {
+    //         voiceTwiloApp.channel = "voice-twilio";
+    //       }
+    //     }
+    //     this.availableApps.push(voiceTwiloApp);
+
+    //     // -------
+
+
+    //     resolve(true);
+
+    //   }, (error) => {
+    //     this.logger.error("--> error getting apps: ", error)
+    //   })
+    // })
   }
 
   onIntegrationSelect(integration) {
@@ -386,7 +393,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.changeRoute(integration.key);
     }).catch(() => {
       this.showInIframe = false;
-      this.integrationLocked = false; // Changeit for testing, make it true again later
+      this.integrationLocked = true;
       this.plan_require = integration.plan;
       this.integrationSelectedName = integration.key;
       this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
@@ -622,7 +629,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           // BASIC
           if (integration.plan === PLAN_NAME.D) {
             this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
-            integration['displayBadge'] = true // I changed for testing, make it false again later
+            integration['displayBadge'] = false
           }
           // PREMIUM
           if (integration.plan === PLAN_NAME.E) {
@@ -645,18 +652,18 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           // BASIC
           if (integration.plan === PLAN_NAME.D) {
             this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
-            integration['displayBadge'] = true // I changed for testing, make it false again later
+            integration['displayBadge'] = false
           }
           // PREMIUM
           if (integration.plan === PLAN_NAME.E) {
             this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
-            integration['displayBadge'] = true // I changed for testing, make it false again later
+            integration['displayBadge'] = false
           }
 
           // TEAM
           if (integration.plan === PLAN_NAME.EE) {
             this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
-            integration['displayBadge'] = true // I changed for testing, make it false again later
+            integration['displayBadge'] = false
           }
           // CUSTOM
           if (integration.plan === PLAN_NAME.F) {
@@ -731,7 +738,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // FREE or SANDBOX PLAN - Trial expired // nk
       if ((this.profile_name === 'free' && this.trialExpired) || (this.profile_name === 'Sandbox' && this.trialExpired)) {
         if (integration_plan !== 'Sandbox') {
-          reject(true); // I changed for testing, make it false again later
+          reject(false);
         }
         resolve(true)
       }
@@ -739,7 +746,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // FREE or SANDBOX PLAN - Trial // nk 
       if ((this.profile_name === 'free' && !this.trialExpired) || (this.profile_name === 'Sandbox' && !this.trialExpired)) {
         if (integration_plan === PLAN_NAME.F) {
-          reject(true);// I changed for testing, make it false again later
+          reject(false);
         }
         resolve(true)
       }
@@ -757,7 +764,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // BASIC PLAN ubscription Is Active // nk
       else if ((this.profile_name === PLAN_NAME.A && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.D && this.subscriptionIsActive)) {
         if (integration_plan === PLAN_NAME.E || integration_plan === PLAN_NAME.EE || integration_plan === PLAN_NAME.F) {
-          reject(true); // I changed for testing, make it false again later
+          reject(false);
         }
         resolve(true)
       }
@@ -765,7 +772,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // BASIC PLAN ubscription Is Not Active // nk
       else if ((this.profile_name === PLAN_NAME.A && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.D && !this.subscriptionIsActive)) {
         if (integration_plan !== 'Sandbox') {
-          reject(true); // I changed for testing, make it false again later
+          reject(false);
         }
         resolve(true)
       }
@@ -781,14 +788,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // PREMIUM PLAN subscription Is Active // nk
       else if ((this.profile_name === PLAN_NAME.B && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.E && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.EE && this.subscriptionIsActive)) {
         if (integration_plan === PLAN_NAME.F) {
-          reject(true); // I changed for testing, make it false again later
+          reject(false);
         }
         resolve(true)
       }
       // PREMIUM PLAN subscription Is Not Active // nk
       else if ((this.profile_name === PLAN_NAME.B && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.E && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.EE && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.C && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.F && !this.subscriptionIsActive)) {
         if (integration_plan !== 'Sandbox') {
-          reject(true); // I changed for testing, make it false again later
+          reject(false);
         }
         resolve(true)
       }
@@ -804,7 +811,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   manageAppVisibility(projectProfileData) {
 
     if (projectProfileData && projectProfileData.customization) {
-       console.log("my console.log --------------------$$$",projectProfileData,projectProfileData.customization)
+
       if (projectProfileData.customization[this.INT_KEYS.WHATSAPP] === false) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.WHATSAPP);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
@@ -822,6 +829,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
 
+
       // -----------------------------
       // VXML_VOICE
       // -----------------------------
@@ -831,8 +839,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
 
-       // Restores the "VXML voice" integration (use case: it was removed from the Integration array in a project where it was not active)
-       if (projectProfileData.customization[this.INT_KEYS.VXML_VOICE] && projectProfileData.customization[this.INT_KEYS.VXML_VOICE] === true) {
+      // Restores the "VXML voice" integration (use case: it was removed from the Integration array in a project where it was not active)
+      if (projectProfileData.customization[this.INT_KEYS.VXML_VOICE] && projectProfileData.customization[this.INT_KEYS.VXML_VOICE] === true) {
         this.logger.log('[INTEGRATIONS] manageAppVisibility VXML_VOICE ')
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
         if (index != -1) {
@@ -840,7 +848,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         } else if (index == -1) {
           this.logger.log('VXML_VOICE index B', index)
           const VXMLVoiceObjct = INTEGRATION_LIST_ARRAY_CLONE.find(i => i.key === this.INT_KEYS.VXML_VOICE);
-          this.logger.log('VXMLVoiceObjct' , VXMLVoiceObjct) 
+          this.logger.log('VXMLVoiceObjct', VXMLVoiceObjct)
           this.INTEGRATIONS.push(VXMLVoiceObjct)
         }
       }
@@ -864,7 +872,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         } else if (index == -1) {
           this.logger.log('TWILIO_VOICE index B', index)
           const twilioVoiceObjct = INTEGRATION_LIST_ARRAY_CLONE.find(i => i.key === this.INT_KEYS.TWILIO_VOICE);
-          this.logger.log('twilioVoiceObjct' , twilioVoiceObjct) 
+          this.logger.log('twilioVoiceObjct', twilioVoiceObjct)
           this.INTEGRATIONS.push(twilioVoiceObjct)
         }
       }
@@ -879,11 +887,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       }
 
     } else {
-      let vxml_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
-      if (vxml_voice_index != -1) { this.INTEGRATIONS.splice(vxml_voice_index, 1) };
+      // let vxml_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
+      // if (vxml_voice_index != -1) { this.INTEGRATIONS.splice(vxml_voice_index, 1) };
 
-      let twilio_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
-      if (twilio_voice_index != -1) { this.INTEGRATIONS.splice(twilio_voice_index, 1) };
+      // let twilio_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+      // if (twilio_voice_index != -1) { this.INTEGRATIONS.splice(twilio_voice_index, 1) };
 
     }
 

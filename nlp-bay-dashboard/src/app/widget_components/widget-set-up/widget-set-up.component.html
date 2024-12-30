@@ -1282,7 +1282,7 @@
 								<!-- ---------------------------------------------------------------------------- -->
 								<!-- <ng-container *ngIf="payIsVisible"> -->
 
-								<button [ngClass]="{'hide-unbranding': !isVisibleWidgetUnbranding}" id="unbranding-btn"
+								<button [ngClass]="" id="unbranding-btn"
 									type="button" class="widget-section-accordion widget-section-header">
 
 									<div class="widget-section-title">
@@ -1298,7 +1298,8 @@
 										</div>
 										<h4 class="widget-section-header__title-underlined">
 											Unbranding
-											<ng-container *ngIf="payIsVisible">
+											<!-- payIsVisible -->
+											<ng-container >
 												<span  class="from-b-plan-badge" *ngIf="featureIsAvailable === false">
 													<span *ngIf="!isAppSumo">  
 														{{'AvailableFromThePlans' | translate: t_params }}
