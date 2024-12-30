@@ -171,6 +171,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.company_name = brand['BRAND_NAME'];
     this.contactUsEmail = brand['CONTACT_US_EMAIL'];
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
+
   }
 
   /**
@@ -310,7 +311,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       // this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/test_fZeeVQ6TI85cglabIK";
       // this.PAYMENT_LINK_PLAN_C = "https://buy.stripe.com/test_4gw1502Ds5X4ed26ot";
 
-      // // New pricing test link
+      // New pricing test link
       // this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_7sI150fqedpwfh6dRc";
       // this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_9AQdRMb9Y4T03yo8wT"; 
       // this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_3cs8xs5PE5X4d8Y8wQ"; 
@@ -456,8 +457,10 @@ export class PricingComponent implements OnInit, OnDestroy {
   openPaymentLinkMontlyPlanA() {
     if (this.USER_ROLE === 'owner') {
       // console.log('[PRICING] PLAN A Montly')
+      const redirect_url= this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success'
+
       // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
-      const url = `${this.PAYMENT_LINK_MONTLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}"`
+      const url = `${this.PAYMENT_LINK_MONTLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}&redirect_url=${redirect_url}"`
       window.open(url, '_self');
 
       this.trackGoToCheckout(PLAN_NAME.A, 'montly')  
@@ -469,9 +472,11 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   openPaymentLinkAnnuallyPlanA() {
     if (this.USER_ROLE === 'owner') {
-      // console.log('[PRICING] PLAN A Annually')
+      // console.log('[PRICING] PLAN A Annually')'
+      const redirect_url= this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success'
+
       // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
-      const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+      const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}&redirect_url=${redirect_url}`
       window.open(url, '_self');
 
       this.trackGoToCheckout(PLAN_NAME.A, 'annually')   
@@ -487,8 +492,10 @@ export class PricingComponent implements OnInit, OnDestroy {
   openPaymentLinkMontlyPlanB() {
     if (this.USER_ROLE === 'owner') {
       // console.log('[PRICING] PLAN B Montly')
+      const redirect_url= this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success'
+
       // const url = `https://buy.stripe.com/test_7sI6pkce24T0d8YdQT?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
-      const url = `${this.PAYMENT_LINK_MONTLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+      const url = `${this.PAYMENT_LINK_MONTLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}&redirect_url=${redirect_url}`
       window.open(url, '_self');
      
       this.trackGoToCheckout(PLAN_NAME.B, 'montly')   
@@ -501,8 +508,10 @@ export class PricingComponent implements OnInit, OnDestroy {
   openPaymentLinkAnnuallyPlanB() {
     if (this.USER_ROLE === 'owner') {
       // console.log('[PRICING] PLAN B Annually')
+      const redirect_url= this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success'
+
       // const url = `https://buy.stripe.com/test_fZeeVQ6TI85cglabIK?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
-      const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+      const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}&redirect_url=${redirect_url}`
       window.open(url, '_self');
 
       this.trackGoToCheckout(PLAN_NAME.B, 'annually')   
@@ -515,8 +524,10 @@ export class PricingComponent implements OnInit, OnDestroy {
   openPaymentLinkPlanC() {
     if (this.USER_ROLE === 'owner') {
       // console.log('[PRICING] PLAN C')
+      const redirect_url= this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success'
+
       // const url = `https://buy.stripe.com/test_4gw1502Ds5X4ed26ot?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
-      const url = `${this.PAYMENT_LINK_PLAN_C}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
+      const url = `${this.PAYMENT_LINK_PLAN_C}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}&redirect_url=${redirect_url}`
       window.open(url, '_self');
     } else {
       this.presentModalAgentCannotManageAvancedSettings()

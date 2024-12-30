@@ -41,7 +41,7 @@ services:
     
 
   cds:
-    image: ajaysehwal81/nlp-bay-cds
+    image: ajaysehwal81/design-cds
     container_name: nlp-bay-cds
     environment:
       - FEATURES_TOKEN=PAY:F-ANA:F-ACT:F-TRI:T-GRO:F-DEP:F-OPH:F-MTL:T-CAR:F-V1L:T-PSA:F-MTT:T-SUP:T-LBS:T-APP:T-DEV:F-NOT:T-IPS:F-ETK:F-RAS:T-PPB:F-PET:F-MTS:F-TIL:T-DGF:T-NAT:T-HPB:F-TOW:T-KNB:F-BAN:F-AST:F-MON:F-CNT:F-AUT:F-WUN:F
@@ -68,7 +68,7 @@ services:
       - "4502:80"
 
   webwidget:
-    image: ajaysehwal81/nlp-bay-webwidget
+    image: ajaysehwal81/chat21-web-webwidget
     container_name: chat21-web-widget
     environment:
       - CHAT21_ENGINE=mqtt
@@ -95,7 +95,7 @@ services:
       - "4200:80"
 
   ionic:
-    image: ajaysehwal81/nlp-bay-ionic
+    image: ajaysehwal81/chat21-ionic
     container_name: chat21-ionic
     environment:
       - DASHBOARD_URL=/dashboard/
@@ -144,7 +144,7 @@ services:
     command: [nginx-debug, '-g', 'daemon off;']
  
   server:
-    image: ajaysehwal81/nlp-bay-server
+    image: ajaysehwal81/nlp-server
     container_name: nlp-bay-server
     restart: always  
     environment: 
@@ -194,7 +194,7 @@ services:
       - "3000:3000"
   
   chat21httpserver:
-    image: ajaysehwal81/nlp-bay-chat21httpserver
+    image: ajaysehwal81/chat21-http-server
     container_name: chat21httpserver
     restart: always    
     environment: 
@@ -220,7 +220,7 @@ services:
       - "8004:8004"
   
   chat21server:
-    image: ajaysehwal81/nlp-bay-chat21server
+    image: ajaysehwal81/chat21-server
     container_name: chat21server
     restart: always
     environment: 
@@ -237,7 +237,7 @@ services:
       - rabbitmq
       - server
   rabbitmq:
-    image: ajaysehwal81/nlp-bay-rabbitmq
+    image: ajaysehwal81/chat21-rabbitmq
     container_name: rabbitmq
     environment:
         RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
