@@ -5,7 +5,7 @@ volumes:
 services:
   dashboard:
    build: ./nlp-bay-dashboard
-   container_name: nlp-bay-dashboard 
+   container_name: nlp-bay-dashboard
    environment: 
       - FEATURES_TOKEN=PAY:F-ANA:F-ACT:F-TRI:T-GRO:F-DEP:F-OPH:F-MTL:T-CAR:F-V1L:T-PSA:F-MTT:T-SUP:T-LBS:T-APP:T-DEV:F-NOT:T-IPS:F-ETK:F-RAS:T-PPB:F-PET:F-MTS:F-TIL:T-DGF:T-NAT:T-HPB:F-TOW:T-KNB:F-BAN:F-AST:F-MON:F-CNT:F-AUT:F-WUN:F
       - BOT_CREDENTIAL_URL=/api/modules/dialogflow/botcredendials/
@@ -21,7 +21,7 @@ services:
       - CHAT21_ENGINE=mqtt
       - UPLOAD_ENGINE=native
       - PUSH_ENGINE=none
-      - LOG_LEVEL=info
+      - LOG_LEVEL=DEBUG
       - APPS_URL=/api/modules/apps/
       - PROMO_BANNER_URL
       - FIREBASE_APIKEY
@@ -185,10 +185,14 @@ services:
       - TELEGRAM_FILE_URL=https://api.telegram.org/file/bot
       - TELEGRAM_LOG=info
       - FB_APP_ID
+      - PAYMENT_STRIPE_API_SECRET_KEY=we_1QbHnzSFdANgbjMQdLJmFnfU
+      - PAYMENT_STRIPE_SECRET=sk_test_51N7xgJSFdANgbjMQzjxusgB2EeDmRTbF1L6ldPP2vbJHTTlHHIFLVlIHmQQlsiA49lCco6R8KWRSysdbZ3QzpPwP0014pTR7gt
+      - PAYMENT_STRIPE_APIKEY=pk_test_51N7xgJSFdANgbjMQDPxtlDVqnDNFqn3BepgO9nZXjFFEpQ4WNFV5sLk9somSy6P2uEdkeH21dayvPJLoTPivHGi300pqw7q6Mu
       - FB_APP_SECRET
       - BASE_FILE_URL=${EXTERNAL_BASE_URL:-http://localhost:8081}/api/"
       - OPENAI_ENDPOINT
       - KB_ENDPOINT
+      - VOICE_ENABLED=true
       - AMQP_MANAGER_URL=amqp://ignored:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NjMwYTAwZS0xNTUxLTQ3Y2ItYmEzMC02NGRlNjJmYmNmNGYiLCJzdWIiOiIwMS1PQlNFUlZFUiIsInNjb3BlIjpbInJhYmJpdG1xLnJlYWQ6Ki8qLyoiLCJyYWJiaXRtcS53cml0ZToqLyovKiIsInJhYmJpdG1xLmNvbmZpZ3VyZToqLyovKiJdLCJjbGllbnRfaWQiOiIwMS1PQlNFUlZFUiIsImNpZCI6IjAxLU9CU0VSVkVSIiwiYXpwIjoiMDEtT0JTRVJWRVIiLCJ1c2VyX2lkIjoiMDEtT0JTRVJWRVIiLCJhcHBfaWQiOiJ0aWxlY2hhdCIsImlhdCI6MTY5NjQ5MjI4NywiZXhwIjoyMDA3NTMyMjg3LCJhdWQiOlsicmFiYml0bXEiLCIwMS1PQlNFUlZFUiJdLCJraWQiOiJ0aWxlZGVzay1rZXkiLCJ0aWxlZGVza19hcGlfcm9sZXMiOiJ1c2VyIn0.Lq0MLTYny7tIYVQ-KEDLlL-h7gAqofCfC2IDgI_0TOE@rabbitmq:5672?heartbeat=60
     depends_on:
       - mongo
