@@ -102,7 +102,7 @@ export const ChannelsIntregrations = [
       description:
         "Use this application to connect your WhatsApp Business account to Tiledesk",
       installActionURL: "",
-      runURL: "https://curly-space-halibut-v9rj7474wxjfwgp-8081.app.github.dev/api/modules/whatsapp/configure",
+      runURL: "/api/modules/whatsapp/configure",
       learnMore: '{"url": "httpshttps://curly-space-halibut-v9rj7474wxjfwgp-8081.app.github.dev/api/modules/whatsapp/detail", "target":"_self"}',
       createdBy: "system",
       where: {
@@ -127,7 +127,7 @@ export const ChannelsIntregrations = [
       description:
         "Use this application to connect your Facebook Page to Tiledesk",
       installActionURL: "",
-      runURL: "httpshttps://curly-space-halibut-v9rj7474wxjfwgp-8081.app.github.dev/api/modules/messenger/configure",
+      runURL: "/api/modules/messenger/configure",
       learnMore: '{"url": "httpshttps://curly-space-halibut-v9rj7474wxjfwgp-8081.app.github.dev/api/modules/messenger/detail", "target":"_self"}',
       createdBy: "system",
       where: {
@@ -202,7 +202,7 @@ export const ChannelsIntregrations = [
       description:
         "Use this application to connect your Telegram Bot to Tiledesk",
       installActionURL: "",
-      runURL: "https://curly-space-halibut-v9rj7474wxjfwgp-8081.app.github.dev/api/modules/telegram/configure",
+      runURL: "/api/modules/telegram/configure",
       learnMore: '{"url": "httpshttps://curly-space-halibut-v9rj7474wxjfwgp-8081.app.github.dev/api/modules/telegram/detail", "target":"_self"}',
       createdBy: "system",
       where: {
@@ -226,7 +226,7 @@ export const ChannelsIntregrations = [
       title: "Twilio SMS",
       description: "Integrate your sms exchange number with Chatbots",
       installActionURL: "",
-      runURL: "https://curly-space-halibut-v9rj7474wxjfwgp-8081.app.github.dev/api/modules/sms/manage/configure",
+      runURL: "/api/modules/sms/manage/configure",
       learnMore: "https://gethelp.tiledesk.com/",
       createdBy: "system",
       where: {
@@ -250,7 +250,7 @@ export const ChannelsIntregrations = [
       title: "Twilio Voice",
       description: "Integrate your voice exchange number with Chatbots",
       installActionURL: "",
-      runURL: "https://curly-space-halibut-v9rj7474wxjfwgp-8081.app.github.dev/api/modules/voice-twilio/manage/configure",
+      runURL: "/api/modules/voice-twilio/manage/configure",
       learnMore: "https://gethelp.tiledesk.com/",
       createdBy: "system",
       where: {
@@ -274,7 +274,7 @@ export const ChannelsIntregrations = [
       title: "VXML Voice",
       description: "Integrate your voice exchange number with Chatbots",
       installActionURL: "",
-      runURL: "https://curly-space-halibut-v9rj7474wxjfwgp-8081.app.github.dev/api/modules/voice/manage/configure",
+      runURL: "/api/modules/voice/manage/configure",
       learnMore: "https://gethelp.tiledesk.com/",
       createdBy: "system",
       where: {
