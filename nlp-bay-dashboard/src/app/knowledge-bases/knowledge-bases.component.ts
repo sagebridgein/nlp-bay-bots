@@ -1617,20 +1617,21 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     let public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
 
     let keys = public_Key.split("-");
+    this.payIsVisible = true;
 
-    keys.forEach(key => {
-      if (key.includes("PAY")) {
-        let pay = key.split(":");
-        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
-        if (pay[1] === "F") {
-          this.payIsVisible = false;
-          // this.logger.log("payIsVisible: ", this.payIsVisible)
-        } else {
-          this.payIsVisible = true;
-          // this.logger.log("payIsVisible: ", this.payIsVisible)
-        }
-      }
-    })
+    // keys.forEach(key => {
+    //   if (key.includes("PAY")) {
+    //     let pay = key.split(":");
+    //     // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+    //     if (pay[1] === "F") {
+    //       this.payIsVisible = false;
+    //       // this.logger.log("payIsVisible: ", this.payIsVisible)
+    //     } else {
+    //       this.payIsVisible = true;
+    //       // this.logger.log("payIsVisible: ", this.payIsVisible)
+    //     }
+    //   }
+    // })
   }
 
 

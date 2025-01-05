@@ -288,63 +288,65 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
     this.logger.log('[USERS] getAppConfig - public_Key', this.public_Key)
+    this.areActivePay=true;
+    this.isVisibleGroups=true;
+    this.isVisibleAnalytics=true;
+    // let keys = this.public_Key.split('-')
+    // keys.forEach((key) => {
+    //   if (key.includes('GRO')) {
+    //     // this.logger.log('[USERS] - PUBLIC-KEY (Users) - key', key);
+    //     let gro = key.split(':')
+    //     // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro key&value', gro);
 
-    let keys = this.public_Key.split('-')
-    keys.forEach((key) => {
-      if (key.includes('GRO')) {
-        // this.logger.log('[USERS] - PUBLIC-KEY (Users) - key', key);
-        let gro = key.split(':')
-        // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro key&value', gro);
+    //     if (gro[1] === 'F') {
+    //       this.isVisibleGroups = false
+    //       // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro isVisibleGroups', this.isVisibleGroups);
+    //     } else {
+    //       this.isVisibleGroups = true
+    //       // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro isVisibleGroups', this.isVisibleGroups);
+    //     }
+    //   }
 
-        if (gro[1] === 'F') {
-          this.isVisibleGroups = false
-          // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro isVisibleGroups', this.isVisibleGroups);
-        } else {
-          this.isVisibleGroups = true
-          // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro isVisibleGroups', this.isVisibleGroups);
-        }
-      }
+    //   if (key.includes('PAY')) {
+    //     // this.logger.log('[USERS] - PUBLIC-KEY (Users) - key', key);
+    //     let gro = key.split(':')
+    //     // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro key&value', gro);
 
-      if (key.includes('PAY')) {
-        // this.logger.log('[USERS] - PUBLIC-KEY (Users) - key', key);
-        let gro = key.split(':')
-        // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro key&value', gro);
+    //     if (gro[1] === 'F') {
+    //       this.areActivePay = false
+    //       // this.logger.log('[USERS] - PUBLIC-KEY (Users) - areActivePay', this.areActivePay);
+    //     } else {
+    //       this.areActivePay = true
+    //       // this.logger.log('[USERS] - PUBLIC-KEY (Users) - areActivePay', this.areActivePay);
+    //     }
+    //   }
 
-        if (gro[1] === 'F') {
-          this.areActivePay = false
-          // this.logger.log('[USERS] - PUBLIC-KEY (Users) - areActivePay', this.areActivePay);
-        } else {
-          this.areActivePay = true
-          // this.logger.log('[USERS] - PUBLIC-KEY (Users) - areActivePay', this.areActivePay);
-        }
-      }
+    //   if (key.includes("ANA")) {
 
-      if (key.includes("ANA")) {
+    //     let ana = key.split(":");
 
-        let ana = key.split(":");
+    //     if (ana[1] === "F") {
+    //       this.isVisibleAnalytics = false;
+    //       this.logger.log('[USERS] - PUBLIC-KEY (Users) - isVisibleAnalytics', this.isVisibleAnalytics);
+    //     } else {
+    //       this.isVisibleAnalytics = true;
+    //       this.logger.log('[USERS] - PUBLIC-KEY (Users) - isVisibleAnalytics', this.isVisibleAnalytics);
+    //     }
+    //   }
 
-        if (ana[1] === "F") {
-          this.isVisibleAnalytics = false;
-          this.logger.log('[USERS] - PUBLIC-KEY (Users) - isVisibleAnalytics', this.isVisibleAnalytics);
-        } else {
-          this.isVisibleAnalytics = true;
-          this.logger.log('[USERS] - PUBLIC-KEY (Users) - isVisibleAnalytics', this.isVisibleAnalytics);
-        }
-      }
+    // })
 
-    })
+    // if (!this.public_Key.includes("GRO")) {
+    //   this.isVisibleGroups = false;
+    // }
 
-    if (!this.public_Key.includes("GRO")) {
-      this.isVisibleGroups = false;
-    }
+    // if (!this.public_Key.includes("PAY")) {
+    //   this.areActivePay = false;
+    // }
 
-    if (!this.public_Key.includes("PAY")) {
-      this.areActivePay = false;
-    }
-
-    if (!this.public_Key.includes("ANA")) {
-      this.isVisibleAnalytics = false;
-    }
+    // if (!this.public_Key.includes("ANA")) {
+    //   this.isVisibleAnalytics = false;
+    // }
   }
 
   getCurrentProject() {
