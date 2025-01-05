@@ -2971,137 +2971,147 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     // this.logger.log('[HOME] AppConfigService getAppConfig public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
+    this.isVisibleANA = true;
+    this.isVisiblePay = true;
+    this.isVisibleAPP = true;
+    this.isVisibleOPH = true;
+    this.isVisibleHomeBanner = true;
+    this.project_plan_badge = true;
+    this.isVisibleKNB = true;
+    this.getProjectPlan()
+
+
     // this.logger.log('[HOME] PUBLIC-KEY keys', keys)
-    keys.forEach(key => {
-      // this.logger.log('[HOME] public_Key key', key)
-      if (key.includes("PAY")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let pay = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - pay key&value', pay);
-        if (pay[1] === "F") {
-          this.isVisiblePay = false;
-          //  this.logger.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
-        } else {
-          this.isVisiblePay = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
-        }
-      }
-      if (key.includes("ANA")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let ana = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - ana key&value', ana);
+    // keys.forEach(key => {
+    //   // this.logger.log('[HOME] public_Key key', key)
+    //   if (key.includes("PAY")) {
+    //     // this.logger.log('[HOME] PUBLIC-KEY - key', key);
+    //     let pay = key.split(":");
+    //     // this.logger.log('[HOME] PUBLIC-KEY - pay key&value', pay);
+    //     if (pay[1] === "F") {
+    //       this.isVisiblePay = false;
+    //       //  this.logger.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
+    //     } else {
+    //       this.isVisiblePay = true;
+    //       // this.logger.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
+    //     }
+    //   }
+    //   if (key.includes("ANA")) {
+    //     // this.logger.log('[HOME] PUBLIC-KEY - key', key);
+    //     let ana = key.split(":");
+    //     // this.logger.log('[HOME] PUBLIC-KEY - ana key&value', ana);
 
-        if (ana[1] === "F") {
-          this.isVisibleANA = false;
-          // this.logger.log('[HOME] PUBLIC-KEY - ana isVisible', this.isVisibleANA);
-        } else {
-          this.isVisibleANA = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - ana isVisible', this.isVisibleANA);
-        }
-      }
+    //     if (ana[1] === "F") {
+    //       this.isVisibleANA = false;
+    //       // this.logger.log('[HOME] PUBLIC-KEY - ana isVisible', this.isVisibleANA);
+    //     } else {
+    //       this.isVisibleANA = true;
+    //       // this.logger.log('[HOME] PUBLIC-KEY - ana isVisible', this.isVisibleANA);
+    //     }
+    //   }
 
-      if (key.includes("APP")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let lbs = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - app key&value', lbs);
+    //   if (key.includes("APP")) {
+    //     // this.logger.log('[HOME] PUBLIC-KEY - key', key);
+    //     let lbs = key.split(":");
+    //     // this.logger.log('[HOME] PUBLIC-KEY - app key&value', lbs);
 
-        if (lbs[1] === "F") {
-          this.isVisibleAPP = false;
-          // this.logger.log('[HOME] PUBLIC-KEY - app isVisible', this.isVisibleAPP);
-        } else {
-          this.isVisibleAPP = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - app isVisible', this.isVisibleAPP);
-        }
-      }
+    //     if (lbs[1] === "F") {
+    //       this.isVisibleAPP = false;
+    //       // this.logger.log('[HOME] PUBLIC-KEY - app isVisible', this.isVisibleAPP);
+    //     } else {
+    //       this.isVisibleAPP = true;
+    //       // this.logger.log('[HOME] PUBLIC-KEY - app isVisible', this.isVisibleAPP);
+    //     }
+    //   }
 
-      if (key.includes("OPH")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let oph = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - oph key&value', oph);
+    //   if (key.includes("OPH")) {
+    //     // this.logger.log('[HOME] PUBLIC-KEY - key', key);
+    //     let oph = key.split(":");
+    //     // this.logger.log('[HOME] PUBLIC-KEY - oph key&value', oph);
 
-        if (oph[1] === "F") {
-          this.isVisibleOPH = false;
-          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
-        } else {
-          this.isVisibleOPH = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
-        }
-      }
+    //     if (oph[1] === "F") {
+    //       this.isVisibleOPH = false;
+    //       // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
+    //     } else {
+    //       this.isVisibleOPH = true;
+    //       // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
+    //     }
+    //   }
 
-      if (key.includes("HPB")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let hpb = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - oph key&value', oph);
+    //   if (key.includes("HPB")) {
+    //     // this.logger.log('[HOME] PUBLIC-KEY - key', key);
+    //     let hpb = key.split(":");
+    //     // this.logger.log('[HOME] PUBLIC-KEY - oph key&value', oph);
 
-        if (hpb[1] === "F") {
-          this.isVisibleHomeBanner = false;
-          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
-        } else {
-          this.isVisibleHomeBanner = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
-        }
-      }
+    //     if (hpb[1] === "F") {
+    //       this.isVisibleHomeBanner = false;
+    //       // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
+    //     } else {
+    //       this.isVisibleHomeBanner = true;
+    //       // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
+    //     }
+    //   }
 
-      if (key.includes("PPB")) {
-        // this.logger.log('PUBLIC-KEY (HOME) - key', key);
-        let ppb = key.split(":");
-        // this.logger.log('PUBLIC-KEY (HOME) - ppb key&value', ppb);
+    //   if (key.includes("PPB")) {
+    //     // this.logger.log('PUBLIC-KEY (HOME) - key', key);
+    //     let ppb = key.split(":");
+    //     // this.logger.log('PUBLIC-KEY (HOME) - ppb key&value', ppb);
 
-        if (ppb[1] === "F") {
-          this.project_plan_badge = false;
-          // this.logger.log('PUBLIC-KEY (HOME) - project plan badge is', this.project_plan_badge);
-        } else {
-          this.project_plan_badge = true;
-          // this.logger.log('PUBLIC-KEY (HOME) - project plan badge is', this.project_plan_badge);
-        }
-      }
+    //     if (ppb[1] === "F") {
+    //       this.project_plan_badge = false;
+    //       // this.logger.log('PUBLIC-KEY (HOME) - project plan badge is', this.project_plan_badge);
+    //     } else {
+    //       this.project_plan_badge = true;
+    //       // this.logger.log('PUBLIC-KEY (HOME) - project plan badge is', this.project_plan_badge);
+    //     }
+    //   }
 
-      if (key.includes('KNB')) {
-        let knb = key.split(':')
-        if (knb[1] === 'F') {
-          this.isVisibleKNB = false;
-        } else {
-          this.isVisibleKNB = true;
-          this.getProjectPlan()
-        }
-      }
+    //   if (key.includes('KNB')) {
+    //     let knb = key.split(':')
+    //     if (knb[1] === 'F') {
+    //       this.isVisibleKNB = false;
+    //     } else {
+    //       this.isVisibleKNB = true;
+    //       this.getProjectPlan()
+    //     }
+    //   }
 
 
-    });
+    // });
 
-    if (!this.public_Key.includes("ANA")) {
-      // this.logger.log('[HOME] PUBLIC-KEY - key.includes("V1L")', this.public_Key.includes("ANA"));
-      this.isVisibleANA = false;
-    }
+    // if (!this.public_Key.includes("ANA")) {
+    //   // this.logger.log('[HOME] PUBLIC-KEY - key.includes("V1L")', this.public_Key.includes("ANA"));
+    //   this.isVisibleANA = false;
+    // }
 
-    if (!this.public_Key.includes("APP")) {
-      // this.logger.log('[HOME] PUBLIC-KEY - key.includes("APP")', this.public_Key.includes("APP"));
-      this.isVisibleAPP = false;
-    }
+    // if (!this.public_Key.includes("APP")) {
+    //   // this.logger.log('[HOME] PUBLIC-KEY - key.includes("APP")', this.public_Key.includes("APP"));
+    //   this.isVisibleAPP = false;
+    // }
 
-    if (!this.public_Key.includes("OPH")) {
-      // this.logger.log('[HOME] PUBLIC-KEY - key.includes("OPH")', this.public_Key.includes("OPH"));
-      this.isVisibleOPH = false;
-    }
+    // if (!this.public_Key.includes("OPH")) {
+    //   // this.logger.log('[HOME] PUBLIC-KEY - key.includes("OPH")', this.public_Key.includes("OPH"));
+    //   this.isVisibleOPH = false;
+    // }
 
-    if (!this.public_Key.includes("HPB")) {
-      // this.logger.log('[HOME] PUBLIC-KEY - key.includes("OPH")', this.public_Key.includes("OPH"));
-      this.isVisibleHomeBanner = false;
-    }
+    // if (!this.public_Key.includes("HPB")) {
+    //   // this.logger.log('[HOME] PUBLIC-KEY - key.includes("OPH")', this.public_Key.includes("OPH"));
+    //   this.isVisibleHomeBanner = false;
+    // }
 
-    if (!this.public_Key.includes("PPB")) {
-      // this.logger.log('PUBLIC-KEY (HOME) - key.includes("PPB")', this.public_Key.includes("PPB"));
-      this.project_plan_badge = false;
-    }
+    // if (!this.public_Key.includes("PPB")) {
+    //   // this.logger.log('PUBLIC-KEY (HOME) - key.includes("PPB")', this.public_Key.includes("PPB"));
+    //   this.project_plan_badge = false;
+    // }
 
-    if (!this.public_Key.includes("PAY")) {
-      // this.logger.log('PUBLIC-KEY (HOME) - key.includes("PPB")', this.public_Key.includes("PPB"));
-      this.isVisiblePay = false;
-    }
+    // if (!this.public_Key.includes("PAY")) {
+    //   // this.logger.log('PUBLIC-KEY (HOME) - key.includes("PPB")', this.public_Key.includes("PPB"));
+    //   this.isVisiblePay = false;
+    // }
 
-    if (!this.public_Key.includes('KNB')) {
-      this.isVisibleKNB = false
-    }
+    // if (!this.public_Key.includes('KNB')) {
+    //   this.isVisibleKNB = false
+    // }
   }
 
   getProjectPlan() {

@@ -244,6 +244,29 @@ class FaqService {
       }).lean().exec()
     })
   }
+  addPublicTemplate(templates,projectid){
+    return new Promise((resolve, reject) => {
+      // Modify each template object with the required properties
+      const updatedTemplates = templates.map(template => {
+        return {
+          ...template, // Copy the existing template properties
+          id_project: projectid,
+          createdBy: "system",
+          updatedBy: "system",
+        };
+      });
+  
+      // Insert the modified templates into the Faq_kb collection
+      Faq_kb.insertMany(updatedTemplates, function(err, docs) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(docs);
+        }
+      });
+    });
+  
+  }
 
 
 }

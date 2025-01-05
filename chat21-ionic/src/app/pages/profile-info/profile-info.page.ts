@@ -264,30 +264,31 @@ export class ProfileInfoPage implements OnInit {
   getOSCODE() {
     let public_Key = this.appConfigProvider.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     this.logger.log('[PROFILE-INFO-PAGE] AppConfigService getAppConfig public_Key', public_Key);
+    this.isVisiblePAY = true;
     this.logger.log('[PROFILE-INFO-PAGE] AppConfigService getAppConfig', this.appConfigProvider.getConfig());
-    if (public_Key) {
-      let keys = public_Key.split("-");
-      this.logger.log('[PROFILE-INFO-PAGE] PUBLIC-KEY - public_Key keys', keys)
+    // if (public_Key) {
+    //   let keys = public_Key.split("-");
+    //   this.logger.log('[PROFILE-INFO-PAGE] PUBLIC-KEY - public_Key keys', keys)
 
-      keys.forEach(key => {
-        if (key.includes("PAY")) {
+    //   keys.forEach(key => {
+    //     if (key.includes("PAY")) {
 
-          let pay = key.split(":");
+    //       let pay = key.split(":");
 
-          if (pay[1] === "F") {
-            this.isVisiblePAY = false;
-          } else {
-            this.isVisiblePAY = true;
-          }
-        }
-      });
+    //       if (pay[1] === "F") {
+    //         this.isVisiblePAY = false;
+    //       } else {
+    //         this.isVisiblePAY = true;
+    //       }
+    //     }
+    //   });
 
-      if (!public_Key.includes("PAY")) {
-        this.isVisiblePAY = false;
-      }
-    } else {
-      this.isVisiblePAY = false;
-    }
+    //   if (!public_Key.includes("PAY")) {
+    //     this.isVisiblePAY = false;
+    //   }
+    // } else {
+    //   this.isVisiblePAY = false;
+    // }
   }
 
   copyLoggedUserUID() {

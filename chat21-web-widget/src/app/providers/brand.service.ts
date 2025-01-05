@@ -21,11 +21,11 @@ export class BrandService {
 
   _brand = {
     DASHBOARD: {
-      META_TITLE: "Tiledesk Support Dashboard",
-      FAVICON_URL: "https://tiledesk.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
-      "company_name": "Tiledesk",
-      "company_site_name": "tiledesk.com",
-      "company_site_url": "https://www.tiledesk.com",
+      META_TITLE: "NlpBay Support",
+      FAVICON_URL: "https://nlpbay.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
+      "company_name": "NlpBay",
+      "company_site_name": "nlpbay.com",
+      "company_site_url": "https://www.nlpbay.com",
       "company_logo_white__url": "assets/img/logos/tiledesk-logo_white_orange.svg",
       "company_logo_black__url": "assets/img/logos/tiledesk_3.0_logo_black_v2_no_version.svg",
       "company_logo_allwhite__url": "assets/img/logos/tiledesk_3.0_logo_all_white_v2_no_version.svg",

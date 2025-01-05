@@ -1,0 +1,499 @@
+[
+    {
+        "_id": "667ac738c08d0b001433cfbf",
+        "webhook_enabled": false,
+        "type": "tilebot",
+        "language": "en",
+        "public": true,
+        "certified": true,
+        "intentsEngine": "none",
+        "tags": [],
+        "score": 0,
+        "trained": true,
+        "certifiedTags": [
+            {
+                "color": "#00699e",
+                "name": "kb-official-responder"
+            }
+        ],
+        "name": "AI Knowledge Base Assistant",
+        "description": "Connect effortlessly your Knowledge Base through the AI-powered feature to retrieve and provide pertinent answers for your users.",
+        "id_project": "63d7911ca7b3d3001a4a9404",
+        "trashed": false,
+        "createdBy": "63ac7f0a70d5ed0012aca75b",
+        "createdAt": "2024-06-25T13:33:44.708Z",
+        "updatedAt": "2024-06-25T13:43:06.136Z",
+        "__v": 0,
+        "url": "http://localhost:3000/modules/tilebot/ext/667ac738c08d0b001433cfbf",
+        "short_description": "Connect effortlessly your Knowledge Base through the AI-powered feature to retrieve and provide pertinent answers for your users.",
+        "title": "AI Knowledge Base Assistant"
+    },
+    {
+        "_id": "65605e3dfb23780013b92711",
+        "webhook_enabled": false,
+        "type": "tilebot",
+        "language": "en",
+        "public": true,
+        "certified": true,
+        "intentsEngine": "none",
+        "tags": [],
+        "score": 0,
+        "trained": true,
+        "certifiedTags": [
+            {
+                "name": "Support",
+                "color": "#25833e"
+            }
+        ],
+        "name": "Qapla'",
+        "id_project": "63d7911ca7b3d3001a4a9404",
+        "trashed": false,
+        "createdBy": "63a070c75f117f0013541aa1",
+        "attributes": {
+            "variables": {
+                "trackNo": "trackNo"
+            }
+        },
+        "createdAt": "2023-11-24T08:26:37.370Z",
+        "updatedAt": "2023-11-24T08:27:00.060Z",
+        "__v": 0,
+        "url": "http://localhost:3000/modules/tilebot/ext/65605e3dfb23780013b92711",
+        "mainCategory": "Customer Satisfaction",
+        "description": "Grazie all'integrazione con Qapla' puoi rispondere automaticamente alle richieste dei clienti sullo stato delle spedizioni 24/7"
+    },
+    {
+        "_id": "6540df71263a67001342ba44",
+        "webhook_enabled": false,
+        "type": "tilebot",
+        "language": "en",
+        "public": true,
+        "certified": true,
+        "intentsEngine": "none",
+        "tags": [
+            "Customer Engagement Templates",
+            "Large Language Models",
+            "Custom User Template",
+            "Conversational AI",
+            "Customer Engagement",
+            "User Experience Enhancement",
+            "AI-Powered Chatbot",
+            "Personalized Conversations"
+        ],
+        "score": 0,
+        "trained": true,
+        "certifiedTags": [
+            {
+                "color": "#25833e",
+                "name": "Support"
+            }
+        ],
+        "name": "Flow Branching + LLM-enabled conversation",
+        "id_project": "63d7911ca7b3d3001a4a9404",
+        "trashed": false,
+        "createdBy": "639885dbec6850001a525e8b",
+        "createdAt": "2023-10-31T11:05:21.675Z",
+        "updatedAt": "2024-01-31T16:23:39.718Z",
+        "__v": 0,
+        "url": "http://localhost:3000/modules/tilebot/ext/6543e9a1263a67001366fe1c",
+        "attributes": {
+            "variables": {
+                "gpt_reply": "gpt_reply",
+                "product_feedback": "product_feedback",
+                "gpt_1st_input": "gpt_1st_input",
+                "gpt_try_input": "gpt_try_input"
+            }
+        },
+        "description": "In today's fast-paced world, efficient customer support is paramount for businesses. Tiledesk, a popular customer engagement platform, offers a wide range of features to help businesses deliver top-notch support to their users. One way to enhance the user experience is by creating customized templates that streamline conversations and improve efficiency. In this article, we'll explore how to create a personalized Tiledesk user template using Large Language Models (LLM), specifically, a LLM like GPT-4.0, to categorize user responses, create different conversation branches, and generate new blocks for better engagement.\n\nYou can get started by [watching this video tutorial](https://youtu.be/yjx1USGofyQ) or, if you prefer, keep reading the rest of this article and watch it later.\n\n## 1. Categorization of User Answers with Larg Language Models\n\nThe first step in creating a customized Tiledesk user template is to categorize user responses efficiently. This categorization helps in routing users to appropriate conversation flows. To achieve this, we can leverage the power of LLM, such as GPT-4.0.\n\n### How it works:\n\n- **Initial Question:** Start by asking an initial question, such as, \"Have you ever used Tiledesk before?\" Users' responses can be quite diverse, but a Language Model can help categorize these responses into predefined categories. For instance, responses can be categorized into \"New Users,\" \"Experienced Users,\" or \"Not Sure.\"\n\n- **Language Model Assistance:** Utilize the Language Model's capabilities to analyze and categorize user responses. The model can understand the context of the responses and assign them to the relevant categories.\n\n- **Routing:** Depending on the category, you can set up different conversation flows. For instance, new users can be guided through onboarding, while experienced users may need advanced support or product feature information.\n\n## 2. Creation of Different Branches for Conversation Flows\n\nOnce you've categorized user responses, it's time to create different conversation branches to guide users through their unique journeys. Each branch can be tailored to address the specific needs of users in a particular category.\n\n### How it works:\n\n- **Branches:** Set up different conversation branches for each user category. For instance, for \"New Users,\" you might have a branch that covers the basics of using Tiledesk. For \"Experienced Users,\" you could create a branch that delves into advanced features and troubleshooting.\n\n- **Conditional Logic:** Use conditional logic within Tiledesk to route users to the appropriate branch based on their categorization. Language Models can assist in making dynamic decisions by analyzing user responses.\n\n## 3. Creation of New Blocks with Language Models\n\nEngaging users effectively often requires asking questions and seeking feedback. Language Models can assist in generating relevant questions and responses to user feedback, enhancing the conversational experience.\n\n### How it works:\n\n- **Generating Questions:** Use the Language Model to generate questions that solicit user feedback. For instance, \"What features of Tiledesk do you find most valuable?\" or \"Is there anything you'd like to see improved in Tiledesk?\"\n\n- **Handling Feedback:** When users provide feedback, use the Language Model to generate appropriate responses. It can help in acknowledging their feedback, providing solutions, or passing feedback to relevant teams.\n\n- **Iterative Improvements:** Continuously refine the questions and responses based on the feedback received. Over time, this can lead to a more personalized and effective user template.\n\nBy incorporating Language Models into your Tiledesk template, you can achieve a higher level of personalization and efficiency in your customer support interactions. This approach not only streamlines user conversations but also enhances the overall user experience.\n\n**In conclusion**, creating a customized user template with LLM for Tiledesk empowers businesses to categorize user responses, create tailored conversation flows, and generate engaging questions and responses. This not only improves support efficiency but also helps in delivering a better customer experience.\n\nIf you're looking to take your Tiledesk support to the next level, consider integrating Large Language Models to create a more personalized and efficient template for your users.\n",
+        "short_description": "Discover how custom templates and Language Models can elevate your business. Categorize user responses, create specialized conversation branches, and generate engaging questions for a more personalized user experience. Boost your customer engagement with this innovative approach.",
+        "title": "Creating a Customized Conversation Flow with LLM",
+        "mainCategory": "Customer Satisfaction",
+        "templateFeatures": [
+            "Categorize user responses",
+            "Create tailored conversation flows",
+            "Generate engaging questions and responses"
+        ]
+    },
+    {
+        "_id": "653940987aba79001392b54d",
+        "webhook_enabled": false,
+        "type": "tilebot",
+        "language": "en",
+        "public": true,
+        "certified": true,
+        "intentsEngine": "none",
+        "tags": [
+            "Lead Generation",
+            "ChatGPT Integration",
+            "AI Chatbot",
+            "Customer Engagement",
+            "CRM Integration",
+            "Email Notifications",
+            "Hubspot Integration",
+            "External Knowledge Base",
+            "Marketing Automation",
+            "Conversion Strategy",
+            "Chatbot Technology",
+            "GPT-Powered Chatbot",
+            "Enhanced Visitor Experience",
+            "LLM-enabled chatbots"
+        ],
+        "score": 0,
+        "trained": true,
+        "certifiedTags": [
+            {
+                "color": "#a16300",
+                "name": "Lead-Gen"
+            }
+        ],
+        "name": "GPT + Email Automation for Lead Gen",
+        "id_project": "63d7911ca7b3d3001a4a9404",
+        "trashed": false,
+        "createdBy": "639885dbec6850001a525e8b",
+        "attributes": {
+            "variables": {
+                "userFullname": "userFullname",
+                "userEmail": "userEmail",
+                "firstname": "firstname",
+                "lastname": "lastname",
+                "userPhone": "userPhone",
+                "result": "result",
+                "status": "status",
+                "error": "error",
+                "gpt_reply": "gpt_reply",
+                "topic": "topic",
+                "use_case": "use_case"
+            },
+            "rules": [
+                {
+                    "uid": "99846253-ecb8-41da-8bbc-a64ac72e6201",
+                    "name": "home page",
+                    "description": "",
+                    "when": {
+                        "regexOption": "ends",
+                        "text": "tiledesk.com/",
+                        "urlMatches": "^.*(tiledesk.com/)$",
+                        "triggerEvery": -1
+                    },
+                    "do": [
+                        {
+                            "message": {
+                                "text": "/proactiveMessage",
+                                "participants": [
+                                    "bot_653940987aba79001392b54d"
+                                ],
+                                "attributes": {
+                                    "subtype": "info"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "createdAt": "2023-10-25T16:21:44.183Z",
+        "updatedAt": "2023-10-27T09:23:15.292Z",
+        "__v": 0,
+        "url": "http://localhost:3000/modules/tilebot/ext/653b8183263a6700130d434a",
+        "description": "Unlock the full potential of lead generation with Tiledesk's seamless ChatGPT integration. Explore how our innovative chatbot, powered by Large Language Models (LLM), can enhance visitor engagement and drive conversions on your website. Discover the power of automated email notifications and expert consultations to fuel your lead generation strategy.\n\n## Qualifying Website Visitors with Chatbots\n\nStart by understanding your visitors' needs. Our chatbot asks the crucial question: Are visitors looking for information or seeking ways to supercharge lead generation? We guide them to the right resources for maximum conversion potential. Feel free to customize these buttons and adapt them to the need of your business. It's important to mention that in this template, for each button we set different variables for the same attribute. This can be useful for different scopes:\n- create conditional flows based on the answers of your customers;\n- export these attributes to your CRM in order to identify better your audience;\n- use the answers of your customers to generated dedicated prompts of Chat-GPT.\n\n## A Glimpse at New Features\n\nDiscover our latest features firsthand. Get a preview of what Tiledesk offers and engage with a real-time chat with our team for personalized insights into how you can boost lead generation.\n\n## The Magic of Email Notifications\n\nCollect visitor information and provide instant email notifications. Even if no one's available for a chat, rest assured, we'll reach out via email to fuel your lead generation efforts. No need to integrate any email automation tool, you can exploit our native email channel.\n\n## Scheduling a 15-Minute Call\n\nIt doesn't end with an email. Explore the opportunity to [schedule a 15-minute call](https://meetings-eu1.hubspot.com/michele-pomposo) with one of our expert to dive deeper into our seamless ChatGPT integration and supercharge your lead generation strategy.\n\n## Streamlining Communication\n\nOur automated email notifications and LLM-enabled chatbot enhance lead generation. Make your interactions efficient and meaningful with Tiledesk and ChatGPT.\n\n## Want to Get Started?\n\nReady to supercharge your lead generation efforts? [Watch this video tutorial](https://www.loom.com/share/7429067bcd064c6d8ebda310bd46bf00?sid=fe49e6a6-ace8-463e-9592-1cb976293ab9) for further instructions. If you have any questions or if you prefer a dedicated session in English, feel free to connect with me on LinkedIn. You can also find my email in my profile page.\n\n## Privacy Policy\n\nTransparency and data privacy are paramount to us. Inside this AI chatbot template, you'll find our comprehensive Privacy Policy. Please remember to replace it with your Privacy Policy URL for your reference. Your privacy and data security are our top priorities.\n\n## Hubspot Integration\n\nIn this AI Chatbot template, you'll find an example of quick integration for Hubspot. To set up your integration, simply replace the Authorization Key with your own. This integration allows you to seamlessly connect your lead generation efforts with Hubspot's powerful CRM. You can find more information about [collecting user data and seamlessly send it to HubSpot in this template](https://tiledesk.com/community/search/getchatbotinfo/chatbotId/64497fa225e3f70012b33f58-Chatbot-to-Collect-User-Data-and-Seamlessly-Send-it-to-HubSpot)\n\n## Connecting to an External Knowledge Base\n\nLooking to enhance your chatbot's knowledge? Check out our quick guide on how to connect your external knowledge base for GPT automation [here](https://gethelp.tiledesk.com/articles/how-to-connect-your-knowledge-base-for-gpt-automation/). This integration empowers your chatbot with a wealth of information to better assist your website visitors.\n\nIn conclusion, harness the synergy between Tiledesk and ChatGPT to supercharge your lead generation efforts. Our LLM-enabled chatbot, combined with email notifications and expert consultations, ensures that your website visitors are primed for conversion.\n\nCurious to explore this lead generation powerhouse? Get in touch, and we'll guide you on implementing it in your projects and workspaces.\n\nStay tuned for more exciting developments at Tiledesk, where we're dedicated to fueling your lead generation success.\n",
+        "short_description": "Unlock the full potential of lead generation with Tiledesk's seamless ChatGPT integration. Explore how our innovative chatbot, powered by Large Language Models, can enhance visitor engagement and drive conversions on your website. Discover the power of automated email notifications and expert consultations to fuel your lead generation strategy. Get in touch to implement this lead generation powerhouse in your workspaces.",
+        "title": "Supercharge Lead Generation with Tiledesk's ChatGPT Integration"
+    },
+    {
+        "_id": "6529582c23034f0013ee1af6",
+        "webhook_enabled": false,
+        "type": "tilebot",
+        "language": "en",
+        "public": true,
+        "certified": true,
+        "intentsEngine": "none",
+        "tags": [],
+        "score": 0,
+        "trained": true,
+        "certifiedTags": [
+            {
+                "name": "Lead-gen",
+                "color": "#a16300"
+            }
+        ],
+        "name": "Generate Leads",
+        "description": "A chatbot that advertises your special offers. It collects the customer’s name, email and phone number to share the promo code and for marketing purposes.",
+        "id_project": "63d7911ca7b3d3001a4a9404",
+        "trashed": false,
+        "createdBy": "63a07fb25f117f0013542b76",
+        "attributes": {
+            "rules": [],
+            "variables": {
+                "userEmail": "userEmail",
+                "userFullname": "userFullname"
+            }
+        },
+        "createdAt": "2023-10-13T14:46:04.803Z",
+        "updatedAt": "2023-11-09T09:12:59.099Z",
+        "__v": 0,
+        "url": "http://localhost:3000/modules/tilebot/ext/654ca29a3c13440013c3cf06",
+        "mainCategory": "Increase Sales",
+        "title": "Generate leads by offering promo discounts via automated email",
+        "videoSource": "https://videos.files.wordpress.com/miWQ0mBX/lead-gen.mp4"
+    },
+    {
+        "_id": "6520383652d5bc00139bccf5",
+        "webhook_enabled": false,
+        "type": "tilebot",
+        "language": "en",
+        "public": true,
+        "certified": true,
+        "intentsEngine": "none",
+        "tags": [],
+        "score": 0,
+        "trained": true,
+        "certifiedTags": [
+            {
+                "name": "Support",
+                "color": "#25833e"
+            }
+        ],
+        "name": "ChatGPT Task",
+        "id_project": "63d7911ca7b3d3001a4a9404",
+        "trashed": false,
+        "createdBy": "63a07fb25f117f0013542b76",
+        "createdAt": "2023-10-06T16:39:18.849Z",
+        "updatedAt": "2023-10-13T08:15:16.257Z",
+        "__v": 0,
+        "url": "http://localhost:3000/modules/tilebot/ext/652825a1aa375a0013e85288",
+        "attributes": {
+            "variables": {
+                "gpt_reply": "gpt_reply",
+                "rating": "rating",
+                "kb_reply": "kb_reply",
+                "kb_source": "kb_source"
+            }
+        },
+        "mainCategory": "Customer Satisfaction",
+        "description": "The Tiledesk Feedback GPT Bot is a transformative tool designed to enhance your customer engagement strategy. It leverages the power of ChatGPT AI to analyze real-time customer feedback and generate personalized responses. Whether a customer rates their experience as excellent or less than satisfactory, the bot responds appropriately, expressing gratitude or empathy as needed. This bot is not just a feedback tool; it’s an essential part of your customer engagement strategy, helping you understand and respond to your customers’ needs more effectively.",
+        "short_description": "The Tiledesk Feedback GPT Bot is a transformative tool designed to enhance your customer engagement strategy",
+        "title": "ChatGPT Task"
+    },
+    {
+        "_id": "651ecc5749598e0013305876",
+        "webhook_enabled": false,
+        "type": "tilebot",
+        "language": "en",
+        "public": true,
+        "certified": true,
+        "intentsEngine": "none",
+        "tags": [
+            "Automation",
+            "Customer Support",
+            "Tiledesk",
+            "Chat-GPT",
+            "AI Integration",
+            "Customer Requests",
+            "Priority Classification",
+            "Efficiency",
+            "Customer Satisfaction",
+            "Resource Optimization",
+            "Consistency",
+            "Customer Experience",
+            "Live Chat",
+            "AI Automation",
+            "Business Operations"
+        ],
+        "score": 0,
+        "trained": true,
+        "certifiedTags": [
+            {
+                "color": "#25833e",
+                "name": "Support"
+            }
+        ],
+        "name": "Manage Support Requests",
+        "id_project": "651ecc47e1228b0013203fac",
+        "trashed": false,
+        "createdBy": "639885dbec6850001a525e8b",
+        "attributes": {
+            "variables": {
+                "gpt_reply": "gpt_reply",
+                "email_example": "email_example"
+            }
+        },
+        "createdAt": "2023-10-05T14:46:47.492Z",
+        "updatedAt": "2023-10-05T15:12:55.163Z",
+        "__v": 0,
+        "url": "http://localhost:3000/modules/tilebot/ext/651ed23c2567d200136c44a7",
+        "description": "## The Power of Automation and AI\n\nAutomation has revolutionized various aspects of business operations, and customer support is no exception. By automating the classification of customer requests, you can achieve the following benefits:\n\n1. **Improved Response Time:** High-priority requests are immediately routed to live agents, reducing customer wait times and enhancing their experience.\n\n2. **Resource Optimization:** Automation allows you to allocate resources more effectively, ensuring that live agents are focused on handling the most critical issues.\n\n3. **Consistency:** AI-driven classification ensures consistent and unbiased prioritization of customer requests.\n\n## Tools Used for Automation\n\nTo achieve this automation, we utilize two key components:\n\n1. **Tiledesk:** Tiledesk is a competitive alternative to Voiceflow and Botpress for streamlined Generative AI Chatbot Development. It also allows businesses to manage customer interactions across various channels, including live chat.\n\n2. **Chat-GPT by OpenAI:** Chat-GPT is a state-of-the-art language model capable of understanding and generating human-like text responses. Its integration with Tiledesk enables it to analyze and classify customer requests effectively.\n\n## The Classification Prompt\n\nThe core of this automation lies in the classification prompt used with Chat-GPT. Here's the prompt we use for classifying incoming customer requests:\n\nAnalyse an incoming customer request via live chat to determine its priority.\nIf the priority is high, you can answer \"high\"; otherwise, answer \"low\".\nThe incoming customer request is {{last_user_text}}\n\n## Conclusion\n\nAutomating the classification of inbound customer requests using Tiledesk and Chat-GPT is a game-changer for modern customer support operations. By leveraging the power of AI and intelligent routing, businesses can improve efficiency, reduce response times, and deliver a superior customer experience.\n\nIn an era where customer satisfaction is a critical competitive advantage, this automation not only helps you stay ahead but also strengthens your customer relationships, ultimately driving business success.\n\n---\n\n*Note: Stay tuned for more insights on optimizing your customer support with cutting-edge technologies.*\n\n*For further inquiries or to explore Tiledesk and Chat-GPT integration, contact me*\n",
+        "short_description": "Discover how automation with Tiledesk and Chat-GPT by OpenAI streamlines customer request classification, allowing you to prioritize high-priority inquiries for swift resolution. Improve efficiency, reduce response times, and enhance the overall customer experience.",
+        "title": "Prioritize the support requests through GPT 4 use case prompts",
+        "mainCategory": "Customer Satisfaction",
+        "videoSource": "https://videos.files.wordpress.com/VJfeGCBw/priority-gpt-bot.mp4"
+    },
+    {
+        "_id": "651e66be6717f500135f41b9",
+        "webhook_enabled": false,
+        "type": "tilebot",
+        "language": "en",
+        "public": true,
+        "certified": true,
+        "intentsEngine": "none",
+        "tags": [],
+        "score": 0,
+        "trained": true,
+        "certifiedTags": [
+            {
+                "color": "#a16300",
+                "name": "Lead-gen"
+            }
+        ],
+        "name": "Showcase Deals",
+        "description": "A chatbot template that shows product cards with detailed information and a purchase link or a link to the product page inside the widget. It also displays the items that the user has added to their cart.",
+        "id_project": "63d7911ca7b3d3001a4a9404",
+        "trashed": false,
+        "createdBy": "63a070c75f117f0013541aa1",
+        "attributes": {
+            "variables": {
+                "userEmail": "userEmail"
+            }
+        },
+        "createdAt": "2023-10-05T07:33:18.803Z",
+        "updatedAt": "2024-08-01T10:02:51.319Z",
+        "__v": 0,
+        "url": "http://localhost:3000/modules/tilebot/ext/66ab5d4bdbb5bb0013d70b6f",
+        "mainCategory": "Increase Sales",
+        "title": "Display your best deals with a carousel for a quick purchase",
+        "videoSource": "https://videos.files.wordpress.com/pujds7Bw/product-cards.mp4"
+    },
+    {
+        "_id": "651ad6c1bfdf310013ca90d7",
+        "webhook_enabled": false,
+        "type": "tilebot",
+        "language": "en",
+        "public": true,
+        "certified": true,
+        "intentsEngine": "none",
+        "tags": [],
+        "score": 0,
+        "trained": true,
+        "certifiedTags": [
+            {
+                "color": "#25833e",
+                "name": "Support"
+            }
+        ],
+        "name": "24/7 Customer Service",
+        "description": "A chatbot that provides initial support for an online shop",
+        "id_project": "63d7911ca7b3d3001a4a9404",
+        "trashed": false,
+        "createdBy": "63a070c75f117f0013541aa1",
+        "attributes": {
+            "variables": {
+                "telefono": "telefono",
+                "OrderID": "OrderID",
+                "userFullname": "userFullname",
+                "userEmail": "userEmail",
+                "mensaje": "mensaje",
+                "userMessage": "userMessage"
+            }
+        },
+        "createdAt": "2023-10-02T14:42:09.889Z",
+        "updatedAt": "2023-10-05T08:49:26.814Z",
+        "__v": 0,
+        "url": "http://localhost:3000/modules/tilebot/ext/651e7896a1b941001307c4c9",
+        "mainCategory": "Customer Satisfaction",
+        "title": "Give real-time info about purchase orders to your customers ",
+        "videoSource": "https://videos.files.wordpress.com/o3etQXZJ/customer-service.mp4"
+    },
+    {
+        "_id": "651ad57537e7250013d82daf",
+        "webhook_enabled": false,
+        "type": "tilebot",
+        "language": "en",
+        "public": true,
+        "certified": true,
+        "intentsEngine": "none",
+        "tags": [],
+        "score": 0,
+        "trained": true,
+        "certifiedTags": [
+            {
+                "color": "#25833e",
+                "name": "Support"
+            }
+        ],
+        "name": "Customer Rating Template",
+        "description": "A chatbot template that asks for customer feedback and takes action accordingly.",
+        "id_project": "63d7911ca7b3d3001a4a9404",
+        "trashed": false,
+        "createdBy": "63a070c75f117f0013541aa1",
+        "attributes": {
+            "variables": {
+                "gpt_reply": "gpt_reply",
+                "rating": "rating"
+            }
+        },
+        "createdAt": "2023-10-02T14:36:37.568Z",
+        "updatedAt": "2023-10-13T13:56:03.533Z",
+        "__v": 0,
+        "url": "http://localhost:3000/modules/tilebot/ext/65292be5aa375a0013f12aa3",
+        "mainCategory": "Customer Satisfaction"
+    },
+    {
+        "_id": "651a87648cb2c70013d80d8b",
+        "webhook_enabled": false,
+        "type": "tilebot",
+        "language": "en",
+        "public": true,
+        "certified": true,
+        "intentsEngine": "none",
+        "tags": [],
+        "score": 0,
+        "trained": true,
+        "certifiedTags": [
+            {
+                "color": "#a16300",
+                "name": "Lead-gen"
+            }
+        ],
+        "name": "Boost Engagement",
+        "description": "A proactive chatbot that helps increase the number of demo requests, provides info about pricing, plans, product features, and connects website visitors to a sales team member if the user requests.",
+        "id_project": "63d7911ca7b3d3001a4a9404",
+        "trashed": false,
+        "createdBy": "63a07fb25f117f0013542b76",
+        "attributes": {
+            "rules": [
+                {
+                    "uid": "44a3878e-36b6-4d05-88cf-a3b85b009671",
+                    "name": "proactive bot",
+                    "description": "",
+                    "when": {
+                        "regexOption": "ends",
+                        "text": "tiledesk.com/2023/09/21/proactive-bot/",
+                        "urlMatches": "^.*(tiledesk.com/2023/09/21/proactive-bot/)$",
+                        "triggerEvery": -1
+                    },
+                    "do": [
+                        {
+                            "message": {
+                                "text": "/start",
+                                "participants": [
+                                    "bot_651a87648cb2c70013d80d8b"
+                                ],
+                                "attributes": {
+                                    "subtype": "info"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "variables": {
+                "preferredContact_channel": "preferredContact_channel"
+            }
+        },
+        "createdAt": "2023-10-02T09:03:32.914Z",
+        "updatedAt": "2024-07-11T11:09:49.546Z",
+        "__v": 0,
+        "url": "http://localhost:3000/modules/tilebot/ext/668fbd7dcbbe2a0013d4e4c1",
+        "mainCategory": "Increase Sales",
+        "title": "Engage your customers proactively to boost the number of your demo requests",
+        "videoSource": "https://videos.files.wordpress.com/TOZV61Dq/demo-booking-bot.mp4"
+    }
+]
