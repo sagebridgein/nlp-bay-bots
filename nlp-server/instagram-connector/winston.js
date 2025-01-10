@@ -1,6 +1,6 @@
 var appRoot = require('app-root-path');
 var winston = require('winston');
-var level = process.env.WHATSAPP_LOG || 'info';
+var level = process.env.MESSENGER_LOG || 'info';
 
 var options = {
   file: {
