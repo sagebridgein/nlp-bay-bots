@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 router.get('/disconnect/:project_id', async (req, res) => {
 
   let project_id = req.params.project_id;
-  let CONTENT_KEY = "Instagram-" + project_id;
+  let CONTENT_KEY = "instagram-" + project_id;
 
   let settings = await db.get(CONTENT_KEY);
 
@@ -48,11 +48,11 @@ router.post('/customer/io', async (req, res) => {
   winston.verbose("Event received from customer.io");
   winston.debug("Body (customer.io): ", req.body);
 
-  let tiledeskChannelMessage = req.body;
+  const { id_project, receiver } = req.body;
 
-  let project_id = req.body.id_project;
+  // let project_id = req.body.id_project;
 
-  let CONTENT_KEY = "Instagram-" + project_id;
+  let CONTENT_KEY = "instagram-" + id_project;
   let settings = await db.get(CONTENT_KEY);
 
   if (!settings) {
@@ -61,16 +61,16 @@ router.post('/customer/io', async (req, res) => {
 
   const tlr = new TiledeskInstagramTranslator();
 
-  let receiver = tiledeskChannelMessage.receiver_phone_number;
-  let phone_number_id = tiledeskChannelMessage.phone_number_id;
+  // let receiver = tiledeskChannelMessage.receiver;
+  // let phone_number_id = tiledeskChannelMessage.phone_number_id;
 
-  let InstagramJsonMessage = await tlr.toInstagram(tiledeskChannelMessage, receiver);
+  let InstagramJsonMessage = await tlr.toInstagram(req.body, receiver);
   winston.debug("[ CUSTOMER.IO ] InstagramJsonMessage: ", JSON.stringify(InstagramJsonMessage, null, 2));
 
   if (InstagramJsonMessage) {
     const twClient = new TiledeskInstagram({ token: settings.wab_token, GRAPH_URL: GRAPH_URL, API_URL: API_URL, BASE_FILE_URL: BASE_FILE_URL });
 
-    twClient.sendMessage(phone_number_id, InstagramJsonMessage).then((response) => {
+    twClient.sendMessage(receiver, InstagramJsonMessage).then((response) => {
         winston.verbose("(wab) Message sent to Instagram! " + response.status + " " + response.statusText);
       res.status(200).send({ success: true, message: "Message sent!"});
     }).catch((err) => {
@@ -90,7 +90,7 @@ router.get("/:project_id", async (req, res) => {
   winston.verbose("(wab) /api/project_id");
 
   let project_id = req.params.project_id;
-  let CONTENT_KEY = "Instagram-" + project_id;
+  let CONTENT_KEY = "instagram-" + project_id;
   let settings = await db.get(CONTENT_KEY);
 
   if (!settings) {
@@ -104,7 +104,7 @@ router.get("/templates/:project_id", async (req, res) => {
 
   let project_id = req.params.project_id;
 
-  let CONTENT_KEY = "Instagram-" + project_id;
+  let CONTENT_KEY = "instagram-" + project_id;
   let settings = await db.get(CONTENT_KEY);
 
   if (settings) {
@@ -144,7 +144,7 @@ router.post('/tiledesk/broadcast', async (req, res) => {
     transaction_id = "tiledesk-broadcast-" + Date.now();
   }
 
-  let CONTENT_KEY = "Instagram-" + project_id;
+  let CONTENT_KEY = "instagram-" + project_id;
   let settings = await db.get(CONTENT_KEY);
 
   if (!settings) {

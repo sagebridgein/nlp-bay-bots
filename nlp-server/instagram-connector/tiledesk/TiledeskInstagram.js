@@ -52,10 +52,14 @@ class TiledeskInstagram {
     }
   }
 
-  async sendMessage(phone_number_id, message) {
+  async sendMessage(instagramUserId, message) {
     
-    winston.debug("(wab) [TiledeskInstagram] Sending message...");
-
+    winston.debug("(wab) [TiledeskInstagram] Sending message...",instagramUserId);
+    const messagePayload = {
+      recipient: { id: instagramUserId },
+      message: { text: messageText },
+    };
+  
     return await axios({
       url: this.GRAPH_URL + phone_number_id + "/messages?access_token=" + this.token,
       headers: {

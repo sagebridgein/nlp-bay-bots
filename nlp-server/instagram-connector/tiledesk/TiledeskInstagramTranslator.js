@@ -16,8 +16,8 @@ const path = require('path');
    * @param {Object} config JSON configuration.
    */
 
-  static Instagram_MESSAGING_PRODUCT = "Instagram";
-  static CHANNEL_NAME = "Instagram";
+  static Instagram_MESSAGING_PRODUCT = "instagram";
+  static CHANNEL_NAME = "instagram";
 
   constructor() {
 
