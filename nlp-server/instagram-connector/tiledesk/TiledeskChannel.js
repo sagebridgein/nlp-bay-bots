@@ -52,9 +52,9 @@ class TiledeskChannel {
       tiledeskMessage.departmentid = department_id;
     }
 
-    if (messageInfo.channel == "Instagram") {
+    if (messageInfo.channel == "instagram") {
       channel = messageInfo.Instagram;
-      new_request_id = "support-group-" + this.settings.project_id + "-" + uuidv4().substring(0, 8) + "-wab-" + channel.phone_number_id + "-" + channel.from;
+      new_request_id = "support-group-" + this.settings.project_id + "-" + uuidv4().substring(0, 8) + "-wab-" + channel.r + "-" + channel.from;
 
     } else if (messageInfo.channel == "telegram") {
       channel = messageInfo.telegram;

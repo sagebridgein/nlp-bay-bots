@@ -462,11 +462,11 @@ router.post("/disconnect", async (req, res) => {
 });
 
 router.get("/direct/tiledesk", async (req, res) => {
-  winston.verbose("/direct/tiledesk");
+  winston.verbose("/direct/tiledesk",req.query);
 
   let project_id = req.query.project_id;
   let Instagram_receiver = req.query.Instagram_receiver;
-  let phone_number_id = req.query.phone_number_id;
+  // let phone_number_id = req.query.phone_number_id;
 
   let CONTENT_KEY = "instagram-" + project_id;
   let settings = await db.get(CONTENT_KEY);
@@ -498,7 +498,7 @@ router.get("/direct/tiledesk", async (req, res) => {
   winston.verbose("(wab) InstagramJsonMessage", InstagramJsonMessage);
 
   twClient
-    .sendMessage(phone_number_id, InstagramJsonMessage)
+    .sendMessage(Instagram_receiver, InstagramJsonMessage)
     .then((response) => {
       winston.verbose(
         "(wab) Message sent to Instagram! " +
@@ -972,9 +972,9 @@ router.post("/webhook/:project_id", async (req, res) => {
       } else {
         let firstname =
           req.body.entry[0].changes[0].value.contacts[0].profile.name;
-
+          
         let message_info = {
-          channel: "Instagram",
+          channel: "instagram",
           Instagram: {
             phone_number_id:
               req.body.entry[0].changes[0].value.metadata.phone_number_id,

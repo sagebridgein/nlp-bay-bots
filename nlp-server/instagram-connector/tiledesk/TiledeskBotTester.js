@@ -74,16 +74,16 @@ class TiledeskBotTester {
           } else {
             test_info = JSON.parse(value)
             let message_info = {
-              channel: "Instagram",
+              channel: "instagram",
               Instagram: {
-                phone_number_id: body.entry[0].changes[0].value.metadata.phone_number_id,
+                receiver_id: InstagramContact.profile.id,
                 from: InstagramChannelMessage.from,
                 firstname: InstagramContact.profile.name,
                 lastname: " "
               }
             }
 
-            let CONTENT_KEY = "Instagram-" + this.project_id;
+            let CONTENT_KEY = "instagram-" + this.project_id;
             let settings = await this.db.get(CONTENT_KEY);
           
             if (!settings) {
