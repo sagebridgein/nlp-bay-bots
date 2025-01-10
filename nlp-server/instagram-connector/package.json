@@ -1,7 +1,7 @@
 {
-  "name": "@tiledesk/tiledesk-messenger-connector",
+  "name": "@tiledesk/tiledesk-instagram-connector",
   "version": "0.1.23",
-  "description": "Tiledesk Messenger connector",
+  "description": "Tiledesk Instagram connector",
   "main": "index.js",
   "scripts": {
     "test": "mocha",

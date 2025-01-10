@@ -39,7 +39,7 @@ class FacebookClient {
     }
 
     this.graph_url = config.GRAPH_URL;
-    this.app_id = config.FB_APP_ID;
+    this.app_id = config.APP_ID;
     this.app_secret = config.APP_SECRET;
     this.base_url = config.BASE_URL;
   }

@@ -60,6 +60,12 @@ class TiledeskChannel {
       channel = messageInfo.messenger;
       new_request_id = "support-group-" + this.settings.project_id + "-" + uuidv4().substring(0, 8) + "-fbm-" + channel.page_id + "-" + channel.sender_id;
 
+    }else if (messageInfo.channel == "instagram"){
+      channel = messageInfo.instagram;
+      new_request_id = "support-group-" + this.settings.project_id + "-" + uuidv4().substring(0, 8) + "-ibm-" + channel + "-" + channel.sender_id;
+
+    
+  
     } else {
       winston.verbose("[(fbm) TiledeskChannel] Channel not supported")
     }
@@ -69,7 +75,7 @@ class TiledeskChannel {
       _id: 'fbm-' + channel.sender_id,
       first_name: channel.firstname,
       last_name: channel.lastname,
-      email: 'na@messenger.com',
+      email: 'na@instagram.com',
       sub: 'userexternal',
       aud: 'https://tiledesk.com/subscriptions/' + this.settings.subscription_id
     }

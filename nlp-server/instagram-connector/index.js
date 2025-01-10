@@ -157,7 +157,7 @@ router.get('/configure', async (req, res) => {
   let token = req.query.token;
   let app_id = req.query.app_id;
 
-  let CONTENT_KEY = "messenger-" + project_id;
+  let CONTENT_KEY = "instagram-" + project_id;
 
   let settings = await db.get(CONTENT_KEY);
 
@@ -217,7 +217,7 @@ router.post('/update', async (req, res) => {
   let app_id = req.body.app_id;
   let department_id = req.body.department;
 
-  let CONTENT_KEY = "messenger-" + project_id;
+  let CONTENT_KEY = "instagram-" + project_id;
   let settings = await db.get(CONTENT_KEY);
 
   settings.department_id = department_id;
@@ -258,7 +258,7 @@ router.post('/tiledesk', async (req, res) => {
   let project_id = req.body.payload.id_project;
 
   // get settings from mongo
-  let CONTENT_KEY = "messenger-" + project_id;
+  let CONTENT_KEY = "instagram-" + project_id;
   let settings = await db.get(CONTENT_KEY);
 
   var text = req.body.payload.text;
@@ -437,7 +437,7 @@ router.post('/webhookFB', async (req, res) => {
   if (body.object === 'page') {
 
     let page_id = body.entry[0].id;
-    let PAGE_KEY = "messenger-page-" + page_id;
+    let PAGE_KEY = "instagram-page-" + page_id;
     let info_settings = await db.get(PAGE_KEY);
 
     if (!info_settings) {
@@ -448,7 +448,7 @@ router.post('/webhookFB', async (req, res) => {
     let project_id = info_settings.project_id;
     winston.debug("(fbm) project_id: " + project_id);
 
-    let CONTENT_KEY = "messenger-" + project_id;
+    let CONTENT_KEY = "instagram-" + project_id;
     let settings = await db.get(CONTENT_KEY);
 
     body.entry.forEach(async (entry) => {
@@ -575,7 +575,7 @@ router.get('/oauth', async (req, res) => {
   winston.debug("(fbm) access_token: " + access_token);
   winston.debug("(fbm) pages_list: " + pages_list);
 
-  let CONTENT_KEY = "messenger-" + project_id;
+  let CONTENT_KEY = "instagram-" + project_id;
 
   let pages = [];
   pages_list.forEach(async (single_page) => {
@@ -637,13 +637,13 @@ router.post('/enablePage', async (req, res) => {
   let project_id = req.body.project_id;
   let token = req.body.token;
 
-  let CONTENT_KEY = "messenger-" + project_id;
+  let CONTENT_KEY = "instagram-" + project_id;
 
   let settings = await db.get(CONTENT_KEY);
 
   let page = settings.pages.find(e => e.name == page_name);
 
-  let KEY = "messenger-page-" + page.id;
+  let KEY = "instagram-page-" + page.id;
 
   let page_info = await db.get(KEY);
   winston.debug("(fbm) page_info: ", page_info);
@@ -660,7 +660,7 @@ router.post('/enablePage', async (req, res) => {
     let current_active_page = settings.pages.find(e => e.active == true);
     if (current_active_page) {
       winston.debug("(fbm) delete current_active_page key: " + current_active_page.id);
-      let TO_DELETE_KEY = "messenger-page-" + current_active_page.id;
+      let TO_DELETE_KEY = "instagram-page-" + current_active_page.id;
       db.remove(TO_DELETE_KEY)
     }
     // ------------------------------------------------
@@ -720,13 +720,13 @@ router.post('/disablePage', async (req, res) => {
   let project_id = req.body.project_id;
   let token = req.body.token;
 
-  let CONTENT_KEY = "messenger-" + project_id;
+  let CONTENT_KEY = "instagram-" + project_id;
 
   let settings = await db.get(CONTENT_KEY);
 
   let page = settings.pages.find(e => e.name == page_name);
 
-  let KEY = "messenger-page-" + page.id;
+  let KEY = "instagram-page-" + page.id;
   await db.remove(KEY);
 
   settings.pages.forEach((page) => {
@@ -767,16 +767,16 @@ router.post('/disconnect', async (req, res) => {
   let token = req.body.token;
   let subscription_id = req.body.subscription_id;
 
-  let CONTENT_KEY = "messenger-" + project_id;
+  let CONTENT_KEY = "instagram-" + project_id;
 
   let settings = await db.get(CONTENT_KEY);
-  const active_page = settings.pages.find(p => p.active === true);
+  // const active_page = settings.pages.find(p => p.active === true);
 
-  if (active_page) {
-    let PAGE_KEY = "messenger-page-" + active_page.id;
-    await db.remove(PAGE_KEY)
-    winston.debug("(fbm) Page deleted.");
-  }
+  // if (active_page) {
+  //   let PAGE_KEY = "instagram-page-" + active_page.id;
+  //   await db.remove(PAGE_KEY)
+  //   winston.debug("(fbm) Page deleted.");
+  // }
 
   await db.remove(CONTENT_KEY)
   winston.verbose("(fbm) Content deleted.");
