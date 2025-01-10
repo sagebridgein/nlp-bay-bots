@@ -22,7 +22,8 @@ export enum INTEGRATIONS_KEYS {
     WHATSAPP = 'whatsapp',
     ZAPIER = 'zapier',
     ZENDESK = 'zendesk',
-    ZOHO = 'zoho'
+    ZOHO = 'zoho',
+    INSTAGRAM="instagram"
 }
 
 export enum APPS_TITLE {
@@ -31,7 +32,8 @@ export enum APPS_TITLE {
     TELEGRAM = "Telegram",
     VXML_VOICE = "VXML Voice",
     TWILIO_SMS = "Twilio SMS",
-    TWILIO_VOICE = "Twilio Voice"
+    TWILIO_VOICE = "Twilio Voice",
+    INSTAGRAM ="Instagram Business"
 }
 
 export enum INTEGRATIONS_CATEGORIES {
@@ -333,6 +335,8 @@ export const INTEGRATION_LIST_ARRAY = [
     { name: "VXML Voice",       category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.VXML_VOICE,      src_icon: "assets/img/int/vxml-icon.png",                   src_logo: "assets/img/int/vxml-icon.png",               pro: false,  plan: 'Sandbox' },
     { name: "Twilio Voice",       category: INTEGRATIONS_CATEGORIES.CHANNEL,        key: INTEGRATIONS_KEYS.TWILIO_VOICE,    src_icon: "assets/img/int/voice-twilio-icon.png",           src_logo: "assets/img/int/voice-twilio-icon.png",       pro: false,  plan: 'Sandbox' },
     { name: "WhatsApp",         category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.WHATSAPP,        src_icon: "assets/img/int/whatsapp-icon.png",               src_logo: "assets/img/int/whatsapp-logo.png",           pro: false,  plan: 'Sandbox' },
+    { name: "Instagram",         category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.INSTAGRAM,        src_icon: "https://cdn-icons-png.flaticon.com/512/15713/15713420.png",               src_logo: "https://cdn-icons-png.flaticon.com/512/15713/15713420.png",           pro: false,  plan: 'Sandbox' },
+
     // { name: "Zapier",           category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.ZAPIER,          src_icon: "assets/img/int/zapier-icon.png",               src_logo: "assets/img/int/zapier-logo.svg",             pro: false,  plan: 'Sandbox' },
     // { name: "Zendesk",          category: INTEGRATIONS_CATEGORIES.LIVE_CHAT,        key: INTEGRATIONS_KEYS.ZENDESK,         src_icon: "assets/img/int/zendesk-icon.png",              src_logo: "assets/img/int/zendesk-logo.png",            pro: false,  plan: 'Sandbox' },
     // { name: "Zoho",             category: INTEGRATIONS_CATEGORIES.OTHER,            key: INTEGRATIONS_KEYS.ZOHO,            src_icon: "assets/img/int/zoho-icon.png",                 src_logo: "assets/img/int/zoho-logo.png",               pro: false,  plan: 'Sandbox' }

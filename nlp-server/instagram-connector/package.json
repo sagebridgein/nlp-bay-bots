@@ -1,14 +1,14 @@
 {
-  "name": "@tiledesk/tiledesk-messenger-connector",
+  "name": "@tiledesk/tiledesk-instagram-connector",
   "version": "0.1.23",
-  "description": "Tiledesk Messenger connector",
+  "description": "Tiledesk Instagram connector",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
     "start": "node index.js"
   },
   "keywords": [],
-  "author": "Giovanni Troisi",
+  "author": "Ajay Sehwal",
   "license": "MIT",
   "dependencies": {
     "@tiledesk/tiledesk-client": "^0.8.29",
