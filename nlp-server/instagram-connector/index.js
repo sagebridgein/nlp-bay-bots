@@ -2,109 +2,66 @@
 const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
-const appRoot = require("app-root-path");
-const handlebars = require("handlebars");
-const fs = require("fs");
-const path = require("path");
-const pjson = require("./package.json");
-const { v4: uuidv4 } = require("uuid");
-const cors = require("cors");
-var winston = require("./winston");
-const url = require("url");
-const mongoose = require("mongoose");
-
-//const ext = require('./routes/ext')
-//const extRoute = ext.router;
-const api = require("./routes/api");
-const apiRoute = api.router;
+const handlebars = require('handlebars');
+const path = require('path');
+const fs = require('fs');
+const pjson = require('./package.json');
+const winston = require('./winston');
+const url = require('url');
 
 // tiledesk clients
-const { TiledeskClient } = require("@tiledesk/tiledesk-client");
-const {
-  TiledeskInstagramTranslator,
-} = require("./tiledesk/TiledeskInstagramTranslator");
-const {
-  TiledeskSubscriptionClient,
-} = require("./tiledesk/TiledeskSubscriptionClient");
-const { TiledeskInstagram } = require("./tiledesk/TiledeskInstagram");
-const { TiledeskChannel } = require("./tiledesk/TiledeskChannel");
-const { TiledeskAppsClient } = require("./tiledesk/TiledeskAppsClient");
-const { MessageHandler } = require("./tiledesk/MessageHandler");
-const { TiledeskBotTester } = require("./tiledesk/TiledeskBotTester");
-const { TemplateManager } = require("./tiledesk/TemplateManager");
-const { InstagramLogger } = require("./tiledesk/InstagramLogger");
+const { TiledeskAppsClient } = require('./tiledesk/TiledeskAppsClient');
+const { TiledeskChannel } = require('./tiledesk/TiledeskChannel');
+const { TiledeskMessengerTranslator } = require('./tiledesk/TiledeskMessengerTranslator');
+const { TiledeskSubscriptionClient } = require('./tiledesk/TiledeskSubscriptionClient');
+const { FacebookClient } = require('./tiledesk/FacebookClient');
+const { MessageHandler } = require('./tiledesk/MessageHandler');
+
 
 // mongo
-const { KVBaseMongo } = require("./tiledesk/KVBaseMongo");
-const kvbase_collection = "kvstore";
+const { KVBaseMongo } = require('./tiledesk/KVBaseMongo');
+const kvbase_collection = 'kvstore';
 const db = new KVBaseMongo(kvbase_collection);
-
-// mongo old
-//const { KVBaseMongo } = require('@tiledesk/tiledesk-kvbasemongo')
-//const kvbase_collection = 'kvstore';
-//const db = new KVBaseMongo(kvbase_collection);
-
-// redis
-var redis = require("redis");
-var redis_client;
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
-router.use(express.static(path.join(__dirname, "template")));
-router.use(cors());
-
-router.use("/ext", apiRoute);
-router.use("/api", apiRoute);
+router.use(express.static(path.join(__dirname, 'template')))
 
 let API_URL = null;
-let GRAPH_URL = null;
 let BASE_URL = null;
 let APPS_API_URL = null;
-let REDIS_HOST = null;
-let REDIS_PORT = null;
-let REDIS_PASSWORD = null;
-let BASE_FILE_URL = null;
-let AMQP_MANAGER_URL = null;
-let JOB_TOPIC_EXCHANGE = null;
+let FB_APP_ID = null;
+let APP_SECRET = null;
+let VERIFY_TOKEN = null;
+let GRAPH_URL = null;
+let DASHBOARD_BASE_URL = null;
 let BRAND_NAME = null;
-
 // Handlebars register helpers
-handlebars.registerHelper("isEqual", (a, b) => {
+handlebars.registerHelper('isEqual', (a, b) => {
   if (a == b) {
-    return true;
+    return true
   } else {
-    return false;
+    return false
   }
-});
+})
 
-handlebars.registerHelper("json", (a) => {
-  return JSON.stringify(a);
-});
+router.get('/', async (req, res) => {
+  res.send('Home works!')
+})
 
-router.get("/", async (req, res) => {
-  res.send("Welcome to Tiledesk-Instagram Business connector!");
-});
-
-router.get("/detail", async (req, res) => {
-  winston.verbose("(wab) /detail");
+router.get('/detail', async (req, res) => {
 
   let project_id = req.query.project_id;
   let token = req.query.token;
   let app_id = req.query.app_id;
 
-  const tdChannel = new TiledeskChannel({
-    settings: { project_id: project_id, token: token },
-    API_URL: API_URL,
-  });
-  let isAvailable = await tdChannel.getProjectDetail();
-  winston.debug("(wab) app is available: ", isAvailable);
   if (!project_id || !token || !app_id) {
-    return res
-      .status(500)
-      .send(
-        "<p>Ops! An error occured.</p><p>Missing query params! project_id, token and app_id are required.</p>"
-      );
+    return res.status(400).send({ message: "queryParams project_id, token, app_id are mandatory" });
   }
+
+  const tdChannel = new TiledeskChannel({ settings: { project_id: project_id, token: token }, API_URL: API_URL })
+  let isAvailable = await tdChannel.getProjectDetail();
+  winston.debug("(wab) app is available: " + isAvailable);
 
   const appClient = new TiledeskAppsClient({ APPS_API_URL: APPS_API_URL });
   let installation = await appClient.getInstallations(project_id, app_id);
@@ -114,7 +71,7 @@ router.get("/detail", async (req, res) => {
     installed = true;
   }
 
-  readHTMLFile("/detail.html", (err, html) => {
+  readHTMLFile('/detail.html', (err, html) => {
     var template = handlebars.compile(html);
     var replacements = {
       app_version: pjson.version,
@@ -122,1486 +79,813 @@ router.get("/detail", async (req, res) => {
       token: token,
       app_id: app_id,
       installed: installed,
-      isAvailable: isAvailable,
-    };
+      isAvailable: isAvailable
+    }
     var html = template(replacements);
     res.send(html);
-  });
-});
+  })
+})
 
-router.post("/install", async (req, res) => {
-  winston.verbose("(wab) /install");
+router.post('/install', async (req, res) => {
 
   let project_id = req.body.project_id;
   let app_id = req.body.app_id;
   let token = req.body.token;
 
-  winston.debug(
-    "(wab) Install app " + app_id + " for project id " + project_id
-  );
+  winston.verbose("(fbm) Install app " + app_id + " for project id " + project_id);
   let installation_info = {
     project_id: project_id,
     app_id: app_id,
-    createdAt: Date.now(),
+    createdAt: Date.now()
   };
 
   const appClient = new TiledeskAppsClient({ APPS_API_URL: APPS_API_URL });
-  appClient
-    .install(installation_info)
-    .then((installation) => {
-      winston.debug("(wab) installation response: ", installation);
+  appClient.install(installation_info).then((installation) => {
 
-      res.redirect(
-        url.format({
-          pathname: BASE_URL + "/detail",
-          query: {
-            project_id: project_id,
-            app_id: app_id,
-            token: token,
-          },
-        })
-      );
-    })
-    .catch((err) => {
-      winston.error("(wab) installation error: " + err.data);
-      res.send("An error occurred during the installation");
-    });
-});
+    winston.debug("(fbm) installation response: ", installation);
 
-router.post("/uninstall", async (req, res) => {
-  winston.verbose("(wab) /uninstall");
+    res.redirect(url.format({
+      pathname: "/detail",
+      query: {
+        "project_id": project_id,
+        "app_id": app_id,
+        "token": token
+      }
+    }));
+
+  }).catch((err) => {
+    winston.error("(fbm) installation error: ", err.data)
+    winston.error("(fbm) installation error: " + err.data)    
+    res.send("An error occurred during the installation");
+  })
+
+})
+
+router.post('/uninstall', async (req, res) => {
+
+  winston.verbose("(fbm) /uninstall");
   let project_id = req.body.project_id;
   let app_id = req.body.app_id;
   let token = req.body.token;
 
   const appClient = new TiledeskAppsClient({ APPS_API_URL: APPS_API_URL });
-  appClient
-    .uninstall(project_id, app_id)
-    .then((response) => {
-      winston.debug("(wab) uninstallation response: ", response);
+  appClient.uninstall(project_id, app_id).then((response) => {
 
-      res.redirect(
-        url.format({
-          pathname: BASE_URL + "/detail",
-          query: {
-            project_id: project_id,
-            app_id: app_id,
-            token: token,
-          },
-        })
-      );
-    })
-    .catch((err) => {
-      winston.error("(wab) uninstallation error: " + err.data);
-      res.send("An error occurred during the uninstallation");
-    });
-});
+    winston.debug("(fbm) uninstallation response: ", response);
 
-router.get("/configure", async (req, res) => {
-  winston.verbose("(wab) /configure");
+    res.redirect(url.format({
+      pathname: "/detail",
+      query: {
+        "project_id": project_id,
+        "app_id": app_id,
+        "token": token
+      }
+    }));
+
+  }).catch((err) => {
+    winston.error("(fbm) uninsallation error: " + err.data)
+    winston.error("(fbm) uninsallation error: ", err.data)
+    res.send("An error occurred during the uninstallation");
+  })
+
+})
+
+router.get('/configure', async (req, res) => {
+  winston.verbose("(fbm) /configure");
 
   let project_id = req.query.project_id;
   let token = req.query.token;
-  let popup_view = false;
+  let app_id = req.query.app_id;
 
-  if (req.query.view && req.query.view === "popup") {
-    popup_view = true;
-  }
+  let CONTENT_KEY = "messenger-" + project_id;
 
-  if (!project_id || !token) {
-    let error_message = "Query params project_id and token are required.";
-    readHTMLFile("/error.html", (err, html) => {
-      var template = handlebars.compile(html);
-
-      var replacements = {
-        app_version: pjson.version,
-        error_message: error_message,
-      };
-      var html = template(replacements);
-      return res.send(html);
-    });
-  } else {
-    let proxy_url = BASE_URL + "/webhook/" + project_id;
-
-    let CONTENT_KEY = "instagram-" + project_id;
-
-    let settings = await db.get(CONTENT_KEY);
-    winston.debug("(wab) settings: ", settings);
-
-    // get departments
-    const tdChannel = new TiledeskChannel({
-      settings: { project_id: project_id, token: token },
-      API_URL: API_URL,
-    });
-    let departments = await tdChannel.getDepartments(token);
-    winston.debug("(wab) found " + departments.length + " departments");
-
-    if (settings) {
-      readHTMLFile("/configure.html", (err, html) => {
-        var template = handlebars.compile(html);
-        var replacements = {
-          app_version: pjson.version,
-          project_id: project_id,
-          token: token,
-          proxy_url: proxy_url,
-          wab_token: settings.wab_token,
-          verify_token: settings.verify_token,
-          business_account_id: settings.business_account_id,
-          subscription_id: settings.subscriptionId,
-          department_id: settings.department_id,
-          departments: departments,
-          brand_name: BRAND_NAME
-        };
-        var html = template(replacements);
-        res.send(html);
-      });
-    } else {
-      readHTMLFile("/configure.html", (err, html) => {
-        if (err) {
-          winston.error("(wab) error read html file: " + err);
-        }
-
-        var template = handlebars.compile(html);
-        var replacements = {
-          app_version: pjson.version,
-          project_id: project_id,
-          token: token,
-          proxy_url: proxy_url,
-          departments: departments,
-          popup_view: popup_view,
-          brand_name: BRAND_NAME
-        };
-        var html = template(replacements);
-        res.send(html);
-      });
-    }
-  }
-});
-
-router.post("/update", async (req, res) => {
-  winston.verbose("(wab) /update");
-
-  let project_id = req.body.project_id;
-  let token = req.body.token;
-  let wab_token = req.body.wab_token;
-  let verify_token = req.body.verify_token;
-  let department_id = req.body.department;
-  let business_account_id = req.body.business_account_id;
-
-  let CONTENT_KEY = "instagram-" + project_id;
   let settings = await db.get(CONTENT_KEY);
 
-  let proxy_url = BASE_URL + "/webhook/" + project_id;
-
   // get departments
-  const tdChannel = new TiledeskChannel({
-    settings: { project_id: project_id, token: token },
-    API_URL: API_URL,
-  });
+  const tdChannel = new TiledeskChannel({ settings: { project_id: project_id, token: token }, API_URL: API_URL })
   let departments = await tdChannel.getDepartments(token);
+  winston.verbose("(fbm) found " + departments.length + " departments")
 
   if (settings) {
-    settings.wab_token = wab_token;
-    settings.verify_token = verify_token;
-    settings.department_id = department_id;
-    settings.business_account_id = business_account_id;
+    winston.debug("(fbm) settings found: ", settings);
 
-    await db.set(CONTENT_KEY, settings);
+    readHTMLFile('/configure.html', (err, html) => {
+      var template = handlebars.compile(html);
+      var replacements = {
+        app_version: pjson.version,
+        project_id: project_id,
+        connected: true,
+        token: token,
+        app_id: app_id,
+        endpoint: BASE_URL,
+        pages: settings.pages,
+        isEmpty: true,
+        department_id: settings.department_id,
+        departments: departments,
+        brand_name: BRAND_NAME
+      }
+      var html = template(replacements)
+      res.send(html);
+    })
 
-    readHTMLFile("/configure.html", (err, html) => {
+  } else {
+
+    readHTMLFile('/configure.html', (err, html) => {
       var template = handlebars.compile(html);
       var replacements = {
         app_version: pjson.version,
         project_id: project_id,
         token: token,
-        proxy_url: proxy_url,
-        wab_token: settings.wab_token,
-        show_success_modal: true,
-        verify_token: settings.verify_token,
-        business_account_id: settings.business_account_id,
-        subscription_id: settings.subscriptionId,
-        department_id: settings.department_id,
+        endpoint: BASE_URL,
         departments: departments,
+        redirect_uri: `https://www.facebook.com/v14.0/dialog/oauth?client_id=${FB_APP_ID}&redirect_uri=${BASE_URL}/oauth?&scope=instagram_basic%2C%20instagram_manage_comments%2C%20instagram_manage_messages%2C%20instagram_manage_insights&state={"project_id":"${project_id}","app_id":"${app_id}","token":"${token}"}`,
         brand_name: BRAND_NAME
-      };
+      }
       var html = template(replacements);
       res.send(html);
-    });
-  } else {
-    const tdClient = new TiledeskSubscriptionClient({
-      API_URL: API_URL,
-      project_id: project_id,
-      token: token,
-    });
 
-    const subscription_info = {
-      target: BASE_URL + "/tiledesk",
-      event: "message.create.request.channel.Instagram",
-    };
-
-    /*
-    // callback
-    await tdClient.subscribe(project_id, data, (err, data) => {
-      // code here
-    }) 
-    */
-
-    // promise
-    tdClient
-      .subscribe(subscription_info)
-      .then((data) => {
-        let subscription = data;
-        winston.debug("\n(wab) Subscription: ", subscription);
-
-        let settings = {
-          project_id: project_id,
-          token: token,
-          proxy_url: proxy_url,
-          subscriptionId: subscription._id,
-          secret: subscription.secret,
-          wab_token: wab_token,
-          verify_token: verify_token,
-          business_account_id: business_account_id,
-          department_id: department_id,
-        };
-
-        db.set(CONTENT_KEY, settings);
-        //let cnt = db.get(CONTENT_KEY);
-
-        readHTMLFile("/configure.html", (err, html) => {
-          var template = handlebars.compile(html);
-          var replacements = {
-            app_version: pjson.version,
-            project_id: project_id,
-            token: token,
-            proxy_url: proxy_url,
-            show_success_modal: true,
-            wab_token: settings.wab_token,
-            verify_token: settings.verify_token,
-            business_account_id: settings.business_account_id,
-            subscription_id: settings.subscriptionId,
-            department_id: settings.department_id,
-            departments: departments,
-            brand_name: BRAND_NAME
-          };
-          var html = template(replacements);
-          res.send(html);
-        });
-      })
-      .catch((err) => {
-        readHTMLFile("/configure.html", (err, html) => {
-          var template = handlebars.compile(html);
-          var replacements = {
-            app_version: pjson.version,
-            project_id: project_id,
-            token: token,
-            proxy_url: proxy_url,
-            departments: departments,
-            show_error_modal: true,
-            brand_name: BRAND_NAME
-          };
-          var html = template(replacements);
-          res.send(html);
-        });
-      });
+    })
   }
-});
 
-router.post("/disconnect", async (req, res) => {
-  winston.verbose("(wab) /disconnect");
+})
+
+router.post('/update', async (req, res) => {
+  winston.verbose("(fbm) /update");
 
   let project_id = req.body.project_id;
   let token = req.body.token;
-  let subscriptionId = req.body.subscription_id;
+  let app_id = req.body.app_id;
+  let department_id = req.body.department;
 
-  let CONTENT_KEY = "instagram-" + project_id;
-  await db.remove(CONTENT_KEY);
-  winston.verbose("(wab) Content deleted.");
-
-  let proxy_url = BASE_URL + "/webhook/" + project_id;
-
-  const tdClient = new TiledeskSubscriptionClient({
-    API_URL: API_URL,
-    project_id: project_id,
-    token: token,
-  });
-  // get departments
-  const tdChannel = new TiledeskChannel({
-    settings: { project_id: project_id, token: token },
-    API_URL: API_URL,
-  });
-  let departments = await tdChannel.getDepartments(token);
-
-  /*
-  // callback
-  tdClient.unsubsribe(project_id, subscriptionId, (err, data) => {
-    // code here
-  })
-  */
-
-  tdClient
-    .unsubscribe(subscriptionId)
-    .then((data) => {
-      readHTMLFile("/configure.html", (err, html) => {
-        var template = handlebars.compile(html);
-        var replacements = {
-          app_version: pjson.version,
-          project_id: project_id,
-          token: token,
-          proxy_url: proxy_url,
-          departments: departments,
-          brand_name: BRAND_NAME
-        };
-        var html = template(replacements);
-        res.send(html);
-      });
-    })
-    .catch((err) => {
-      winston.error("(wab) unsubscribe error: " + err);
-    });
-});
-
-router.get("/direct/tiledesk", async (req, res) => {
-  winston.verbose("/direct/tiledesk",req.query);
-
-  let project_id = req.query.project_id;
-  let Instagram_receiver = req.query.Instagram_receiver;
-  // let phone_number_id = req.query.phone_number_id;
-
-  let CONTENT_KEY = "instagram-" + project_id;
+  let CONTENT_KEY = "messenger-" + project_id;
   let settings = await db.get(CONTENT_KEY);
 
-  let tiledeskChannelMessage = {
-    text: "Sample text",
-    attributes: {
-      attachment: {
-        type: "wa_template",
-        template: {
-          language: "en_US",
-          name: "hello_world",
-        },
-      },
-    },
-  };
-  const tlr = new TiledeskInstagramTranslator();
-  const twClient = new TiledeskInstagram({
-    token: settings.wab_token,
-    GRAPH_URL: GRAPH_URL,
-    API_URL: API_URL,
-    BASE_FILE_URL: BASE_FILE_URL,
-  });
+  settings.department_id = department_id;
+  await db.set(CONTENT_KEY, settings);
 
-  let InstagramJsonMessage = await tlr.toInstagram(
-    tiledeskChannelMessage,
-    Instagram_receiver
-  );
-  winston.verbose("(wab) InstagramJsonMessage", InstagramJsonMessage);
+  // get departments
+  const tdChannel = new TiledeskChannel({ settings: { project_id: project_id, token: token }, API_URL: API_URL });
+  let departments = await tdChannel.getDepartments(token);
+  winston.verbose("(fbm) found " + departments.length + " departments")
 
-  twClient
-    .sendMessage(Instagram_receiver, InstagramJsonMessage)
-    .then((response) => {
-      winston.verbose(
-        "(wab) Message sent to Instagram! " +
-          response.status +
-          " " +
-          response.statusText
-      );
-    })
-    .catch((err) => {
-      //winston.error("(wab) error send message: ", err);
-      return res.status(400).send({ success: false, error: err });
-    });
+  readHTMLFile('/configure.html', (err, html) => {
 
-  res.status(200).send("Message sent");
-});
+    var template = handlebars.compile(html);
+    var replacements = {
+      app_version: pjson.version,
+      project_id: project_id,
+      connected: true,
+      token: token,
+      app_id: app_id,
+      endpoint: BASE_URL,
+      pages: settings.pages,
+      isEmpty: true,
+      department_id: settings.department_id,
+      departments: departments,
+      brand_name: BRAND_NAME
+    }
+    var html = template(replacements)
+    res.send(html);
+  })
 
+})
 
-// Can be deleted?
-router.post("/tiledesk/broadcast", async (req, res) => {
-  winston.verbose("(wab) Message received from Tiledesk (Broadcast)");
+router.post('/tiledesk', async (req, res) => {
+  winston.verbose("(fbm) Message received from Tiledesk");
+  winston.info("(fbm) Message received from Tiledesk body: ", req.body);
 
   let tiledeskChannelMessage = req.body.payload;
-  winston.verbose("(wab) tiledeskChannelMessage: ", tiledeskChannelMessage);
   let project_id = req.body.payload.id_project;
 
-  let CONTENT_KEY = "instagram-" + project_id;
-  let settings = await db.get(CONTENT_KEY);
-
-  if (!settings) {
-    return res.status(400).send({
-      success: false,
-      error: "Instagram is not installed for the project_id: " + project_id,
-    });
-  }
-
-  if (!settings.business_account_id) {
-    return res.status(400).send({
-      success: false,
-      error:
-        "Missing parameter 'Instagram Business Account ID'. Please update your app.",
-    });
-  }
-
-  let receiver_list = req.body.receiver_list;
-  let phone_number_id = req.body.phone_number_id;
-
-  let tm = new TemplateManager({
-    token: settings.wab_token,
-    business_account_id: settings.business_account_id,
-    GRAPH_URL: GRAPH_URL,
-  });
-  const tlr = new TiledeskInstagramTranslator();
-  const twClient = new TiledeskInstagram({
-    token: settings.wab_token,
-    GRAPH_URL: GRAPH_URL,
-    API_URL: API_URL,
-    BASE_FILE_URL: BASE_FILE_URL,
-  });
-
-  let response = await tm.getTemplates();
-  let templates = response.data;
-
-  let selected_template = templates.find(
-    (t) => t.name === tiledeskChannelMessage.attributes.attachment.template.name
-  );
-
-  let params_object = await tm.generateParamsObject(selected_template);
-
-  tiledeskChannelMessage.attributes.attachment.template.params = params_object;
-  winston.verbose("(wab) --> tiledeskChannelMessage: ", tiledeskChannelMessage);
-
-  let messages_sent = 0;
-  let errors = [];
-  let error_count = 0;
-
-  if (receiver_list) {
-    let i = 0;
-    async function execute(Instagram_receiver) {
-      let customTiledeskJsonMessage = await tlr.sanitizeTiledeskMessage(
-        tiledeskChannelMessage,
-        Instagram_receiver
-      );
-      winston.verbose("customTiledeskJsonMessage: ", customTiledeskJsonMessage);
-
-      let InstagramJsonMessage = await tlr.toInstagram(
-        customTiledeskJsonMessage,
-        Instagram_receiver.phone_number
-      );
-      winston.verbose(
-        "(wab) message created for receiver: " + Instagram_receiver.phone_number
-      );
-      winston.verbose("(wab) InstagramJsonMessage", InstagramJsonMessage);
-
-      await twClient
-        .sendMessage(phone_number_id, InstagramJsonMessage)
-        .then((response) => {
-          winston.verbose(
-            "(wab) Message sent to Instagram! " +
-              response.status +
-              " " +
-              response.statusText
-          );
-          messages_sent += 1;
-          i += 1;
-          if (i < receiver_list.length) {
-            execute(receiver_list[i]);
-          } else {
-            winston.debug("(wab) End of list");
-            return res.status(200).send({
-              success: true,
-              message: "Broadcast terminated",
-              messages_sent: messages_sent,
-              errors: errors,
-            });
-          }
-        })
-        .catch((err) => {
-          winston.error(
-            "(wab) error send message: " + err.response.data.error.message
-          );
-          errors.push({
-            receiver: Instagram_receiver.phone_number,
-            error: err.response.data.error.message,
-          });
-          i += 1;
-          if (i < receiver_list.length) {
-            execute(receiver_list[i]);
-          } else {
-            winston.debug("(wab) End of list");
-            return res.status(200).send({
-              success: true,
-              message: "Broadcast terminated",
-              messages_sent: messages_sent,
-              errors: errors,
-            });
-          }
-        });
-    }
-    execute(receiver_list[0]);
-  }
-});
-
-router.post("/tiledesk", async (req, res) => {
-  winston.verbose("(wab) Message received from Tiledesk");
-
-  var tiledeskChannelMessage = req.body.payload;
-  winston.debug("(wab) tiledeskChannelMessage: ", tiledeskChannelMessage);
-  var project_id = req.body.payload.id_project;
-
   // get settings from mongo
-  let CONTENT_KEY = "instagram-" + project_id;
+  let CONTENT_KEY = "messenger-" + project_id;
   let settings = await db.get(CONTENT_KEY);
-  let wab_token = settings.wab_token;
 
   var text = req.body.payload.text;
+  let sender_id = req.body.payload.sender;
   let attributes = req.body.payload.attributes;
+
   let commands;
   if (attributes && attributes.commands) {
     commands = attributes.commands;
   }
 
-  var sender_id = req.body.payload.sender;
-
-  if (sender_id.indexOf("wab") > -1) {
-    winston.verbose("(wab) Skip same sender");
+  if (sender_id.indexOf("fbm") > -1) {
+    winston.debug("(fbm) Skip same sender");
     return res.sendStatus(200);
   }
 
   if (attributes && attributes.subtype === "info") {
-    winston.verbose("(wab) Skip subtype (info)");
+    winston.debug("(fbm) Skip subtype (info)");
     return res.sendStatus(200);
   }
-
+  
   if (attributes && attributes.subtype === "private") {
     winston.verbose("(wab) Skip subtype (private)");
     return res.sendStatus(200);
   }
 
-  if (attributes && attributes.subtype === "info/support") {
-    winston.verbose("(wab) Skip subtype: " + attributes.subtype);
+  if (attributes && attributes.subtype === 'info/support') {
+    winston.debug("(fbm) Skip subtype: " + attributes.subtype);
     return res.sendStatus(200);
   }
 
   let recipient_id = tiledeskChannelMessage.recipient;
   let sender = tiledeskChannelMessage.sender;
-  let Instagram_receiver = recipient_id.substring(
-    recipient_id.lastIndexOf("-") + 1
-  );
+  let page_id = recipient_id.substring(recipient_id.lastIndexOf("fbm-") + 4, recipient_id.lastIndexOf("-"));
+  let messenger_receiver = recipient_id.substring(recipient_id.lastIndexOf("-") + 1);
 
-  let phone_number_id;
-  if (attributes && attributes.Instagram_phone_number_id) {
-    phone_number_id = attributes.Instagram_phone_number_id;
-  } else {
-    phone_number_id = recipient_id.substring(
-      recipient_id.lastIndexOf("wab-") + 4,
-      recipient_id.lastIndexOf("-")
-    );
-  }
-
-  if (!phone_number_id) {
-    return res
-      .status(400)
-      .send({ success: false, message: "Phone number id undefined" });
-  }
-
-  /*
-  if (settings.expired && 
-      settings.expired === true) {
-    winston.info("settings expired: " + settings.expired);
-        return res.status(200).send({ success: 'false', message: "plan expired"})
-      
-  */
+  winston.info("(fbm) sender: " + sender);
+  winston.info("(fbm) text: " + text);
+  winston.info("(fbm) attributes: ", attributes);
+  winston.info("(fbm) tiledesk sender_id: " + sender_id);
+  winston.info("(fbm) recipient_id: " + recipient_id);
+  winston.info("(fbm) page_id: " + page_id);
+  winston.info("(fbm) messenger_receiver: " + messenger_receiver);
 
   // Return an info message option
-  if (settings.expired && settings.expired === true) {
+  if (settings.expired &&
+    settings.expired === true) {
+
     winston.verbose("settings expired: " + settings.expired);
     let tiledeskJsonMessage = {
-      text: "Expired. Upgrade Plan.",
+      text: 'Expired. Upgrade Plan.',
       sender: "system",
       senderFullname: "System",
       attributes: {
-        subtype: "info",
+        subtype: 'info',
+        messagelabel: { key: 'PLAN_EXPIRED'  } // for translation
       },
-      channel: { name: "Instagram" },
-    };
+      channel: { name: 'messenger' }
+    }
     let message_info = {
-      channel: "Instagram",
-      Instagram: {
-        from: Instagram_receiver,
-        phone_number_id: phone_number_id,
-      },
-    };
+      channel: "messenger",
+      messenger: {
+        page_id: page_id,
+        sender_id: messenger_receiver
+      }
+    }
 
-    const tdChannel = new TiledeskChannel({
-      settings: settings,
-      API_URL: API_URL,
-    });
-    const response = await tdChannel.send(
-      tiledeskJsonMessage,
-      message_info,
-      settings.department_id
-    );
-    winston.verbose("(wab) Expiration message sent to Tiledesk");
+    const tdChannel = new TiledeskChannel({ settings: settings, API_URL: API_URL })
+    const response = await tdChannel.send(tiledeskJsonMessage, message_info, settings.department_id);
+    winston.verbose("(wab) Expiration message sent to Tiledesk")
     return res.sendStatus(200);
   }
 
-  winston.debug("(wab) text: " + text);
-  winston.debug("(wab) attributes: " + attributes);
-  winston.debug("(wab) tiledesk sender_id: " + sender_id);
-  winston.debug("(wab) recipient_id: " + recipient_id);
-  winston.debug("(wab) Instagram_receiver: " + Instagram_receiver);
-  winston.debug("(wab) phone_number_id: " + phone_number_id);
-
-  const messageHandler = new MessageHandler({
-    tiledeskChannelMessage: tiledeskChannelMessage,
-  });
-  const tlr = new TiledeskInstagramTranslator();
+  const page_detail = settings.pages.find(p => p.id === page_id);
+  const fbClient = new FacebookClient({ GRAPH_URL: GRAPH_URL, FB_APP_ID: FB_APP_ID, APP_SECRET: APP_SECRET, BASE_URL: BASE_URL });
+  const messageHandler = new MessageHandler({ tiledeskChannelMessage: tiledeskChannelMessage });
+  const tlr = new TiledeskMessengerTranslator();
 
   if (commands) {
     let i = 0;
     async function execute(command) {
       // message
       if (command.type === "message") {
-        let tiledeskCommandMessage = await messageHandler.generateMessageObject(
-          command
-        );
-        winston.debug(
-          "(wab) message generated from command: ",
-          tiledeskCommandMessage
-        );
+        let tiledeskCommandMessage = await messageHandler.generateMessageObject(command);
+        winston.debug("(fbm) message generated from command: ", tiledeskCommandMessage)
 
-        let InstagramJsonMessage = await tlr.toInstagram(
-          tiledeskCommandMessage,
-          Instagram_receiver
-        );
-        winston.verbose("(wab) InstagramJsonMessage", InstagramJsonMessage);
 
-        if (InstagramJsonMessage) {
-          const twClient = new TiledeskInstagram({
-            token: settings.wab_token,
-            GRAPH_URL: GRAPH_URL,
-            API_URL: API_URL,
-            BASE_FILE_URL: BASE_FILE_URL,
-          });
-          twClient
-            .sendMessage(phone_number_id, InstagramJsonMessage)
-            .then((response) => {
-              winston.verbose(
-                "(wab) Message sent to Instagram! " +
-                  response.status +
-                  " " +
-                  response.statusText
-              );
-              i += 1;
-              if (i < commands.length) {
-                execute(commands[i]);
+        let messagesList = await messageHandler.splitMessageFromTiledesk(tiledeskCommandMessage);
+
+        let j = 0;
+        async function send(message) {
+          let messengerJsonMessage = await tlr.toMessenger(message, messenger_receiver)
+          winston.verbose("(fbm) messengerJsonMessage" + JSON.stringify(messengerJsonMessage));
+
+
+          if (messengerJsonMessage) {
+            fbClient.send(messengerJsonMessage, page_detail.access_token).then((response) => {
+              winston.debug("(fbm) Message sent to Messenger!" + response.status + response.statusText);
+              j += 1;
+              if (j < messagesList.length) {
+                send(messagesList[j])
               } else {
-                winston.debug("(wab) End of commands");
-                return res.sendStatus(200);
+                winston.debug("(fbm) End of splitted message -> go to next command")
+                i += 1;
+                if (i < commands.length) {
+                  execute(commands[i]);
+                } else {
+                  winston.debug("(fbm) End of commands")
+                }
               }
             })
-            .catch((err) => {
-              winston.error("(wab) send message error: ", err);
-            });
-        } else {
-          winston.error("(wab) InstagramJsonMessage is undefined!");
+          } else {
+            winston.error("(fbm) messengerJsonMessage is undefined!")
+          }
         }
+        send(messagesList[0]);
       }
 
-      //wait
+      // wait
       if (command.type === "wait") {
         setTimeout(() => {
           i += 1;
           if (i < commands.length) {
             execute(commands[i]);
           } else {
-            winston.debug("(wab) End of commands");
-            return res.sendStatus(200);
+            winston.debug("(fbm) End of commands")
           }
-        }, command.time);
+        }, command.time)
       }
     }
     execute(commands[0]);
-  } else if (tiledeskChannelMessage.text || tiledeskChannelMessage.metadata) {
-    let InstagramJsonMessage = await tlr.toInstagram(
-      tiledeskChannelMessage,
-      Instagram_receiver
-    );
-    winston.verbose("(wab) InstagramJsonMessage", InstagramJsonMessage);
-
-    if (InstagramJsonMessage) {
-      const twClient = new TiledeskInstagram({
-        token: settings.wab_token,
-        GRAPH_URL: GRAPH_URL,
-        API_URL: API_URL,
-        BASE_FILE_URL: BASE_FILE_URL,
-      });
-
-      twClient
-        .sendMessage(phone_number_id, InstagramJsonMessage)
-        .then((response) => {
-          winston.verbose(
-            "(wab) Message sent to Instagram! " +
-              response.status +
-              " " +
-              response.statusText
-          );
-          return res.sendStatus(200);
-        })
-        .catch((err) => {
-          //winston.error("(wab) error send message: ", err);
-          return res
-            .status(400)
-            .send({ success: false, error: "Template not existing" });
-        });
-    } else {
-      winston.error("(wab) Instagram Json Message is undefined!");
-      return res
-        .status(400)
-        .send({
-          success: false,
-          error: "An error occurred during message translation",
-        });
-    }
-  } else {
-    winston.debug("(wab) no command, no text --> skip");
-    return res
-      .sendStatus(400)
-      .send({
-        success: false,
-        error: "No command or text specified. Skip message.",
-      });
   }
-});
 
-// Endpoint for Instagram Business
-// Accepts POST requests at /webhook endpoint
-router.post("/webhook/:project_id", async (req, res) => {
-  // Parse the request body from the POST
-  let project_id = req.params.project_id;
-  winston.verbose("(wab) Message received from Instagram");
+  else if (tiledeskChannelMessage.text || tiledeskChannelMessage.metadata) {
 
-  // Check the Incoming webhook message
-  // info on Instagram text message payload: https://developers.facebook.com/docs/Instagram/cloud-api/webhooks/payload-examples#text-messages
-  if (req.body.object) {
-    let CONTENT_KEY = "instagram-" + project_id;
-    let settings = await db.get(CONTENT_KEY);
-    winston.debug("(wab) settings: ", settings);
+    let messagesList = await messageHandler.splitMessageFromTiledesk(tiledeskChannelMessage);
+    winston.debug("(fbm) message splitted in " + messagesList.length + " messages");
 
-    if (!settings) {
-      winston.warn("(wab) settings not found for project_id: " + project_id);
-      winston.warn("(wab) settings not found for request: ", req.body);
-      return res.sendStatus(200);
+    let j = 0;
+    async function send(message) {
+      let messengerJsonMessage = await tlr.toMessenger(message, messenger_receiver);
+      winston.verbose("(fbm) messengerJsonMessage", messengerJsonMessage)
+
+      if (messengerJsonMessage) {
+        fbClient.send(messengerJsonMessage, page_detail.access_token).then((response) => {
+          winston.verbose("(fbm) Message sent to Messenger!" + response.status + " " + response.statusText);
+          j += 1;
+          if (j < messagesList.length) {
+            send(messagesList[j])
+          } else {
+            winston.debug("(fbm) End of splitted message")
+          }
+        }).catch((err) => {
+          winston.error("(fbm) error send message: ", err)
+        })
+      } else {
+        winston.error("(fbm) messengerJsonMessage is undefined!")
+      }
+    }
+    send(messagesList[0]);
+
+  }
+
+  else {
+    winston.debug("(fbm) no command, no text --> skip")
+  }
+
+  return res.status(200).send({ message: "sent" });
+})
+
+router.post('/webhookFB', async (req, res) => {
+
+  winston.verbose("(fbm) Message received from Facebook Messenger");
+
+  let body = req.body;
+  if (body.object === 'page') {
+
+    let page_id = body.entry[0].id;
+    let PAGE_KEY = "messenger-page-" + page_id;
+    let info_settings = await db.get(PAGE_KEY);
+
+    if (!info_settings) {
+      winston.debug("(fbm) Facebook page not enabled --> Skip")
+      return res.status(200).send('EVENT_RECEIVED');
     }
 
-    const tdClient = new TiledeskClient({
-      projectId: project_id,
-      token: settings.token,
-      APIURL: API_URL,
-      APIKEY: "___",
-      log: false,
-    });
+    let project_id = info_settings.project_id;
+    winston.debug("(fbm) project_id: " + project_id);
 
-    const wl = new InstagramLogger({ tdClient: tdClient });
-    wl.forwardMessage(req.body);
+    let CONTENT_KEY = "messenger-" + project_id;
+    let settings = await db.get(CONTENT_KEY);
 
-    if (
-      req.body.entry &&
-      req.body.entry[0].changes &&
-      req.body.entry[0].changes[0] &&
-      req.body.entry[0].changes[0].value.messages &&
-      req.body.entry[0].changes[0].value.messages[0]
-    ) {
-      if (req.body.entry[0].changes[0].value.messages[0].type == "system") {
-        winston.verbose("(wab) Skip system message");
-        return res.sendStatus(200);
+    body.entry.forEach(async (entry) => {
+
+      let messengerChannelMessage = entry.messaging[0];
+      winston.debug("(fbm) webhook_event: ", messengerChannelMessage);
+
+      const tlr = new TiledeskMessengerTranslator();
+      const tdChannel = new TiledeskChannel({ settings: settings, API_URL: API_URL })
+      const fbClient = new FacebookClient({ GRAPH_URL: GRAPH_URL, FB_APP_ID: FB_APP_ID, APP_SECRET: APP_SECRET, BASE_URL: BASE_URL });
+
+      const page = settings.pages.find(p => p.id === page_id);
+
+      let user_info = await fbClient.getUserInfo(page.access_token, messengerChannelMessage.sender.id)
+      messengerChannelMessage.sender.fullname = user_info.first_name + " " + user_info.last_name;
+
+      winston.debug("(fbm) page: " + page);
+      winston.debug("(fbm) user_info: ", user_info);
+
+      let message_info = {
+        channel: TiledeskMessengerTranslator.CHANNEL_NAME,
+        messenger: {
+          page_id: page_id,
+          sender_id: messengerChannelMessage.sender.id,
+          firstname: user_info.first_name,
+          lastname: user_info.last_name
+        }
       }
 
-      if (req.body.entry[0].id !== settings.business_account_id) {
-        winston.verbose(
-          "(wab) Skip message with waba that not belong to Tiledesk project id"
-        );
-        return res.sendStatus(200);
-      }
+      if (messengerChannelMessage.message &&
+        messengerChannelMessage.message.attachments &&
+        messengerChannelMessage.message.attachments.length > 1) {
 
-      let InstagramChannelMessage =
-        req.body.entry[0].changes[0].value.messages[0];
+        const messageHandler = new MessageHandler();
+        let messagesList = await messageHandler.splitMessageFromMessenger(messengerChannelMessage);
 
-      /*
-      let CONTENT_KEY = "instagram-" + project_id;
-      let settings = await db.get(CONTENT_KEY);
-      winston.debug("(wab) settings: ", settings);
-      */
+        for (let message of messagesList) {
 
-      if (!settings) {
-        winston.verbose("(wab) No settings found. Exit..");
-        return res.sendStatus(200);
-      }
+          let tiledeskJsonMessage = await tlr.toTiledesk(message);
+          winston.verbose("(fbm) tiledeskJsonMessage: ", tiledeskJsonMessage);
 
-      const tlr = new TiledeskInstagramTranslator();
-      const tdChannel = new TiledeskChannel({
-        settings: settings,
-        API_URL: API_URL,
-      });
+          if (tiledeskJsonMessage) {
+            const response = await tdChannel.send(tiledeskJsonMessage, message_info, settings.department_id);
+            winston.verbose("(fbm) Message sent to Tiledsk")
+            winston.debug("(fbm) response: ", response);
+          } else {
+            winston.verbose("(fbm) tiledeskJsonMessage is undefined!")
+          }
 
-      // Initialize conversation with chatbot
-      if (
-        InstagramChannelMessage.text &&
-        InstagramChannelMessage.text.body.startsWith("#td")
-      ) {
-        let code = InstagramChannelMessage.text.body.split(" ")[0];
+        }
 
-        const bottester = new TiledeskBotTester({
-          project_id: project_id,
-          redis_client: redis_client,
-          db: db,
-          tdChannel: tdChannel,
-          tlr: tlr,
-        });
-        bottester
-          .startBotConversation(req.body, code)
-          .then((result) => {
-            winston.verbose("(wab) test conversation started");
-            winston.debug("(wab) startBotConversation result: ", result);
-          })
-          .catch((err) => {
-            winston.error("(wab) start test onversation error: ", err);
-          });
-
-        // Standard message
       } else {
-        let firstname =
-          req.body.entry[0].changes[0].value.contacts[0].profile.name;
-          
-        let message_info = {
-          channel: "instagram",
-          Instagram: {
-            phone_number_id:
-              req.body.entry[0].changes[0].value.metadata.phone_number_id,
-            from: req.body.entry[0].changes[0].value.messages[0].from,
-            firstname:
-              req.body.entry[0].changes[0].value.contacts[0].profile.name,
-            lastname: " ",
-          },
-        };
-
-        let tiledeskJsonMessage;
-
-        /*
-        if ((InstagramChannelMessage.type == 'text')) {
-          winston.debug("(wab) message type: text")
-          tiledeskJsonMessage = await tlr.toTiledesk(InstagramChannelMessage, firstname);
-        }
-
-        else if (InstagramChannelMessage.type == 'interactive') {
-          winston.debug("(wab) message type: interactive")
-          tiledeskJsonMessage = await tlr.toTiledesk(InstagramChannelMessage, firstname);
-        }
-
-        else if ((InstagramChannelMessage.type == 'image') || (InstagramChannelMessage.type == 'video') || (InstagramChannelMessage.type == 'document') || (InstagramChannelMessage.type == 'audio')) {
-          let media;
-          const util = new TiledeskInstagram({ token: settings.wab_token, GRAPH_URL: GRAPH_URL, API_URL: API_URL, BASE_FILE_URL: BASE_FILE_URL })
-
-          if (InstagramChannelMessage.type == 'image') {
-            media = InstagramChannelMessage.image;
-            const filename = await util.downloadMedia(media.id);
-            if (!filename) {
-              winston.debug("(wab) Unable to download media with id " + media.id + ". Message not sent.");
-              return res.status(500).send({ success: false, error: "unable to download media" })
-            }
-            let file_path = path.join(__dirname, 'tmp', filename);
-
-            const image_url = await util.uploadMedia(file_path, "images");
-            winston.debug("(wab) image_url: " + image_url)
-
-            tiledeskJsonMessage = await tlr.toTiledesk(InstagramChannelMessage, firstname, image_url);
-          }
-
-          if (InstagramChannelMessage.type == 'video') {
-            media = InstagramChannelMessage.video;
-
-            const filename = await util.downloadMedia(media.id);
-            if (!filename) {
-              winston.debug("(wab) Unable to download media with id " + media.id + ". Message not sent.");
-              return res.status(500).send({ success: false, error: "unable to download media" })
-            }
-            let file_path = path.join(__dirname, 'tmp', filename);
-
-            const media_url = await util.uploadMedia(file_path, "files");
-            winston.debug("(wab) media_url: " + media_url)
-
-            tiledeskJsonMessage = await tlr.toTiledesk(InstagramChannelMessage, firstname, media_url);
-          }
-
-          if (InstagramChannelMessage.type == 'document') {
-            media = InstagramChannelMessage.document;
-
-            const filename = await util.downloadMedia(media.id);
-            if (!filename) {
-              winston.debug("(wab) Unable to download media with id " + media.id + ". Message not sent.");
-              return res.status(500).send({ success: false, error: "unable to download media" })
-            }
-            let file_path = path.join(__dirname, 'tmp', filename);
-
-            const media_url = await util.uploadMedia(file_path, "files");
-            winston.debug("(wab) media_url: " + media_url)
-
-            tiledeskJsonMessage = await tlr.toTiledesk(InstagramChannelMessage, firstname, media_url);
-          }
-
-          if (InstagramChannelMessage.type == 'audio') {
-            media = InstagramChannelMessage.audio;
-
-            const filename = await util.downloadMedia(media.id);
-            if (!filename) {
-              winston.debug("(wab) Unable to download media with id " + media.id + ". Message not sent.");
-              return res.status(500).send({ success: false, error: "unable to download media" })
-            }
-            let file_path = path.join(__dirname, 'tmp', filename);
-
-            const media_url = await util.uploadMedia(file_path, "files");
-            winston.debug("(wab) media_url: " + media_url)
-
-            tiledeskJsonMessage = await tlr.toTiledesk(InstagramChannelMessage, firstname, media_url);
-          }
-
-        } else {
-          // unsupported. Try anyway to send something.
-          winston.debug("(wab) unsupported message")
-        }
-        */
-
-        ////////////////////////////////////////////////////
-
-        if (
-          InstagramChannelMessage.type == "image" ||
-          InstagramChannelMessage.type == "video" ||
-          InstagramChannelMessage.type == "document" ||
-          InstagramChannelMessage.type == "audio"
-        ) {
-          let media;
-          const util = new TiledeskInstagram({
-            token: settings.wab_token,
-            GRAPH_URL: GRAPH_URL,
-            API_URL: API_URL,
-            BASE_FILE_URL: BASE_FILE_URL,
-          });
-
-          if (InstagramChannelMessage.type == "image") {
-            media = InstagramChannelMessage.image;
-            const filename = await util.downloadMedia(media.id);
-            if (!filename) {
-              winston.debug(
-                "(wab) Unable to download media with id " +
-                  media.id +
-                  ". Message not sent."
-              );
-              return res
-                .status(500)
-                .send({ success: false, error: "unable to download media" });
-            }
-            let file_path = path.join(__dirname, "tmp", filename);
-
-            const image_url = await util.uploadMedia(file_path, "images");
-            winston.debug("(wab) image_url: " + image_url);
-
-            tiledeskJsonMessage = await tlr.toTiledesk(
-              InstagramChannelMessage,
-              firstname,
-              image_url
-            );
-          }
-
-          if (InstagramChannelMessage.type == "video") {
-            media = InstagramChannelMessage.video;
-
-            const filename = await util.downloadMedia(media.id);
-            if (!filename) {
-              winston.debug(
-                "(wab) Unable to download media with id " +
-                  media.id +
-                  ". Message not sent."
-              );
-              return res
-                .status(500)
-                .send({ success: false, error: "unable to download media" });
-            }
-            let file_path = path.join(__dirname, "tmp", filename);
-
-            const media_url = await util.uploadMedia(file_path, "files");
-            winston.debug("(wab) media_url: " + media_url);
-
-            tiledeskJsonMessage = await tlr.toTiledesk(
-              InstagramChannelMessage,
-              firstname,
-              media_url
-            );
-          }
-
-          if (InstagramChannelMessage.type == "document") {
-            media = InstagramChannelMessage.document;
-
-            const filename = await util.downloadMedia(media.id);
-            if (!filename) {
-              winston.debug(
-                "(wab) Unable to download media with id " +
-                  media.id +
-                  ". Message not sent."
-              );
-              return res
-                .status(500)
-                .send({ success: false, error: "unable to download media" });
-            }
-            let file_path = path.join(__dirname, "tmp", filename);
-
-            const media_url = await util.uploadMedia(file_path, "files");
-            winston.debug("(wab) media_url: " + media_url);
-
-            tiledeskJsonMessage = await tlr.toTiledesk(
-              InstagramChannelMessage,
-              firstname,
-              media_url
-            );
-          }
-
-          if (InstagramChannelMessage.type == "audio") {
-            media = InstagramChannelMessage.audio;
-
-            const filename = await util.downloadMedia(media.id);
-            if (!filename) {
-              winston.debug(
-                "(wab) Unable to download media with id " +
-                  media.id +
-                  ". Message not sent."
-              );
-              return res
-                .status(500)
-                .send({ success: false, error: "unable to download media" });
-            }
-            let file_path = path.join(__dirname, "tmp", filename);
-
-            const media_url = await util.uploadMedia(file_path, "files");
-            winston.debug("(wab) media_url: " + media_url);
-
-            tiledeskJsonMessage = await tlr.toTiledesk(
-              InstagramChannelMessage,
-              firstname,
-              media_url
-            );
-          }
-        } else {
-          winston.debug("(wab) message type: ", InstagramChannelMessage.type);
-          tiledeskJsonMessage = await tlr.toTiledesk(
-            InstagramChannelMessage,
-            firstname
-          );
-        }
+        let tiledeskJsonMessage = await tlr.toTiledesk(messengerChannelMessage);
+        winston.verbose("(fbm) tiledeskJsonMessage: ", tiledeskJsonMessage);
 
         if (tiledeskJsonMessage) {
-          winston.verbose("(wab) tiledeskJsonMessage: ", tiledeskJsonMessage);
-          const response = await tdChannel.send(
-            tiledeskJsonMessage,
-            message_info,
-            settings.department_id
-          );
-          winston.verbose("(wab) Message sent to Tiledesk!");
-          winston.debug("(wab) response: ", response);
+          const response = await tdChannel.send(tiledeskJsonMessage, message_info, settings.department_id);
+          winston.verbose("(fbm) Message sent to Tiledsk")
+          winston.debug("(fbm) response: ", response)
         } else {
-          winston.verbose("(wab) tiledeskJsonMessage is undefined");
+          winston.verbose("(fbm) tiledeskJsonMessage is undefined!")
         }
       }
-    }
 
-    if (
-      req.body.entry &&
-      req.body.entry[0].changes &&
-      req.body.entry[0].changes[0] &&
-      req.body.entry[0].changes[0].value.statuses &&
-      req.body.entry[0].changes[0].value.statuses[0]
-    ) {
-      let InstagramStatusMessage =
-        req.body.entry[0].changes[0].value.statuses[0];
-      winston.verbose("(wab) InstagramStatusMessage: ", InstagramStatusMessage);
-
-      let message_id = InstagramStatusMessage.id;
-      let status = InstagramStatusMessage.status;
-      let error = null;
-      if (InstagramStatusMessage.errors) {
-        error = InstagramStatusMessage.errors[0].title;
-      }
-      winston.verbose(
-        "(wab) update status in " + status + " for message_id " + message_id
-      );
-
-      /*
-      let CONTENT_KEY = "instagram-" + project_id;
-      let settings = await db.get(CONTENT_KEY);
-      winston.debug("(wab) settings: ", settings);
-      */
-
-      const tdClient = new TiledeskClient({
-        projectId: project_id,
-        token: settings.token,
-        APIURL: API_URL,
-        APIKEY: "___",
-        log: false,
-      });
-
-      const wl = new InstagramLogger({ tdClient: tdClient });
-      wl.updateMessageStatus(message_id, status, error);
-    }
-
-    res.sendStatus(200);
-  } else {
-    // Return a '404 Not Found' if event is not from a Instagram API
-    winston.verbose("(wab) event not from Instagram");
-    res.sendStatus(404);
+    })
   }
-});
 
-// Accepts GET requests at the /webhook endpoint. You need this URL to setup webhook initially.
-// info on verification request payload: https://developers.facebook.com/docs/graph-api/webhooks/getting-started#verification-requests
-router.get("/webhook/:project_id", async (req, res) => {
-  /**
-   * UPDATE YOUR VERIFY TOKEN
-   *This will be the Verify Token value when you set up webhook
-   */
-  winston.verbose("(wab) Verify the webhook... ");
-  winston.debug("(wab) req.query: " + req.query);
+  return res.status(200).send('EVENT_RECEIVED');
+})
 
-  // Parse params from the webhook verification request
-  let mode = req.query["hub.mode"];
-  let token = req.query["hub.verify_token"];
-  let challenge = req.query["hub.challenge"];
+router.get('/webhookFB', async (req, res) => {
 
-  let CONTENT_KEY = "instagram-" + req.params.project_id;
+  winston.verbose("(fbm) Verify the webhook... ", req.query);
+
+  // Parse the query params
+  let mode = req.query['hub.mode'];
+  let token = req.query['hub.verify_token'];
+  let challenge = req.query['hub.challenge'];
+
+  winston.verbose("(fbm) token: " + token);
+  winston.verbose("(fbm) verify token: " + VERIFY_TOKEN);
+  winston.verbose("(fbm) mode: " + mode)
+  winston.verbose("(fbm) challenge: " + challenge)
+
+  // Checks if a token and mode is in the query string of the request
+  if (mode && token) {
+
+    // Checks the mode and token sent is correct
+    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+
+      // Responds with the challenge token from the request
+      winston.verbose('(fbm) Webhook verified');
+      return res.status(200).send(challenge);
+
+    } else {
+      // Responds with '403 Forbidden' if verify tokens do not match
+      return res.sendStatus(403);
+    }
+  }
+  return res.sendStatus(403);
+})
+
+router.get('/oauth', async (req, res) => {
+  winston.verbose("(fbm) /oauth")
+
+  let project_id = JSON.parse(req.query.state).project_id;
+  var code = req.query.code;
+  let token = JSON.parse(req.query.state).token;
+  let app_id = JSON.parse(req.query.state).app_id;
+
+  const tdClient = new TiledeskSubscriptionClient({ API_URL: API_URL, project_id: project_id, token: token })
+  const fbClient = new FacebookClient({ GRAPH_URL: GRAPH_URL, FB_APP_ID: FB_APP_ID, APP_SECRET: APP_SECRET, BASE_URL: BASE_URL });
+
+  const subscription_info = {
+    target: BASE_URL + '/tiledesk',
+    event: 'message.create.request.channel.messenger',
+  }
+
+  const subscription = await tdClient.subscribe(subscription_info);
+  const access_token = await fbClient.getAccessTokenFromCode(code);
+  const pages_list = await fbClient.getPages(access_token);
+
+  winston.debug("(fbm) subscription: " + subscription);
+  winston.debug("(fbm) access_token: " + access_token);
+  winston.debug("(fbm) pages_list: " + pages_list);
+
+  let CONTENT_KEY = "messenger-" + project_id;
+
+  let pages = [];
+  pages_list.forEach(async (single_page) => {
+    let page = {
+      id: single_page.id,
+      name: single_page.name,
+      access_token: single_page.access_token,
+      category: single_page.category,
+      active: false
+    }
+    pages.push(page);
+    let event_sub = await fbClient.messageEventSubscription(single_page.id, single_page.access_token);
+    winston.debug("(fbm) event subscription: " + event_sub.status + " " + event_sub.statusText)
+  })
+
+  let settings = {
+    project_id: project_id,
+    token: token,
+    access_token: access_token,
+    subscription_id: subscription._id,
+    secret: subscription.secret,
+    pages: pages,
+    app_id: app_id
+  }
+
+  await db.set(CONTENT_KEY, settings);
+
+  //let settings_retrived = await db.get(CONTENT_KEY);
+  //var redirect_uri = DASHBOARD_BASE_URL + "/#/project/" + project_id + "/app-store-install/" + app_id + "/run";
+  var redirect_uri = DASHBOARD_BASE_URL + "/#/project/" + project_id + "/integrations?name=messenger";
+  console.log("(fbm) redirect_uri: ", redirect_uri);
+  res.redirect(redirect_uri);
+
+  /*
+  readHTMLFile('/configure.html', (err, html) => {
+    var template = handlebars.compile(html);
+    var replacements = {
+      app_version: pjson.version,
+      project_id: project_id,
+      connected: true,
+      token: token,
+      app_id: app_id,
+      endpoint: BASE_URL,
+      subscription_id: settings.subscription_id,
+      secret: settings.secret,
+      pages: settings.pages
+    }
+    var html = template(replacements)
+    res.send(html);
+  })
+  */
+
+})
+
+router.post('/enablePage', async (req, res) => {
+  winston.verbose("(fbm) /enablePage")
+
+  let page_name = req.body.page_name;
+  let project_id = req.body.project_id;
+  let token = req.body.token;
+
+  let CONTENT_KEY = "messenger-" + project_id;
 
   let settings = await db.get(CONTENT_KEY);
 
-  if (!settings || !settings.verify_token) {
-    winston.error("(wab) No settings found! Unable to verify token.");
-    res.sendStatus(403);
-  } else {
-    let VERIFY_TOKEN = settings.verify_token;
+  let page = settings.pages.find(e => e.name == page_name);
 
-    // Check if a token and mode were sent
-    if (mode && token) {
-      // Check the mode and token sent are correct
-      if (mode === "subscribe" && token === VERIFY_TOKEN) {
-        // Respond with 200 OK and challenge token from the request
-        winston.verbose("(wab) Webhook verified");
-        res.status(200).send(challenge);
-      } else {
-        // Responds with '403 Forbidden' if verify tokens do not match
-        winston.error("(wab) mode is not 'subscribe' or token do not match");
-        res.sendStatus(403);
-      }
-    } else {
-      winston.error("(wab) mode or token undefined");
-      res
-        .status(400)
-        .send("impossible to verify the webhook: mode or token undefined.");
+  let KEY = "messenger-page-" + page.id;
+
+  let page_info = await db.get(KEY);
+  winston.debug("(fbm) page_info: ", page_info);
+
+  const tdChannel = new TiledeskChannel({ settings: { project_id: project_id, token: token }, API_URL: API_URL })
+  let departments = await tdChannel.getDepartments(token);
+
+  if (!page_info) {
+    // pagina non attiva per nessun progetto
+    await db.set(KEY, { project_id: project_id });
+
+    // ------------------------------------------------
+    // delete current active page key if exists
+    let current_active_page = settings.pages.find(e => e.active == true);
+    if (current_active_page) {
+      winston.debug("(fbm) delete current_active_page key: " + current_active_page.id);
+      let TO_DELETE_KEY = "messenger-page-" + current_active_page.id;
+      db.remove(TO_DELETE_KEY)
     }
-  }
-});
+    // ------------------------------------------------
 
-router.post("/newtest", async (req, res) => {
-  winston.verbose("(wab) initializing new test..");
+    settings.pages.forEach((page) => {
+      page.active = false;
+    })
+    settings.pages.find(e => e.name == page_name).active = true;
+    await db.set(CONTENT_KEY, settings);
+
+    readHTMLFile('/configure.html', (err, html) => {
+      var template = handlebars.compile(html);
+      var replacements = {
+        app_version: pjson.version,
+        project_id: project_id,
+        connected: true,
+        token: token,
+        endpoint: BASE_URL,
+        pages: settings.pages,
+        department_id: settings.department_id,
+        departments: departments,
+        brand_name: BRAND_NAME
+      }
+      var html = template(replacements)
+      return res.send(html);
+    })
+
+  } else {
+    // pagina attiva per qualche progetto --> reject
+    winston.verbose("Page already in use in another project");
+    let alert = "Unable to activate " + page_name + ". Page already in use in another project."
+
+    readHTMLFile('/configure.html', (err, html) => {
+      var template = handlebars.compile(html);
+      var replacements = {
+        app_version: pjson.version,
+        project_id: project_id,
+        connected: true,
+        token: token,
+        endpoint: BASE_URL,
+        pages: settings.pages,
+        department_id: settings.department_id,
+        departments: departments,
+        brand_name: BRAND_NAME,
+        show_alert_modal: true
+      }
+      var html = template(replacements)
+      return res.send(html);
+    })
+  }
+})
+
+router.post('/disablePage', async (req, res) => {
+  winston.verbose("(fbm) disablePage");
+
+  let page_name = req.body.page_name;
+  let project_id = req.body.project_id;
+  let token = req.body.token;
+
+  let CONTENT_KEY = "messenger-" + project_id;
+
+  let settings = await db.get(CONTENT_KEY);
+
+  let page = settings.pages.find(e => e.name == page_name);
+
+  let KEY = "messenger-page-" + page.id;
+  await db.remove(KEY);
+
+  settings.pages.forEach((page) => {
+    page.active = false;
+  })
+
+  await db.set(CONTENT_KEY, settings);
+
+  const tdChannel = new TiledeskChannel({ settings: { project_id: project_id, token: token }, API_URL: API_URL })
+  let departments = await tdChannel.getDepartments(token);
+  winston.debug("(fbm) found " + departments.length + " departments")
+
+  readHTMLFile('/configure.html', (err, html) => {
+    var template = handlebars.compile(html);
+    var replacements = {
+      app_version: pjson.version,
+      project_id: project_id,
+      connected: true,
+      token: token,
+      endpoint: BASE_URL,
+      pages: settings.pages,
+      department_id: settings.department_id,
+      departments: departments,
+      brand_name: BRAND_NAME
+      //displayError: true,
+      //alert: alert
+    }
+    var html = template(replacements)
+    return res.send(html);
+  })
+
+})
+
+router.post('/disconnect', async (req, res) => {
+  winston.verbose("(fbm) /disconnect");
 
   let project_id = req.body.project_id;
-  let bot_id = req.body.bot_id;
+  let token = req.body.token;
+  let subscription_id = req.body.subscription_id;
 
-  let info = {
-    project_id: project_id,
-    bot_id: bot_id,
-  };
+  let CONTENT_KEY = "messenger-" + project_id;
 
-  let short_uid = uuidv4().substring(0, 8);
-  let key = "bottest:" + short_uid;
+  let settings = await db.get(CONTENT_KEY);
+  const active_page = settings.pages.find(p => p.active === true);
 
-  if (!redis_client) {
-    return res.status(500).send({
-      message: "Test it out on Instagram not available. Redis not ready.",
-    });
+  if (active_page) {
+    let PAGE_KEY = "messenger-page-" + active_page.id;
+    await db.remove(PAGE_KEY)
+    winston.debug("(fbm) Page deleted.");
   }
 
-  await redis_client.set(key, JSON.stringify(info), "EX", 604800);
-  redis_client.get(key, (err, value) => {
-    if (err) {
-      winston.error("(wab) redis get err: ", err);
-      return res
-        .status(500)
-        .send({ success: "false", message: "Testing info could not be saved" });
-    } else {
-      winston.debug("(wab) new test initialized with id: " + short_uid);
-      return res.status(200).send({ short_uid: short_uid });
-    }
-  });
-});
+  await db.remove(CONTENT_KEY)
+  winston.verbose("(fbm) Content deleted.");
 
-router.get("/templates/detail", async (req, res) => {
-  let project_id = req.query.project_id;
-  let token = req.query.token;
-  let app_id = req.query.app_id;
-  let template_id = req.query.id_template;
-  winston.debug("get template_id: " + template_id);
+  const tdClient = new TiledeskSubscriptionClient({ API_URL: API_URL, project_id: project_id, token: token })
+  tdClient.unsubscribe(settings.subscription_id).then(async (data) => {
 
-  let CONTENT_KEY = "instagram-" + project_id;
-  let settings = await db.get(CONTENT_KEY);
-  winston.debug("(wab) settings: ", settings);
+    const tdChannel = new TiledeskChannel({ settings: { project_id: project_id, token: token }, API_URL: API_URL })
+    let departments = await tdChannel.getDepartments(token);
+    winston.debug("(fbm) found " + departments.length + " departments")
 
-  if (settings) {
-    // forse non serve, comunque non si può prendere un singolo template
-    /*
-    let tm = new TemplateManager({ token: settings.wab_token, business_account_id: settings.business_account_id, GRAPH_URL: GRAPH_URL })
-    let templates_info = await tm.getTemplateNamespace();
-    let namespace = templates_info.message_template_namespace;
-    let template = await tm.getTemplateById(namespace);
-    */
-    let tm = new TemplateManager({
-      token: settings.wab_token,
-      business_account_id: settings.business_account_id,
-      GRAPH_URL: GRAPH_URL,
-    });
-    let templates = await tm.getTemplates();
-    let template = JSON.parse(
-      JSON.stringify(templates.data.find((t) => t.id === template_id))
-    );
-    let template_name = template.name;
+    readHTMLFile('/configure.html', (err, html) => {
 
-    let template_copy = {
-      name: template.name,
-      components: template.components,
-      language: template.language,
-      status: template.status,
-      id: template.id,
-      category: template.category,
-    };
-
-    readHTMLFile("/template_detail.html", (err, html) => {
       var template = handlebars.compile(html);
       var replacements = {
         app_version: pjson.version,
         project_id: project_id,
         token: token,
-        app_id: app_id,
-        name: template_name,
-        template: template_copy,
-      };
-      var html = template(replacements);
-      res.send(html);
-    });
-  } else {
-    return res.send("Instagram not installed on this project");
-  }
-});
-
-/*
-router.get("/templates/:project_id", async (req, res) => {
-  winston.verbose("(wab) /templates");
-
-  let project_id = req.params.project_id;
-  let token = req.query.token;
-  let app_id = req.query.app_id;
-
-  let CONTENT_KEY = "instagram-" + project_id;
-  let settings = await db.get(CONTENT_KEY);
-  winston.debug("(wab) settings: ", settings);
-
-  if (settings) {
-    let tm = new TemplateManager({
-      token: settings.wab_token,
-      business_account_id: settings.business_account_id,
-      GRAPH_URL: GRAPH_URL,
-    });
-    let templates = await tm.getTemplates();
-
-    readHTMLFile("/templates.html", (err, html) => {
-      var template = handlebars.compile(html);
-      var replacements = {
-        app_version: pjson.version,
-        project_id: project_id,
-        token: token,
-        app_id: app_id,
-        templates: templates.data,
-      };
-      var html = template(replacements);
-      res.send(html);
-    });
-  } else {
-    winston.verbose("No settings found.");
-    return res
-      .status(404)
-      .send({
-        success: false,
-        error: "Instagram not installed for the project id " + project_id,
-      });
-  }
-});
-*/
-
-/*
-router.get("/ext/templates/:project_id", async (req, res) => {
-  winston.verbose("(wab) /ext/templates");
-
-  let project_id = req.params.project_id;
-
-  let CONTENT_KEY = "instagram-" + project_id;
-  let settings = await db.get(CONTENT_KEY);
-
-  if (settings) {
-
-    if (settings.business_account_id) {
-      let tm = new TemplateManager({ token: settings.wab_token, business_account_id: settings.business_account_id, GRAPH_URL: GRAPH_URL })
-      let templates = await tm.getTemplates();
-      if (templates) {
-        res.status(200).send(templates.data);
-      } else {
-        res.status(500).send({ success: false, code: '02', message: "A problem occurred while getting templates from Instagram" })
+        endpoint: BASE_URL,
+        departments: departments,
+        brand_name: BRAND_NAME,
+        redirect_uri: `https://www.facebook.com/v14.0/dialog/oauth?client_id=${FB_APP_ID}&redirect_uri=${BASE_URL}/oauth?&scope=public_profile%2C%20email%2C%20pages_show_list%2C%20pages_messaging&state={"project_id":"${project_id}","app_id":"${settings.app_id}","token":"${token}"}`,
       }
+      var html = template(replacements)
+      return res.send(html);
+    })
 
-    } else {
-      res.status(500).send({ success: false, code: '03', message: "Missing parameter 'Instagram Business Account ID'. Please update your app." })
-    }
+  }).catch((err) => {
+    winston.error("(fbm) unsubscribe error: ", err);
+  })
 
-  } else {
-    res.status(400).send({ success: false, code: '01', message: "Instagram not installed for the project_id " + project_id })
-  }
 
 })
-*/
 
-//router.delete("/ext/")
-
-/*
-router.get("/ext/:project_id", async (req, res) => {
-  winston.verbose("(wab) /ext/");
-
-  let project_id = req.params.project_id;
-  let CONTENT_KEY = "instagram-" + project_id;
-  let settings = await db.get(CONTENT_KEY);
-
-  if (!settings) {
-    return res.status(200).send({ success: false, message: "Instagram not installed for the project_id " + project_id })
-  }
-  return res.status(200).send({ success: true, settings: settings })
-})
-*/
-
-// *****************************
-// ********* FUNCTIONS *********
-// *****************************
-
-async function startApp(settings, callback) {
-  winston.info("(wab) Starting Instagram App");
+function startApp(settings, callback) {
+  winston.info("(fbm) Starting Messenger App");
 
   if (!settings.MONGODB_URL) {
-    winston.error("(wab) MONGODB_URL is mandatory. Exit...");
-    return callback("Missing parameter: MONGODB_URL");
+    winston.error("(fbm) MONGODB_URL is mandatory. Exit...");
+    return callback('Missing parameter: MONGODB_URL');
   }
 
   if (!settings.API_URL) {
-    winston.error("(wab) API_URL is mandatory. Exit...");
-    return callback("Missing parameter: API_URL");
+    winston.error("(fbm) API_URL is mandatory. Exit...");
+    return callback('Missing parameter: API_URL');
   } else {
     API_URL = settings.API_URL;
-    winston.info("(wab) API_URL: " + API_URL);
-  }
-
-  if (!settings.BASE_FILE_URL) {
-    winston.error("(wab) BASE_FILE_URL is mandatory. Exit...");
-    return callback("Missing parameter: BASE_FILE_URL");
-  } else {
-    BASE_FILE_URL = settings.BASE_FILE_URL;
-    winston.info("(wab) BASE_FILE_URL: " + BASE_FILE_URL);
+    winston.info("(fbm) API_URL: " + API_URL);
   }
 
   if (!settings.BASE_URL) {
-    winston.error("(wab) BASE_URL is mandatory. Exit...");
-    return callback("Missing parameter: BASE_URL");
+    winston.error("(fbm) BASE_URL is mandatory. Exit...");
+    return callback('Missing parameter: BASE_URL')
   } else {
     BASE_URL = settings.BASE_URL;
-    winston.info("(wab) BASE_URL: " + BASE_URL);
+    winston.info("(fbm) BASE_URL: " + BASE_URL);
   }
 
-  if (!settings.GRAPH_URL) {
-    winston.error("(wab) GRAPH_URL is mandatory. Exit...");
-    return callback("Missing parameter: GRAPH_URL");
+  if (!settings.DASHBOARD_BASE_URL) {
+    winston.error("(fbm) DASHBOARD_BASE_URL is mandatory. Exit...");
+    return callback('Missing parameter: DASHBOARD_BASE_URL');
   } else {
-    GRAPH_URL = settings.GRAPH_URL;
-    winston.info("(wab) GRAPH_URL: " + GRAPH_URL);
+    DASHBOARD_BASE_URL = settings.DASHBOARD_BASE_URL;
+    winston.info("(fbm) DASHBOARD_BASE_URL: " + DASHBOARD_BASE_URL)
   }
 
   if (!settings.APPS_API_URL) {
-    winston.error("(wab) APPS_API_URL is mandatory. Exit...");
-    return callback("Missing parameter: APPS_API_URL");
+    winston.error("(fbm) APPS_API_URL is mandatory. Exit...");
+    return callback('Missing parameter: APPS_API_URL');
   } else {
     APPS_API_URL = settings.APPS_API_URL;
-    winston.info("(wab) APPS_API_URL: " + APPS_API_URL);
+    winston.info("(fbm) APPS_API_URL: " + APPS_API_URL);
   }
 
-  if (settings.REDIS_HOST && settings.REDIS_PORT) {
-    REDIS_HOST = settings.REDIS_HOST;
-    REDIS_PORT = settings.REDIS_PORT;
-    REDIS_PASSWORD = settings.REDIS_PASSWORD;
-    connectRedis();
+  if (!settings.FB_APP_ID) {
+    winston.error("(fbm) FB_APP_ID is mandatory. Exit...");
+    return callback('Missing parameter: FB_APP_ID');
   } else {
-    winston.info(
-      "(wab) Missing redis parameters --> Test it out on Instagram disabled"
-    );
+    FB_APP_ID = settings.FB_APP_ID;
+    winston.info("(fbm) FB_APP_ID: " + FB_APP_ID);
   }
 
-  if (!settings.AMQP_MANAGER_URL) {
-    winston.error("(wab) AMQP_MANAGER_URL is mandatory (?). Exit...");
+  if (!settings.FB_APP_SECRET) {
+    winston.error("(fbm) APP_SECRET is mandatory. Exit...");
+    return callback('Missing parameter: APP_SECRET');
   } else {
-    AMQP_MANAGER_URL = settings.AMQP_MANAGER_URL;
-    winston.info("(wab) AMQP_MANAGER_URL is present");
+    APP_SECRET = settings.FB_APP_SECRET;
+    winston.info("(fbm) APP_SECRET: " + APP_SECRET.substring(0, 8) + "************");
   }
 
-  if (!settings.JOB_TOPIC_EXCHANGE) {
-    winston.info(
-      "(wab) JOB_TOPIC_EXCHANGE should be present. Using default value"
-    );
-    JOB_TOPIC_EXCHANGE = "tiledesk-Instagram";
+  if (!settings.VERIFY_TOKEN) {
+    winston.error("(fbm) VERIFY_TOKEN is mandatory. Exit...");
+    return callback('Missing parameter: VERIFY_TOKEN');
   } else {
-    JOB_TOPIC_EXCHANGE = settings.JOB_TOPIC_EXCHANGE;
-    winston.info("(wab) JOB_TOPIC_EXCHANGE is present");
+    VERIFY_TOKEN = settings.VERIFY_TOKEN;
+    winston.info("(fbm) VERIFY_TOKEN: " + VERIFY_TOKEN.substring(0, 8) + "************");
   }
 
+  if (!settings.GRAPH_URL) {
+    winston.error("(fbm) GRAPH_URL is mandatory. Exit...");
+    return callback('Missing parameter: GRAPH_URL');
+  } else {
+    GRAPH_URL = settings.GRAPH_URL;
+    winston.info("(fbm) GRAPH_URL: " + GRAPH_URL);
+  }
+  
   if (settings.BRAND_NAME) {
-    BRAND_NAME = settings.BRAND_NAME;
+    BRAND_NAME = settings.BRAND_NAME
   }
-
-  // // For test only
-  // if (settings.LOG_MONGODB_URL) {
-  //   /**
-  //    * Connect with a different Database
-  //    */
-  //   mongoose
-  //    .connect(settings.LOG_MONGODB_URL)
-  //    .then(() => {
-  //      winston.info("Mongoose DB Connected");
-  //    })
-  //    .catch((err) => {
-  //      winston.error("(Mongoose) Unable to connect with MongoDB ", err);
-  //    });
-  // }
-
-  let LOG_MONGODB_URL;
-  if (!settings.LOG_MONGODB_URL) {
-    LOG_MONGODB_URL = settings.MONGODB_URL;
-  } else {
-    LOG_MONGODB_URL = settings.LOG_MONGODB_URL;
-  }
-
-  mongoose
-    .connect(LOG_MONGODB_URL)
-    .then(() => {
-      winston.info("Mongoose DB Connected");
-    })
-    .catch((err) => {
-      winston.error("(Mongoose) Unable to connect with MongoDB ", err);
-    });
 
   if (settings.dbconnection) {
     db.reuseConnection(settings.dbconnection, () => {
@@ -1609,70 +893,29 @@ async function startApp(settings, callback) {
       if (callback) {
         callback(null);
       }
-    });
+    })
   } else {
     db.connect(settings.MONGODB_URL, () => {
       winston.info("(wab) KVBaseMongo successfully connected.");
-
+  
       if (callback) {
         callback(null);
       }
     });
   }
 
-  api.startRoute(
-    {
-      DB: db,
-      API_URL: API_URL,
-      GRAPH_URL: GRAPH_URL,
-      BASE_FILE_URL: BASE_FILE_URL,
-      AMQP_MANAGER_URL: AMQP_MANAGER_URL,
-      JOB_TOPIC_EXCHANGE: JOB_TOPIC_EXCHANGE,
-    },
-    (err) => {
-      if (!err) {
-        winston.info("(wab) API route successfully started.");
-      } else {
-        winston.info("(wab) Unable to start API route.");
-      }
-    }
-  );
-}
-
-function connectRedis() {
-  redis_client = redis.createClient({
-    host: REDIS_HOST,
-    port: REDIS_PORT,
-    password: REDIS_PASSWORD,
-  });
-
-  redis_client.on("error", (err) => {
-    winston.info("(wab) Connect Redis Error " + err);
-  });
-  /*
-  redis_client.on('connect', () => {
-    winston.info('Redis Connected!'); // Connected!
-  });
-  */
-  redis_client.on("ready", () => {
-    winston.info("(wab) Redis ready!");
-  });
-  //await redis_client.connect(); // only for v4
 }
 
 function readHTMLFile(templateName, callback) {
-  fs.readFile(
-    __dirname + "/template" + templateName,
-    { encoding: "utf-8" },
-    function (err, html) {
+  fs.readFile(__dirname + '/template' + templateName, { encoding: 'utf-8' },
+    function(err, html) {
       if (err) {
         throw err;
         //callback(err);
       } else {
-        callback(null, html);
+        callback(null, html)
       }
-    }
-  );
+    })
 }
 
 module.exports = { router: router, startApp: startApp };

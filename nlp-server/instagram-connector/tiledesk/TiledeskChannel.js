@@ -1,7 +1,7 @@
 const axios = require("axios").default;
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
-const winston = require('../winston')
+const winston = require('../winston');
 
 class TiledeskChannel {
 
@@ -10,11 +10,11 @@ class TiledeskChannel {
     *
     * @example
     * const { TiledeskChannel } = require('tiledesk-channel');
-    * const tdChannel = new TiledeskChannel({tiledeskJsonMessage: replyFromInstagram, settings: appSettings, InstagramJsonMessage: originalInstagramMessage, API_URL: tiledeskApiUrl });
+    * const tdChannel = new TiledeskChannel({tiledeskJsonMessage: replyFromWhatsapp, settings: appSettings, whatsappJsonMessage: originalWhatsappMessage, API_URL: tiledeskApiUrl });
     * 
     * @param {Object} config JSON configuration.
-    * @param {string} config.tiledeskJsonMessage Mandatory. Message translated from Instagram to Tiledesk
-    * @param {string} config.InstagramJsonMessage Mandatory. Original Instagram message.
+    * @param {string} config.tiledeskJsonMessage Mandatory. Message translated from Whatsapp to Tiledesk
+    * @param {string} config.whatsappJsonMessage Mandatory. Original whatsapp message.
     * @param {string} config.settings Mandatory. Installation settings.
     * @param {string} config.API_URL Mandatory. Tiledesk api url.
     * @param {boolean} options.log Optional. If true HTTP requests are logged.
@@ -33,11 +33,6 @@ class TiledeskChannel {
       throw new Error('config.API_URL is mandatory');
     }
 
-    this.log = false;
-    if (config.log) {
-      this.log = config.log;
-    }
-
     this.settings = config.settings;
     this.API_URL = config.API_URL;
 
@@ -52,9 +47,9 @@ class TiledeskChannel {
       tiledeskMessage.departmentid = department_id;
     }
 
-    if (messageInfo.channel == "instagram") {
-      channel = messageInfo.Instagram;
-      new_request_id = "support-group-" + this.settings.project_id + "-" + uuidv4().substring(0, 8) + "-wab-" + channel.r + "-" + channel.from;
+    if (messageInfo.channel == "whatsapp") {
+      channel = messageInfo.whatsapp;
+      new_request_id = "support-group-" + this.settings.project_id + "-" + uuidv4().substring(0, 8) + "-wab-" + channel.phone_number_id + "-" + channel.from;
 
     } else if (messageInfo.channel == "telegram") {
       channel = messageInfo.telegram;
@@ -63,21 +58,20 @@ class TiledeskChannel {
 
     } else if (messageInfo.channel == "messenger") {
       channel = messageInfo.messenger;
-      // Check it
-      //new_request_id = hased_request_id = "support-group-" + projectId + "-" + uuidv4() + "-" + sender_id + "-" + webhook_event.recipient.id;
+      new_request_id = "support-group-" + this.settings.project_id + "-" + uuidv4().substring(0, 8) + "-fbm-" + channel.page_id + "-" + channel.sender_id;
 
     } else {
-      winston.verbose("(wab) [TiledeskChannel] Channel not supported")
-      return null;
+      winston.verbose("[(fbm) TiledeskChannel] Channel not supported")
     }
 
+
     var payload = {
-      _id: 'wab-' + channel.from,
+      _id: 'fbm-' + channel.sender_id,
       first_name: channel.firstname,
       last_name: channel.lastname,
-      email: 'na@Instagram.com',
+      email: 'na@messenger.com',
       sub: 'userexternal',
-      aud: 'https://tiledesk.com/subscriptions/' + this.settings.subscriptionId
+      aud: 'https://tiledesk.com/subscriptions/' + this.settings.subscription_id
     }
 
     var customToken = jwt.sign(payload, this.settings.secret);
@@ -90,34 +84,34 @@ class TiledeskChannel {
       },
       data: {},
       method: 'POST'
-    }).then((response) => {
-  
+    }).then( async (response) => {
+
       let token = response.data.token;
       token = this.fixToken(token);
-      
-      return axios({
+
+      return await axios({
         url: this.API_URL + `/${this.settings.project_id}/requests/me?channel=${messageInfo.channel}`,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token
         },
         method: 'GET'
-      }).then((response) => {
+      }).then( async (response) => {
 
-        winston.debug("(wab) [TiledeskChannel] get request response: ", response.data);
+        winston.debug("(fbm) [TiledeskChannel] get request response: ", response.data);
 
         let request_id;
         if (response.data.requests[0]) {
           request_id = response.data.requests[0].request_id;
-          winston.debug("(wab) [TiledeskChannel] Old request_id: " + request_id);
+          winston.debug("(fbm) [TiledeskChannel] Old request id: " + request_id);
         } else {
           request_id = new_request_id;
-          winston.debug("(wab) [TiledeskChannel] New request_id: " + request_id);
+          winston.debug("(fbm) [TiledeskChannel] New request id: " + request_id);
         }
 
-        winston.debug("(wab) [TiledeskChannel] tiledeskMessage:", tiledeskMessage);
+        winston.debug("(fbm) [TiledeskChannel] tiledeskMessage:", tiledeskMessage);
         
-        return axios({
+        return await axios({
           url: this.API_URL + `/${this.settings.project_id}/requests/${request_id}/messages`,
           headers: {
             'Content-Type': 'application/json',
@@ -125,22 +119,20 @@ class TiledeskChannel {
           },
           data: tiledeskMessage,
           method: 'POST'
-        }).then((response) => {
-
-          winston.debug("(wab) [TiledeskChannel] send message response: ", response.data);
-          
+        }).then( async (response) => {
+          winston.debug("(fbm) [TiledeskChannel] send message response: ", response.data);  
           return response.data;
-
+          
         }).catch((err) => {
-          winston.error("(wab) [TiledeskChannel] send message: ", err);
+          winston.error("(fbm) [TiledeskChannel] send message error: ", err);
         })
+        
       }).catch((err) => {
-        winston.error("(wab) [TiledeskChannel]  get requests: ", err);
+        winston.error("(fbm) [TiledeskChannel] get requests error: ", err);
       })
 
-
     }).catch((err) => {
-      winston.error("(wab) [TiledeskChannel] sign in error: ", err);
+      winston.error("(fbm) [TiledeskChannel] sign in error: ", err);
     })
   }
 
@@ -155,10 +147,10 @@ class TiledeskChannel {
       },
       method: 'GET'
     }).then((response) => {
-      winston.debug("(wab) [TiledeskChannel] get departments response.data: ", response.data)
+      winston.debug("(fbm) [TiledeskChannel] get departments: ", response.data)
       return response.data;
     }).catch((err) => {
-      winston.error("(wab) [TiledeskChannel] get departments error");
+      winston.error("(fbm) [TiledeskChannel] get departments error: ", err);
     })
   }
 
@@ -166,16 +158,13 @@ class TiledeskChannel {
     
     let channel;
     let new_request_id;
-    tiledeskMessage.participants = ["bot_" + bot_id];
-    tiledeskMessage.attributes = {
-      sourcePage: "Instagram://&td_draft=true"
-    }
+    tiledeskMessage.participants = ["bot_" + bot_id]
 
-    if (messageInfo.channel == "Instagram") {
-      channel = messageInfo.Instagram;
+    if (messageInfo.channel == "whatsapp") {
+      channel = messageInfo.whatsapp;
       new_request_id = "support-group-" + this.settings.project_id + "-" + uuidv4().substring(0, 8) + "-wab-" + channel.phone_number_id + "-" + channel.from;
     } else {
-      winston.verbose("(wab) [TiledeskChannel] Channel not supported")
+      winston.verbose("(fbm) [TiledeskChannel] Channel not supported")
       return null;
     }
 
@@ -183,7 +172,7 @@ class TiledeskChannel {
       _id: 'wab-' + channel.from,
       first_name: channel.firstname,
       last_name: channel.lastname,
-      email: 'na@Instagram.com',
+      email: 'na@whatsapp.com',
       sub: 'userexternal',
       aud: 'https://tiledesk.com/subscriptions/' + this.settings.subscriptionId
     }
@@ -214,14 +203,14 @@ class TiledeskChannel {
       }).then((response) => {
         return response.data
       }).catch((err) => {
-        winston.error("(wab) [TiledeskChannel] send message (open conversation) error: ", err);
+        winston.error("(fbm) [TiledeskChannel] send message error (open conversation): ", err);
       })
     }).catch((err) => {
-      winston.error("(wab) [TiledeskChannel] sign in error: ", err);
+      winston.error("(fbm) [TiledeskChannel] sign in error: ", err);
     })
   }
 
-  async getProjectDetail() {
+    async getProjectDetail() {
 
     return await axios({
       url: this.API_URL + '/projects/' + this.settings.project_id,
@@ -284,8 +273,8 @@ class TiledeskChannel {
     }
     
   }
+  
 
 }
 
 module.exports = { TiledeskChannel }
-

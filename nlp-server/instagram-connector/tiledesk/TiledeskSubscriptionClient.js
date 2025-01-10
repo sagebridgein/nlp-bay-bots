@@ -1,5 +1,5 @@
 const axios = require("axios").default;
-const winston = require('../winston')
+const winston = require('../winston');
 
 class TiledeskSubscriptionClient {
 
@@ -27,10 +27,6 @@ class TiledeskSubscriptionClient {
     this.API_URL = config.API_URL;
     this.token = config.token;
     this.config = config;
-    this.log = false;
-    if (config.log) {
-      this.log = config.log;
-    }
   }
 
   async subscribe(subscription_info, callback) {
@@ -59,7 +55,7 @@ class TiledeskSubscriptionClient {
             if (callback) {
               callback(null, resbody);
             }
-            winston.verbose("(wab) [TiledeskSubscriptionClient] Subscribed");
+            winston.verbose("(fbm) [TiledeskSubscriptionClient] Subscribed");
             resolve(resbody);
           }
         }, true);
@@ -92,7 +88,7 @@ class TiledeskSubscriptionClient {
             if (callback) {
               callback(null, resbody);
             }
-            winston.verbose("(wab) [TiledeskSubscriptionClient] Unsubscribed");
+            winston.verbose("(fbm) [TiledeskSubscriptionClient] Unsubscribed");
             resolve(resbody);
           }
         }, true);
@@ -119,11 +115,11 @@ class TiledeskSubscriptionClient {
       }
       else {
         if (callback) {
-          callback("Response status not 200", null, null);
-          //callback({ message: "Response status not 200" }, options, res), null, null);
+          callback(TiledeskClient.getErr({ message: "Response status not 200" }, options, res), null, null);
         }
       }
     }).catch((err) => {
+      winston.error("(fbm) [TiledeskSubscriptionClient] An error occured: ", err);
       if (callback) {
         callback(err, null, null);
       }
