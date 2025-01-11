@@ -12,6 +12,9 @@ const url = require('url');
 // tiledesk clients
 const { TiledeskChannel } = require('./tiledesk/TiledeskChannel');
 const { InstagramClient } = require('./tiledesk/InstagramClient');
+const { TiledeskinstagramTranslator } = require('./tiledesk/TiledeskinstagramTranslator');
+const { MessageHandler } = require('./tiledesk/MessageHandler');
+const { TiledeskSubscriptionClient } = require('./tiledesk/TiledeskSubscriptionClient');
 
 const { KVBaseMongo } = require('./tiledesk/KVBaseMongo');
 const kvbase_collection = 'kvstore';
@@ -143,7 +146,9 @@ router.post('/uninstall', async (req, res) => {
 router.get("/configure",async(req,res)=>{
     winston.verbose("(fbm) /configure");
     winston.info(req.body);
-    let {project_id,token,app_id}=req.query;
+    let project_id = req.query.project_id;
+    let token = req.query.token;
+    let app_id = req.query.app_id;
     let CONTENT_KEY=`instagram-${project_id}`;
     let settings=await db.get(CONTENT_KEY);
     const tdChannel = new TiledeskChannel({ settings: { project_id: project_id, token: token }, API_URL: API_URL })
@@ -200,7 +205,7 @@ router.get('/oauth', async (req, res) => {
     let app_id = JSON.parse(req.query.state).app_id;
   
     const tdClient = new TiledeskSubscriptionClient({ API_URL: API_URL, project_id: project_id, token: token })
-    const instaClient = new FacebookClient({ GRAPH_URL: GRAPH_URL, INSTA_APP_ID: INSTA_APP_ID, APP_SECRET: INSTA_APP_SECRET, BASE_URL: BASE_URL });
+    const instaClient = new InstagramClient({ GRAPH_URL: GRAPH_URL, INSTA_APP_ID: INSTA_APP_ID, APP_SECRET: INSTA_APP_SECRET, BASE_URL: BASE_URL });
   
     const subscription_info = {
       target: BASE_URL + '/tiledesk',
@@ -375,7 +380,7 @@ router.post('/tiledesk', async (req, res) => {
     const page_detail = settings.pages.find(p => p.id === page_id);
     const fbClient = new InstagramClient({ GRAPH_URL: GRAPH_URL, FB_APP_ID: FB_APP_ID, APP_SECRET: APP_SECRET, BASE_URL: BASE_URL });
     const messageHandler = new MessageHandler({ tiledeskChannelMessage: tiledeskChannelMessage });
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
   
     if (commands) {
       let i = 0;
@@ -468,7 +473,127 @@ router.post('/tiledesk', async (req, res) => {
   
     return res.status(200).send({ message: "sent" });
   })
+  router.post('/webhookFB', async (req, res) => {
 
+    winston.verbose("(fbm) Message received from Facebook Messenger");
+  
+    let body = req.body;
+    if (body.object === 'page') {
+  
+      let page_id = body.entry[0].id;
+      let PAGE_KEY = "messenger-page-" + page_id;
+      let info_settings = await db.get(PAGE_KEY);
+  
+      if (!info_settings) {
+        winston.debug("(fbm) Facebook page not enabled --> Skip")
+        return res.status(200).send('EVENT_RECEIVED');
+      }
+  
+      let project_id = info_settings.project_id;
+      winston.debug("(fbm) project_id: " + project_id);
+  
+      let CONTENT_KEY = "messenger-" + project_id;
+      let settings = await db.get(CONTENT_KEY);
+  
+      body.entry.forEach(async (entry) => {
+  
+        let messengerChannelMessage = entry.messaging[0];
+        winston.debug("(fbm) webhook_event: ", messengerChannelMessage);
+  
+        const tlr = new TiledeskinstagramTranslator();
+        const tdChannel = new TiledeskChannel({ settings: settings, API_URL: API_URL })
+        const fbClient = new FacebookClient({ GRAPH_URL: GRAPH_URL, FB_APP_ID: FB_APP_ID, APP_SECRET: APP_SECRET, BASE_URL: BASE_URL });
+  
+        const page = settings.pages.find(p => p.id === page_id);
+  
+        let user_info = await fbClient.getUserInfo(page.access_token, messengerChannelMessage.sender.id)
+        messengerChannelMessage.sender.fullname = user_info.first_name + " " + user_info.last_name;
+  
+        winston.debug("(fbm) page: " + page);
+        winston.debug("(fbm) user_info: ", user_info);
+  
+        let message_info = {
+          channel: TiledeskinstagramTranslator.CHANNEL_NAME,
+          messenger: {
+            page_id: page_id,
+            sender_id: messengerChannelMessage.sender.id,
+            firstname: user_info.first_name,
+            lastname: user_info.last_name
+          }
+        }
+  
+        if (messengerChannelMessage.message &&
+          messengerChannelMessage.message.attachments &&
+          messengerChannelMessage.message.attachments.length > 1) {
+  
+          const messageHandler = new MessageHandler();
+          let messagesList = await messageHandler.splitMessageFromMessenger(messengerChannelMessage);
+  
+          for (let message of messagesList) {
+  
+            let tiledeskJsonMessage = await tlr.toTiledesk(message);
+            winston.verbose("(fbm) tiledeskJsonMessage: ", tiledeskJsonMessage);
+  
+            if (tiledeskJsonMessage) {
+              const response = await tdChannel.send(tiledeskJsonMessage, message_info, settings.department_id);
+              winston.verbose("(fbm) Message sent to Tiledsk")
+              winston.debug("(fbm) response: ", response);
+            } else {
+              winston.verbose("(fbm) tiledeskJsonMessage is undefined!")
+            }
+  
+          }
+  
+        } else {
+          let tiledeskJsonMessage = await tlr.toTiledesk(messengerChannelMessage);
+          winston.verbose("(fbm) tiledeskJsonMessage: ", tiledeskJsonMessage);
+  
+          if (tiledeskJsonMessage) {
+            const response = await tdChannel.send(tiledeskJsonMessage, message_info, settings.department_id);
+            winston.verbose("(fbm) Message sent to Tiledsk")
+            winston.debug("(fbm) response: ", response)
+          } else {
+            winston.verbose("(fbm) tiledeskJsonMessage is undefined!")
+          }
+        }
+  
+      })
+    }
+  
+    return res.status(200).send('EVENT_RECEIVED');
+  })
+  
+  router.get('/webhookFB', async (req, res) => {
+  
+    winston.verbose("(fbm) Verify the webhook... ", req.query);
+  
+    // Parse the query params
+    let mode = req.query['hub.mode'];
+    let token = req.query['hub.verify_token'];
+    let challenge = req.query['hub.challenge'];
+  
+    winston.verbose("(fbm) token: " + token);
+    winston.verbose("(fbm) verify token: " + VERIFY_TOKEN);
+    winston.verbose("(fbm) mode: " + mode)
+    winston.verbose("(fbm) challenge: " + challenge)
+  
+    // Checks if a token and mode is in the query string of the request
+    if (mode && token) {
+  
+      // Checks the mode and token sent is correct
+      if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+  
+        // Responds with the challenge token from the request
+        winston.verbose('(fbm) Webhook verified');
+        return res.status(200).send(challenge);
+  
+      } else {
+        // Responds with '403 Forbidden' if verify tokens do not match
+        return res.sendStatus(403);
+      }
+    }
+    return res.sendStatus(403);
+  })
 function startApp(settings, callback) {
     winston.info("(fbm) Starting Instagram App");
   

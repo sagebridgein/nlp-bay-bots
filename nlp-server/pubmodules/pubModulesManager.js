@@ -334,7 +334,7 @@ class PubModulesManager {
 
             this.instagramRoute = this.instagram.instagramRoute;
 
-            winston.info("PubModulesManager initialized apps.");
+            winston.info("PubModulesManager Instagram initialized apps.");
         } catch(err) {
             if (err.code == 'MODULE_NOT_FOUND') { 
                 winston.info("PubModulesManager init apps module not found");
