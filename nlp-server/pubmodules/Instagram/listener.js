@@ -1,69 +1,62 @@
-const Instagram = require("../../instagram-connector");
+const messenger = require("@tiledesk/tiledesk-messenger-connector");
 var winston = require('../../config/winston');
 var configGlobal = require('../../config/global');
 const mongoose = require("mongoose");
 
 const apiUrl = process.env.API_URL || configGlobal.apiUrl;
-winston.info('Instagram apiUrl: ' + apiUrl);
+//winston.info('Messenger apiUrl: ' + apiUrl);
 
 const dbConnection = mongoose.connection;
 
 class Listener {
 
     listen(config) {
-        winston.info("Instagram Listener listen");
+        winston.info("Messenger Listener listen");
         if (config.databaseUri) {
-            winston.debug("Instagram config databaseUri: " + config.databaseUri);
+            winston.debug("messenger config databaseUri: " + config.databaseUri);
         }
 
-        var port = process.env.CACHE_REDIS_PORT || 6379;
-        winston.debug("Redis port: "+ port);
-
-        var host = process.env.CACHE_REDIS_HOST || "127.0.0.1"
-        winston.debug("Redis host: "+ host);
-
-        var password = process.env.CACHE_REDIS_PASSWORD;
-        winston.debug("Redis password: "+ password);
-
         let graph_url = process.env.META_GRAPH_URL || config.graphUrl || "https://graph.facebook.com/v14.0/"
-        winston.debug("Instagram graph_url: "+ password);
+        winston.debug("Messenger graph_url: " + graph_url);
 
-        let baseFileUrl = process.env.BASE_FILE_URL || apiUrl || "http://localhost:3000"
+        let log = process.env.MESSENGER_LOG || false
+        winston.debug("Messenger log: " + log);
 
-        let job_topic = process.env.JOB_TOPIC_EXCHANGE;
-        winston.debug("Instagram job topic " + job_topic);
+        let insta_app_id = process.env.INSTA_APP_ID;
+        winston.debug("Messenger Insta_app_id: ", INSTA_app_id);
 
-        let amqp_manager_url = process.env.AMQP_MANAGER_URL;
-        winston.debug("amqp_manager_url " + amqp_manager_url);
+        let insta_app_secret = process.env.INSTA_APP_SECRET;
+        winston.debug("Messenger Insta_app_secret: ", insta_app_secret);
+        
+        let insta_verify_token = process.env.INSTAGRAM_VERIFY_TOKEN;
+
+        let dashboard_base_url = process.env.EMAIL_BASEURL || config.baseUrl;
+        winston.debug("Messenger dashboard_base_url: ", dashboard_base_url);
 
         let brand_name = null;
         if (process.env.BRAND_NAME) {
             brand_name = process.env.BRAND_NAME
         }
 
-        let log = process.env.Instagram_LOG || false
-        winston.debug("Instagram log: "+ log);
 
-        Instagram.startApp({
-            MONGODB_URL: config.databaseUri,          
-            dbconnection: dbConnection,
+        messenger.startApp({
+            MONGODB_URL: config.databaseUri,   
+            dbconnection: dbConnection,      
             API_URL: apiUrl,
-            BASE_FILE_URL: baseFileUrl,
-            GRAPH_URL: graph_url,
-            BASE_URL: apiUrl + "/modules/instagram",                     
+            BASE_URL: apiUrl + "/modules/instagram",
             APPS_API_URL: apiUrl + "/modules/apps",
-            REDIS_HOST: host,
-            REDIS_PORT: port,
-            REDIS_PASSWORD: password,
-            AMQP_MANAGER_URL: amqp_manager_url,
-            JOB_TOPIC_EXCHANGE: job_topic,
+            FB_APP_ID: insta_app_id,
+            FB_APP_SECRET: insta_app_secret,
+            GRAPH_URL: graph_url,
+            DASHBOARD_BASE_URL: dashboard_base_url,
+            VERIFY_TOKEN: insta_verify_token,
             BRAND_NAME: brand_name,
             log: log
         }, (err) => {
             if (!err) {
-                winston.info("Tiledesk Instragram Connector proxy server succesfully started.");
+                winston.info("Tiledesk Messenger Connector proxy server succesfully started.");
             } else {
-                winston.info("unable to start Tiledesk Instagram Connector. " + err);
+                winston.info("unable to start Tiledesk Messenger Connector. " + err);
             }
         })
 

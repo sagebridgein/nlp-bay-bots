@@ -53,8 +53,6 @@ class TiledeskChannel {
 
     } else if (messageInfo.channel == "telegram") {
       channel = messageInfo.telegram;
-      // Check it
-      //new_request_id = "support-group-" + projectId + "-" + uuidv4() + "-telegram-" + from;
 
     } else if (messageInfo.channel == "messenger") {
       channel = messageInfo.messenger;
@@ -62,17 +60,15 @@ class TiledeskChannel {
 
     }else if (messageInfo.channel == "instagram"){
       channel = messageInfo.instagram;
-      new_request_id = "support-group-" + this.settings.project_id + "-" + uuidv4().substring(0, 8) + "-ibm-" + channel + "-" + channel.sender_id;
+      new_request_id = "support-group-" + this.settings.project_id + "-" + uuidv4().substring(0, 8) + "-ibm-" + channel.id + "-" + channel.sender_id;
 
-    
-  
-    } else {
+   } else {
       winston.verbose("[(fbm) TiledeskChannel] Channel not supported")
     }
 
 
     var payload = {
-      _id: 'fbm-' + channel.sender_id,
+      _id: 'ibm-' + channel.sender_id,
       first_name: channel.firstname,
       last_name: channel.lastname,
       email: 'na@instagram.com',

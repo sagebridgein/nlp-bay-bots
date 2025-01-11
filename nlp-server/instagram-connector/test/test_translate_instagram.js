@@ -1,5 +1,5 @@
 let assert = require('assert');
-const { TiledeskMessengerTranslator } = require('../tiledesk/TiledeskMessengerTranslator');
+const { TiledeskinstagramTranslator } = require('../tiledesk/TiledeskInstagramTranslator');
 const log = false;
 
 describe('Test Translator\n', function() {
@@ -16,9 +16,9 @@ describe('Test Translator\n', function() {
     }
     let messenger_receiver = tiledeskChannelMessage.recipient.substring(tiledeskChannelMessage.recipient.lastIndexOf("-") + 1);
 
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
     assert(tlr != null);
-    const messengerJsonMessage = tlr.toMessenger(tiledeskChannelMessage, messenger_receiver);
+    const messengerJsonMessage = tlr.toinstagram(tiledeskChannelMessage, messenger_receiver);
     assert(messengerJsonMessage != null);
     assert(messengerJsonMessage.recipient);
     assert(messengerJsonMessage.recipient.id === messenger_receiver);
@@ -45,9 +45,9 @@ describe('Test Translator\n', function() {
     }
     let messenger_receiver = tiledeskChannelMessage.recipient.substring(tiledeskChannelMessage.recipient.lastIndexOf("-") + 1);
 
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
     assert(tlr != null);
-    const messengerJsonMessage = tlr.toMessenger(tiledeskChannelMessage, messenger_receiver);
+    const messengerJsonMessage = tlr.toinstagram(tiledeskChannelMessage, messenger_receiver);
     assert(messengerJsonMessage != null);
     assert(messengerJsonMessage.recipient);
     assert(messengerJsonMessage.recipient.id === messenger_receiver);
@@ -78,9 +78,9 @@ describe('Test Translator\n', function() {
     }  
     let messenger_receiver = tiledeskChannelMessage.recipient.substring(tiledeskChannelMessage.recipient.lastIndexOf("-") + 1);
 
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
     assert(tlr != null);
-    const messengerJsonMessage = tlr.toMessenger(tiledeskChannelMessage, messenger_receiver);
+    const messengerJsonMessage = tlr.toinstagram(tiledeskChannelMessage, messenger_receiver);
     assert(messengerJsonMessage != null);
     assert(messengerJsonMessage.recipient);
     assert(messengerJsonMessage.recipient.id === messenger_receiver);
@@ -114,9 +114,9 @@ describe('Test Translator\n', function() {
     }  
     let messenger_receiver = tiledeskChannelMessage.recipient.substring(tiledeskChannelMessage.recipient.lastIndexOf("-") + 1);
 
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
     assert(tlr != null);
-    const messengerJsonMessage = tlr.toMessenger(tiledeskChannelMessage, messenger_receiver);
+    const messengerJsonMessage = tlr.toinstagram(tiledeskChannelMessage, messenger_receiver);
     assert(messengerJsonMessage != null);
     assert(messengerJsonMessage.recipient);
     assert(messengerJsonMessage.recipient.id === messenger_receiver);
@@ -148,9 +148,9 @@ describe('Test Translator\n', function() {
     }
     let messenger_receiver = tiledeskChannelMessage.recipient.substring(tiledeskChannelMessage.recipient.lastIndexOf("-") + 1);
 
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
     assert(tlr != null);
-    const messengerJsonMessage = tlr.toMessenger(tiledeskChannelMessage, messenger_receiver);
+    const messengerJsonMessage = tlr.toinstagram(tiledeskChannelMessage, messenger_receiver);
     assert(messengerJsonMessage != null);
     assert(messengerJsonMessage.recipient);
     assert(messengerJsonMessage.recipient.id === messenger_receiver);
@@ -188,9 +188,9 @@ describe('Test Translator\n', function() {
     }
     let messenger_receiver = tiledeskChannelMessage.recipient.substring(tiledeskChannelMessage.recipient.lastIndexOf("-") + 1);
 
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
     assert(tlr != null);
-    const messengerJsonMessage = tlr.toMessenger(tiledeskChannelMessage, messenger_receiver);
+    const messengerJsonMessage = tlr.toinstagram(tiledeskChannelMessage, messenger_receiver);
     assert(messengerJsonMessage != null);
     assert(messengerJsonMessage.recipient);
     assert(messengerJsonMessage.recipient.id === messenger_receiver);
@@ -231,9 +231,9 @@ describe('Test Translator\n', function() {
     }
     let messenger_receiver = tiledeskChannelMessage.recipient.substring(tiledeskChannelMessage.recipient.lastIndexOf("-") + 1);
 
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
     assert(tlr != null);
-    const messengerJsonMessage = tlr.toMessenger(tiledeskChannelMessage, messenger_receiver);
+    const messengerJsonMessage = tlr.toinstagram(tiledeskChannelMessage, messenger_receiver);
     assert(messengerJsonMessage != null);
     assert(messengerJsonMessage.recipient);
     assert(messengerJsonMessage.recipient.id === messenger_receiver);
@@ -273,12 +273,12 @@ describe('Test Translator\n', function() {
     }
     messengerChannelMessage.sender.fullname = "John Doe"; // from messenger contacts
 
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
     assert(tlr != null);
     const tiledeskJsonMessage = await tlr.toTiledesk(messengerChannelMessage)
     assert(tiledeskJsonMessage != null);
     assert(tiledeskJsonMessage.channel);
-    assert(tiledeskJsonMessage.channel.name === TiledeskMessengerTranslator.CHANNEL_NAME);
+    assert(tiledeskJsonMessage.channel.name === TiledeskinstagramTranslator.CHANNEL_NAME);
     assert(tiledeskJsonMessage.text === messengerChannelMessage.message.text);
     assert(tiledeskJsonMessage.senderFullname === messengerChannelMessage.sender.fullname);
     if (log) {
@@ -307,12 +307,12 @@ describe('Test Translator\n', function() {
     }
     messengerChannelMessage.sender.fullname = "John Doe"; // from messenger contacts
 
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
     assert(tlr != null);
     const tiledeskJsonMessage = await tlr.toTiledesk(messengerChannelMessage)
     assert(tiledeskJsonMessage != null);
     assert(tiledeskJsonMessage.channel);
-    assert(tiledeskJsonMessage.channel.name === TiledeskMessengerTranslator.CHANNEL_NAME);
+    assert(tiledeskJsonMessage.channel.name === TiledeskinstagramTranslator.CHANNEL_NAME);
     assert(tiledeskJsonMessage.text === messengerChannelMessage.message.quick_reply.payload);
     assert(tiledeskJsonMessage.senderFullname === messengerChannelMessage.sender.fullname);
     if (log) {
@@ -339,12 +339,12 @@ describe('Test Translator\n', function() {
     }
     messengerChannelMessage.sender.fullname = "John Doe"; // from messenger contacts
   
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
     assert(tlr != null);
     const tiledeskJsonMessage = await tlr.toTiledesk(messengerChannelMessage)
     assert(tiledeskJsonMessage != null);
     assert(tiledeskJsonMessage.channel);
-    assert(tiledeskJsonMessage.channel.name === TiledeskMessengerTranslator.CHANNEL_NAME);
+    assert(tiledeskJsonMessage.channel.name === TiledeskinstagramTranslator.CHANNEL_NAME);
     assert(tiledeskJsonMessage.type === "text");
     assert(tiledeskJsonMessage.text === "");
     assert(tiledeskJsonMessage.senderFullname === messengerChannelMessage.sender.fullname);
@@ -384,12 +384,12 @@ describe('Test Translator\n', function() {
     }
     messengerChannelMessage.sender.fullname = "John Doe"; // from messenger contacts
   
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
     assert(tlr != null);
     const tiledeskJsonMessage = await tlr.toTiledesk(messengerChannelMessage)
     assert(tiledeskJsonMessage != null);
     assert(tiledeskJsonMessage.channel);
-    assert(tiledeskJsonMessage.channel.name === TiledeskMessengerTranslator.CHANNEL_NAME);
+    assert(tiledeskJsonMessage.channel.name === TiledeskinstagramTranslator.CHANNEL_NAME);
     assert(tiledeskJsonMessage.senderFullname === messengerChannelMessage.sender.fullname);
     assert(tiledeskJsonMessage.type === "image");
     assert(tiledeskJsonMessage.text === "Attached image");
@@ -426,12 +426,12 @@ describe('Test Translator\n', function() {
     }
     messengerChannelMessage.sender.fullname = "John Doe"; // from messenger contacts
 
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
     assert(tlr != null);
     const tiledeskJsonMessage = await tlr.toTiledesk(messengerChannelMessage)
     assert(tiledeskJsonMessage != null);
     assert(tiledeskJsonMessage.channel);
-    assert(tiledeskJsonMessage.channel.name === TiledeskMessengerTranslator.CHANNEL_NAME);
+    assert(tiledeskJsonMessage.channel.name === TiledeskinstagramTranslator.CHANNEL_NAME);
     assert(tiledeskJsonMessage.senderFullname === messengerChannelMessage.sender.fullname);
     assert(tiledeskJsonMessage.type === "file");
     assert(tiledeskJsonMessage.text === ("[Download video](" + messengerChannelMessage.message.attachments[0].payload.url + ")"));
@@ -466,12 +466,12 @@ describe('Test Translator\n', function() {
     }
     messengerChannelMessage.sender.fullname = "John Doe"; // from messenger contacts
 
-    const tlr = new TiledeskMessengerTranslator();
+    const tlr = new TiledeskinstagramTranslator();
     assert(tlr != null);
     const tiledeskJsonMessage = await tlr.toTiledesk(messengerChannelMessage)
     assert(tiledeskJsonMessage != null);
     assert(tiledeskJsonMessage.channel);
-    assert(tiledeskJsonMessage.channel.name === TiledeskMessengerTranslator.CHANNEL_NAME);
+    assert(tiledeskJsonMessage.channel.name === TiledeskinstagramTranslator.CHANNEL_NAME);
     assert(tiledeskJsonMessage.senderFullname === messengerChannelMessage.sender.fullname);
     assert(tiledeskJsonMessage.type === "file");
     assert(tiledeskJsonMessage.text === ("[Download document](" + messengerChannelMessage.message.attachments[0].payload.url + ")"));
