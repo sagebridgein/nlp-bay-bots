@@ -150,7 +150,7 @@ services:
     container_name: nlp-bay-server
     restart: always  
     environment: 
-      - LOG_LEVEL=info
+      - LOG_LEVEL=debug
       - CHAT21_ENABLED=true
       - CHAT21_ENGINE=mqtt
       - CHAT21_URL=http://chat21httpserver:8004
@@ -184,14 +184,21 @@ services:
       - TELEGRAM_API_URL=https://api.telegram.org/bot
       - TELEGRAM_FILE_URL=https://api.telegram.org/file/bot
       - TELEGRAM_LOG=info
-      - FB_APP_ID
       - PAYMENT_STRIPE_API_SECRET_KEY=we_1QbHnzSFdANgbjMQdLJmFnfU
       - PAYMENT_STRIPE_SECRET=sk_test_51N7xgJSFdANgbjMQzjxusgB2EeDmRTbF1L6ldPP2vbJHTTlHHIFLVlIHmQQlsiA49lCco6R8KWRSysdbZ3QzpPwP0014pTR7gt
       - PAYMENT_STRIPE_APIKEY=pk_test_51N7xgJSFdANgbjMQDPxtlDVqnDNFqn3BepgO9nZXjFFEpQ4WNFV5sLk9somSy6P2uEdkeH21dayvPJLoTPivHGi300pqw7q6Mu
-      - FB_APP_SECRET
       - BASE_FILE_URL=${EXTERNAL_BASE_URL:-http://localhost:8081}/api/"
       - OPENAI_ENDPOINT
       - KB_ENDPOINT
+      - INSTA_APP_ID=1720191188773390
+      - INSTA_APP_SECRET=a3eb9a511559f83c1d0829c0fc6bff00
+      - INSTAGRAM_VERIFY_TOKEN=1720191188773390
+      - INSTA_GRAPH_URL=https://graph.instagram.com/
+      - MESSENGER_LOG=true
+      - MESSENGER_VERIFY_TOKEN=463fddb755c6cdd3e42088041d3aa848
+      - FB_APP_ID=1146398937213664
+      - FB_APP_SECRET=463fddb755c6cdd3e42088041d3aa848
+      - API_URL=https://super-journey-g4r7rq96wrrg2ggg-3000.app.github.dev
       - VOICE_ENABLED=true
       - AMQP_MANAGER_URL=amqp://ignored:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NjMwYTAwZS0xNTUxLTQ3Y2ItYmEzMC02NGRlNjJmYmNmNGYiLCJzdWIiOiIwMS1PQlNFUlZFUiIsInNjb3BlIjpbInJhYmJpdG1xLnJlYWQ6Ki8qLyoiLCJyYWJiaXRtcS53cml0ZToqLyovKiIsInJhYmJpdG1xLmNvbmZpZ3VyZToqLyovKiJdLCJjbGllbnRfaWQiOiIwMS1PQlNFUlZFUiIsImNpZCI6IjAxLU9CU0VSVkVSIiwiYXpwIjoiMDEtT0JTRVJWRVIiLCJ1c2VyX2lkIjoiMDEtT0JTRVJWRVIiLCJhcHBfaWQiOiJ0aWxlY2hhdCIsImlhdCI6MTY5NjQ5MjI4NywiZXhwIjoyMDA3NTMyMjg3LCJhdWQiOlsicmFiYml0bXEiLCIwMS1PQlNFUlZFUiJdLCJraWQiOiJ0aWxlZGVzay1rZXkiLCJ0aWxlZGVza19hcGlfcm9sZXMiOiJ1c2VyIn0.Lq0MLTYny7tIYVQ-KEDLlL-h7gAqofCfC2IDgI_0TOE@rabbitmq:5672?heartbeat=60
     depends_on:

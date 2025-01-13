@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require("uuid");
 const { TiledeskChannel } = require("./TiledeskChannel");
 const winston = require("../winston");
 
-class TiledeskinstagramTranslator {
+class TiledeskInstagramTranslator {
   /**
    * Constructor for TiledeskWhatsappTranslator
    *const axios = require("axios").default;
@@ -313,4 +313,4 @@ const path = require('path');
   }
 }
 
-module.exports = { TiledeskinstagramTranslator };
+module.exports = { TiledeskInstagramTranslator };
