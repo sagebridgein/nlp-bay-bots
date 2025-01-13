@@ -748,13 +748,13 @@ router.post('/disconnect', async (req, res) => {
   let CONTENT_KEY = "instagram-" + project_id;
 
   let settings = await db.get(CONTENT_KEY);
-  const active_page = settings.pages.find(p => p.active === true);
+  // const active_page = settings.pages.find(p => p.active === true);
 
-  if (active_page) {
-    let PAGE_KEY = "instagram-page-" + active_page.id;
-    await db.remove(PAGE_KEY)
-    winston.debug("(ibm) Page deleted.");
-  }
+  // if (active_page) {
+  //   let PAGE_KEY = "instagram-page-" + active_page.id;
+  //   await db.remove(PAGE_KEY)
+  //   winston.debug("(ibm) Page deleted.");
+  // }
 
   await db.remove(CONTENT_KEY)
   winston.verbose("(ibm) Content deleted.");
@@ -776,7 +776,7 @@ router.post('/disconnect', async (req, res) => {
         endpoint: BASE_URL,
         departments: departments,
         brand_name: BRAND_NAME,
-        redirect_uri: `https://www.instagram.com/oauth/authorize?client_id=${FB_APP_ID}&redirect_uri=${BASE_URL}/oauth?&scope=instagram_business_basic%2C%20instagram_business_manage_messages&state={"project_id":"${project_id}","app_id":"${app_id}","token":"${token}"}`,
+        redirect_uri: `https://www.instagram.com/oauth/authorize?client_id=${FB_APP_ID}&redirect_uri=${BASE_URL}/oauth?&scope=instagram_business_basic%2C%20instagram_business_manage_messages&state={"project_id":"${project_id}","app_id":"${settings.app_id}","token":"${token}"}`,
       }
       var html = template(replacements)
       return res.send(html);
