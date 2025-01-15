@@ -115,7 +115,7 @@ router.post('/install', async (req, res) => {
 
   }).catch((err) => {
     winston.error("(ibm) installation error: ", err.data)
-    winston.error("(ibm) installation error: " + err.data)    
+    winston.error("(ibm) installation error: " + err.data)
     res.send("An error occurred during the installation");
   })
 
@@ -198,7 +198,7 @@ router.get('/configure', async (req, res) => {
         token: token,
         endpoint: BASE_URL,
         departments: departments,
-        redirect_uri: `https://www.instagram.com/oauth/authorize?client_id=${FB_APP_ID}&redirect_uri=${BASE_URL}/oauth?&scope=instagram_business_basic%2C%20instagram_business_manage_messages&state={"project_id":"${project_id}","app_id":"${app_id}","token":"${token}"}`,
+        redirect_uri: `https://www.instagram.com/oauth/authorize?client_id=${FB_APP_ID}&redirect_uri=${BASE_URL}/oauth?&scope=instagram_business_basic%2C%20instagram_business_manage_messages&response_type=code&state={"project_id":"${project_id}","app_id":"${app_id}","token":"${token}"}`,
         brand_name: BRAND_NAME
       }
       var html = template(replacements);
@@ -279,7 +279,7 @@ router.post('/tiledesk', async (req, res) => {
     winston.debug("(ibm) Skip subtype (info)");
     return res.sendStatus(200);
   }
-  
+
   if (attributes && attributes.subtype === "private") {
     winston.verbose("(wab) Skip subtype (private)");
     return res.sendStatus(200);
@@ -292,16 +292,15 @@ router.post('/tiledesk', async (req, res) => {
 
   let recipient_id = tiledeskChannelMessage.recipient;
   let sender = tiledeskChannelMessage.sender;
-  // let page_id = recipient_id.substring(recipient_id.lastIndexOf("ibm-") + 4, recipient_id.lastIndexOf("-"));
+  let user_id = recipient_id.substring(recipient_id.lastIndexOf("ibm-") + 4, recipient_id.lastIndexOf("-"));
   let messenger_receiver = recipient_id.substring(recipient_id.lastIndexOf("-") + 1);
 
-  winston.info("(ibm) sender: " + sender);
-  winston.info("(ibm) text: " + text);
-  winston.info("(ibm) attributes: ", attributes);
-  winston.info("(ibm) tiledesk sender_id: " + sender_id);
-  winston.info("(ibm) recipient_id: " + recipient_id);
-  winston.info("(ibm) page_id: " + page_id);
-  winston.info("(ibm) messenger_receiver: " + messenger_receiver);
+  winston.debug("(ibm) sender: " + sender);
+  winston.debug("(ibm) text: " + text);
+  winston.debug("(ibm) attributes: ", attributes);
+  winston.debug("(ibm) tiledesk sender_id: " + sender_id);
+  winston.debug("(ibm) recipient_id: " + recipient_id);
+  winston.debug("(ibm) messenger_receiver: " + messenger_receiver);
 
   // Return an info message option
   if (settings.expired &&
@@ -314,25 +313,25 @@ router.post('/tiledesk', async (req, res) => {
       senderFullname: "System",
       attributes: {
         subtype: 'info',
-        messagelabel: { key: 'PLAN_EXPIRED'  } // for translation
+        messagelabel: { key: 'PLAN_EXPIRED' } // for translation
       },
       channel: { name: 'instagram' }
     }
     let message_info = {
       channel: "instagram",
-      messenger: {
-        // page_id: page_id,
+      instagram: {
+        user_id:user_id,
         sender_id: messenger_receiver
       }
     }
 
     const tdChannel = new TiledeskChannel({ settings: settings, API_URL: API_URL })
     const response = await tdChannel.send(tiledeskJsonMessage, message_info, settings.department_id);
+    console.log(response);
     winston.verbose("(wab) Expiration message sent to Tiledesk")
     return res.sendStatus(200);
   }
 
-  const page_detail = settings.pages.find(p => p.id === page_id);
   const fbClient = new InstagramClient({ GRAPH_URL: GRAPH_URL, FB_APP_ID: FB_APP_ID, APP_SECRET: APP_SECRET, BASE_URL: BASE_URL });
   const messageHandler = new MessageHandler({ tiledeskChannelMessage: tiledeskChannelMessage });
   const tlr = new TiledeskInstagramTranslator();
@@ -355,7 +354,7 @@ router.post('/tiledesk', async (req, res) => {
 
 
           if (messengerJsonMessage) {
-            fbClient.send(messengerJsonMessage, page_detail.access_token).then((response) => {
+            fbClient.send(messengerJsonMessage, settings.access_token).then((response) => {
               winston.debug("(ibm) Message sent to Messenger!" + response.status + response.statusText);
               j += 1;
               if (j < messagesList.length) {
@@ -403,7 +402,7 @@ router.post('/tiledesk', async (req, res) => {
       winston.verbose("(ibm) messengerJsonMessage", messengerJsonMessage)
 
       if (messengerJsonMessage) {
-        fbClient.send(messengerJsonMessage, page_detail.access_token).then((response) => {
+        fbClient.send(messengerJsonMessage, settings.access_token).then((response) => {
           winston.verbose("(ibm) Message sent to Messenger!" + response.status + " " + response.statusText);
           j += 1;
           if (j < messagesList.length) {
@@ -432,47 +431,47 @@ router.post('/tiledesk', async (req, res) => {
 router.post('/webhookFB', async (req, res) => {
 
   winston.verbose("(fbm) Message received from Instagram");
-  console.log("message recived from instagram ===============>",req.body);
+  console.log("message recived from instagram ===============>", req.body);
 
   let body = req.body;
-  if (body.object === 'page') {
+  if (body.object === 'instagram') {
 
-    let page_id = body.entry[0].id;
-    // let PAGE_KEY = "messenger-page-" + page_id;
-    let info_settings = await db.get(PAGE_KEY);
+    let user_id = body.entry[0].id;
+    let ACCOUNT_KEY = "instagram-account-" + user_id;
+    let user_info = await db.get(ACCOUNT_KEY);
 
-    if (!info_settings) {
+    if (!user_info) {
       winston.debug("(fbm) Instagram page not enabled --> Skip")
       return res.status(200).send('EVENT_RECEIVED');
     }
 
-    let project_id = info_settings.project_id;
+    let project_id = user_info.project_id;
+    let CONTENT_KEY=`instagram-${project_id}`
+    let settings=await db.get(CONTENT_KEY);
     winston.debug("(fbm) project_id: " + project_id);
-
-    let CONTENT_KEY = "instagram-" + project_id;
-    let settings = await db.get(CONTENT_KEY);
 
     body.entry.forEach(async (entry) => {
 
       let messengerChannelMessage = entry.messaging[0];
+      console.log(messengerChannelMessage);
       winston.debug("(fbm) webhook_event: ", messengerChannelMessage);
 
       const tlr = new TiledeskInstagramTranslator();
       const tdChannel = new TiledeskChannel({ settings: settings, API_URL: API_URL })
       const fbClient = new InstagramClient({ GRAPH_URL: GRAPH_URL, FB_APP_ID: FB_APP_ID, APP_SECRET: APP_SECRET, BASE_URL: BASE_URL });
 
-      const page = settings.pages.find(p => p.id === page_id);
+      // const page = settings.access_token;
 
-      let user_info = await fbClient.getUserInfo(page.access_token, messengerChannelMessage.sender.id)
+      let user_info = await fbClient.getUserInfo(settings.access_token, messengerChannelMessage.sender.id)
       messengerChannelMessage.sender.fullname = user_info.first_name + " " + user_info.last_name;
-
-      winston.debug("(fbm) page: " + page);
+      console.log(user_info);
+      // winston.debug("(fbm) page: " + page);
       winston.debug("(fbm) user_info: ", user_info);
 
       let message_info = {
         channel: TiledeskInstagramTranslator.CHANNEL_NAME,
-        messenger: {
-          page_id: page_id,
+        instagram: {
+          user_id: user_id,
           sender_id: messengerChannelMessage.sender.id,
           firstname: user_info.first_name,
           lastname: user_info.last_name
@@ -484,8 +483,9 @@ router.post('/webhookFB', async (req, res) => {
         messengerChannelMessage.message.attachments.length > 1) {
 
         const messageHandler = new MessageHandler();
+        console.log(messageHandler);
         let messagesList = await messageHandler.splitMessageFromMessenger(messengerChannelMessage);
-
+        console.log(messagesList);
         for (let message of messagesList) {
 
           let tiledeskJsonMessage = await tlr.toTiledesk(message);
@@ -573,7 +573,7 @@ router.get('/oauth', async (req, res) => {
   const instagramBusinessAccount = await instaClient.getInstagramBusinessAccount(access_token);
 
   if (!instagramBusinessAccount) {
-      return res.status(400).send('No Instagram Business Account linked to this access_token.');
+    return res.status(400).send('No Instagram Business Account linked to this access_token.');
   }
 
   winston.debug("(ibm) subscription: " + subscription);
@@ -582,8 +582,8 @@ router.get('/oauth', async (req, res) => {
 
   let CONTENT_KEY = "instagram-" + project_id;
 
-  
-  let event_sub = await fbClient.messageEventSubscription(instagramBusinessAccount.id, instagramBusinessAccount.access_token);
+
+  let event_sub = await instaClient.messageEventSubscription(instagramBusinessAccount.id, access_token);
   winston.debug("(fbm) event subscription: " + event_sub.status + " " + event_sub.statusText)
 
   let settings = {
@@ -597,6 +597,7 @@ router.get('/oauth', async (req, res) => {
   }
 
   await db.set(CONTENT_KEY, settings);
+  await db.set(`instagram-account-${instagramBusinessAccount.user_id}`, {project_id});
 
   //let settings_retrived = await db.get(CONTENT_KEY);
   //var redirect_uri = DASHBOARD_BASE_URL + "/#/project/" + project_id + "/app-store-install/" + app_id + "/run";
@@ -746,15 +747,12 @@ router.post('/disconnect', async (req, res) => {
   let subscription_id = req.body.subscription_id;
 
   let CONTENT_KEY = "instagram-" + project_id;
-
   let settings = await db.get(CONTENT_KEY);
-  // const active_page = settings.pages.find(p => p.active === true);
-
-  // if (active_page) {
-  //   let PAGE_KEY = "instagram-page-" + active_page.id;
-  //   await db.remove(PAGE_KEY)
-  //   winston.debug("(ibm) Page deleted.");
-  // }
+  const active_account = settings.value.account;
+  if (active_account) {
+    let active_account_key = `instagram-account-${active_account.user_id}`
+    await db.remove(active_account_key)
+  }
 
   await db.remove(CONTENT_KEY)
   winston.verbose("(ibm) Content deleted.");
@@ -860,7 +858,7 @@ function startApp(settings, callback) {
     GRAPH_URL = settings.GRAPH_URL;
     winston.info("(ibm) GRAPH_URL: " + GRAPH_URL);
   }
-  
+
   if (settings.BRAND_NAME) {
     BRAND_NAME = settings.BRAND_NAME
   }
@@ -875,7 +873,7 @@ function startApp(settings, callback) {
   } else {
     db.connect(settings.MONGODB_URL, () => {
       winston.info("(wab) KVBaseMongo successfully connected.");
-  
+
       if (callback) {
         callback(null);
       }
@@ -886,7 +884,7 @@ function startApp(settings, callback) {
 
 function readHTMLFile(templateName, callback) {
   fs.readFile(__dirname + '/template' + templateName, { encoding: 'utf-8' },
-    function(err, html) {
+    function (err, html) {
       if (err) {
         throw err;
         //callback(err);

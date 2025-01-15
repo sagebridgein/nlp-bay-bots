@@ -81,7 +81,8 @@ class KVBaseMongo {
       });
     });
   }
-
+ 
+  
   remove(k) {
     return new Promise((resolve, reject) => {
       this.db.collection(this.KV_COLLECTION).deleteOne({key: k}, function(err) {

@@ -60,7 +60,7 @@ class TiledeskChannel {
 
     }else if (messageInfo.channel == "instagram"){
       channel = messageInfo.instagram;
-      new_request_id = "support-group-" + this.settings.project_id + "-" + uuidv4().substring(0, 8) + "-ibm-" + channel.id + "-" + channel.sender_id;
+      new_request_id = "support-group-" + this.settings.project_id + "-" + uuidv4().substring(0, 8) + "-ibm-" + channel.user_id + "-" + channel.sender_id;
 
    } else {
       winston.verbose("[(fbm) TiledeskChannel] Channel not supported")

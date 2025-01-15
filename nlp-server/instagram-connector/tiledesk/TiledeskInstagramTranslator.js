@@ -238,7 +238,7 @@ const path = require('path');
 
     let tiledeskMessage = {
       senderFullname: instagramChannelMessage.sender.fullname,
-      channel: { name: TiledeskinstagramTranslator.CHANNEL_NAME },
+      channel: { name: TiledeskInstagramTranslator.CHANNEL_NAME },
     };
 
     if (instagramChannelMessage.postback) {
