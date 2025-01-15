@@ -1,6 +1,4 @@
-
-
-const qs = require("qs"); 
+const qs = require("qs");
 const axios = require("axios").default;
 const fs = require("fs");
 const FormData = require("form-data");
@@ -16,7 +14,7 @@ class InstagramClient {
    *
    * @param {Object} config JSON configuration.
    * @param {string} config.INSTA_GRAPH_URL Mandatory. The api url for facebook.
-   * @param {string} config.APP_ID Mandatory. The facebook developer app id.
+   * @param {string} config.FB_APP_ID Mandatory. The facebook developer app id.
    * @param {boolean} options.log Optional. If true HTTP requests are logged.
    */
   constructor(config) {
@@ -33,38 +31,39 @@ class InstagramClient {
       throw new Error("config.BASE_URL is mandatory");
     }
     this.insta_api_url = config.GRAPH_URL;
-    this.insta_graph_url="https://graph.instagram.com/v21.0/"
+    this.insta_graph_url = "https://graph.instagram.com/v21.0/"
     this.app_id = config.FB_APP_ID;
     this.app_secret = config.APP_SECRET;
     this.base_url = config.BASE_URL;
   }
   async send(message, access_token) {
-    winston.debug("(fbm) [InstagramClient] Sending message...");
+    try {
+      winston.debug("(fbm) [InstagramClient] Sending message...");
+      winston.debug("(fbm) [InstagramClient] Message payload:", { message, access_token });
 
-    return await axios({
-      url: this.insta_graph_url + "me/messages",
-      header: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${access_token}`
-      },
-      method: "POST",
-      data: message,
-    })
-      .then((response) => {
-        winston.debug("(fbm) [InstagramClient] Message sent!");
-        return response;
-      })
-      .catch((err) => {
-        winston.error(
-          "(fbm) [InstagramClient] error send message: ",
-          err.response.data
-        );
-        throw err;
-      });
+      const response = await axios.post(
+        `${this.insta_graph_url}me/messages`,
+        message,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      winston.debug("(ibm) [InstagramClient] Message sent successfully!", { response: response.data });
+      return response.data;
+    } catch (err) {
+      const errorData = err.response?.data || err.message;
+      winston.error("(fbm) [InstagramClient] Error sending message:", errorData);
+      throw err;
+    }
   }
+
   async getAccessTokenFromCode(code, callback) {
     console.log("Code received:", code);
-  
+
     try {
       // Prepare the parameters
       const params = {
@@ -74,12 +73,12 @@ class InstagramClient {
         redirect_uri: this.base_url + '/oauth',
         code: code,
       };
-  
+
       // Convert parameters to x-www-form-urlencoded format
       const formData = qs.stringify(params);
-  
+
       const URL = `${this.insta_api_url}oauth/access_token`;
-  
+
       // Make the POST request
       const response = await axios.post(
         URL,
@@ -90,28 +89,28 @@ class InstagramClient {
           },
         }
       );
-  
+
       console.log("Access token received:", response.data);
-  
+
       // Call the callback if provided
       if (callback) {
         callback(null, response.data.access_token);
       }
-  
+
       return response.data.access_token;
-  
+
     } catch (error) {
       console.error("Error during token retrieval:", error);
-  
+
       // Call the callback with error if provided
       if (callback) {
         callback(error);
       }
-  
+
       throw error; // Rethrow the error for further handling
     }
   }
-  
+
   async messageEventSubscription(app_id, access_token) {
     return await axios({
       url: this.insta_graph_url + app_id + "/subscribed_apps?access_token=" + access_token + "&subscribed_fields=['messages','comments','mentions']",

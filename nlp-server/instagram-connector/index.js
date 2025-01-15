@@ -453,7 +453,6 @@ router.post('/webhookFB', async (req, res) => {
     body.entry.forEach(async (entry) => {
 
       let messengerChannelMessage = entry.messaging[0];
-      console.log(messengerChannelMessage);
       winston.debug("(fbm) webhook_event: ", messengerChannelMessage);
 
       const tlr = new TiledeskInstagramTranslator();
@@ -463,9 +462,7 @@ router.post('/webhookFB', async (req, res) => {
       // const page = settings.access_token;
 
       let user_info = await fbClient.getUserInfo(settings.access_token, messengerChannelMessage.sender.id)
-      messengerChannelMessage.sender.fullname = user_info.first_name + " " + user_info.last_name;
-      console.log(user_info);
-      // winston.debug("(fbm) page: " + page);
+      messengerChannelMessage.sender.fullname = user_info.name
       winston.debug("(fbm) user_info: ", user_info);
 
       let message_info = {
@@ -473,8 +470,7 @@ router.post('/webhookFB', async (req, res) => {
         instagram: {
           user_id: user_id,
           sender_id: messengerChannelMessage.sender.id,
-          firstname: user_info.first_name,
-          lastname: user_info.last_name
+          firstname: user_info.name,
         }
       }
 
@@ -744,11 +740,10 @@ router.post('/disconnect', async (req, res) => {
 
   let project_id = req.body.project_id;
   let token = req.body.token;
-  let subscription_id = req.body.subscription_id;
 
   let CONTENT_KEY = "instagram-" + project_id;
   let settings = await db.get(CONTENT_KEY);
-  const active_account = settings.value.account;
+  const active_account = settings.account.user_id;
   if (active_account) {
     let active_account_key = `instagram-account-${active_account.user_id}`
     await db.remove(active_account_key)

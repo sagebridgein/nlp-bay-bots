@@ -69,8 +69,8 @@ class TiledeskChannel {
 
     var payload = {
       _id: 'ibm-' + channel.sender_id,
-      first_name: channel.firstname,
-      last_name: channel.lastname,
+      first_name: channel.name,
+      last_name:channel.name,
       email: 'na@instagram.com',
       sub: 'userexternal',
       aud: 'https://tiledesk.com/subscriptions/' + this.settings.subscription_id
